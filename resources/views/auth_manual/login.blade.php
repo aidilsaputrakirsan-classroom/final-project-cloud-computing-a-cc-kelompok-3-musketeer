@@ -48,11 +48,24 @@
             margin-bottom: 10px;
             text-align: center;
         }
+        .register-link {
+            display: block;
+            margin-top: 14px;
+            text-align: center;
+        }
+        .register-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 <div class="login-container">
-    <h2>Selamat Datang di Chatterbox</h2>
+    <h2>Login ke Chatterbox</h2>
     @if(session()->has('failed'))
         <div class="error-message">{{ session('failed') }}</div>
     @endif
@@ -62,6 +75,9 @@
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
+    <div class="register-link">
+        <a href="/register">Belum punya akun? Register di sini</a>
+    </div>
 </div>
 </body>
 </html>
