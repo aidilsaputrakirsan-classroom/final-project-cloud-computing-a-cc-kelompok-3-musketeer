@@ -1,126 +1,131 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bantuan & FAQ - Chatter Box</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <style>
-        :root {
-            --chatter-blue: #4C9CBD;
-        }
-        .text-chatter { color: var(--chatter-blue) !important; }
-        .btn-chatter {
-            background-color: var(--chatter-blue);
-            border: none;
-            color: white;
-        }
-        .btn-chatter:hover {
-            background-color: #3b88a8;
-        }
-        .card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-        }
-    </style>
-</head>
-<body class="bg-light">
+@extends('layouts.main')
 
-    <div class="container py-5">
-        <h2 class="fw-bold mb-4 text-chatter">Bantuan & FAQ</h2>
+@section('title', 'Bantuan & FAQ | Chatter Box')
 
-        {{-- ================== KATEGORI 1 ================== --}}
-        <h4 class="fw-semibold text-chatter mb-3"><i class="bi bi-person-circle me-2"></i>Akun & Profil</h4>
-        <div class="row g-3 mb-5">
-            @foreach ($faqData['akun'] as $slug => $faq)
-                <div class="col-md-6">
-                    <a href="{{ route('faq.show', ['slug' => $slug]) }}" 
-                       class="card p-3 text-decoration-none text-dark shadow-sm h-100">
-                        <div class="d-flex align-items-center">
-                            <i class="bi {{ $faq['icon'] }} fs-3 text-chatter me-3"></i>
-                            <span class="fw-semibold">{{ $faq['title'] }}</span>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
+@section('content')
+<style>
+    body {
+        background: #fff !important;
+    }
+    .dashboard-content {
+        background: #fff !important;
+    }
+    h2 {
+        color:#40A09C;
+        margin-bottom:25px;
+    }
+    .faq-section {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px 25px;
+        margin-bottom: 25px;
+    }
+    .faq-section h3 {
+        color: #40A09C;
+        font-size: 1.2em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+    .faq-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .faq-item {
+        flex: 1 1 calc(50% - 10px);
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #37474f;
+        font-size: 0.96em;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .faq-item i {
+        color: #40A09C;
+        font-size: 1.1em;
+    }
+    .faq-item:hover {
+        background: #e7f6f8;
+        border-color: #bde2e3;
+        transform: translateY(-2px);
+    }
+    .faq-footer {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 0.95em;
+        color: #666;
+    }
+    .faq-footer a {
+        background: #40A09C;
+        color: #fff;
+        text-decoration: none;
+        padding: 8px 18px;
+        border-radius: 6px;
+        display: inline-block;
+        margin-top: 8px;
+    }
+    .faq-footer a:hover {
+        background: #2f7f7a;
+    }
+</style>
 
-        {{-- ================== KATEGORI 2 ================== --}}
-        <h4 class="fw-semibold text-chatter mb-3"><i class="bi bi-chat-left-text-fill me-2"></i>Postingan & Komentar</h4>
-        <div class="row g-3 mb-5">
-            @foreach ($faqData['postingan'] as $slug => $faq)
-                <div class="col-md-6">
-                    <a href="{{ route('faq.show', ['slug' => $slug]) }}" 
-                       class="card p-3 text-decoration-none text-dark shadow-sm h-100">
-                        <div class="d-flex align-items-center">
-                            <i class="bi {{ $faq['icon'] }} fs-3 text-chatter me-3"></i>
-                            <span class="fw-semibold">{{ $faq['title'] }}</span>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
+<h2>Bantuan & FAQ</h2>
 
-        {{-- ================== KATEGORI 3 ================== --}}
-        <h4 class="fw-semibold text-chatter mb-3"><i class="bi bi-shield-lock-fill me-2"></i>Pengaturan & Keamanan</h4>
-        <div class="row g-3 mb-5">
-            @foreach ($faqData['keamanan'] as $slug => $faq)
-                <div class="col-md-6">
-                    <a href="{{ route('faq.show', ['slug' => $slug]) }}" 
-                       class="card p-3 text-decoration-none text-dark shadow-sm h-100">
-                        <div class="d-flex align-items-center">
-                            <i class="bi {{ $faq['icon'] }} fs-3 text-chatter me-3"></i>
-                            <span class="fw-semibold">{{ $faq['title'] }}</span>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- ================== KATEGORI 4 ================== --}}
-        <h4 class="fw-semibold text-chatter mb-3"><i class="bi bi-bug-fill me-2"></i>Kendala Teknis</h4>
-        <div class="row g-3 mb-5">
-            @foreach ($faqData['kendala'] as $slug => $faq)
-                <div class="col-md-6">
-                    <a href="{{ route('faq.show', ['slug' => $slug]) }}" 
-                       class="card p-3 text-decoration-none text-dark shadow-sm h-100">
-                        <div class="d-flex align-items-center">
-                            <i class="bi {{ $faq['icon'] }} fs-3 text-chatter me-3"></i>
-                            <span class="fw-semibold">{{ $faq['title'] }}</span>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- ================== KATEGORI 5 ================== --}}
-        <h4 class="fw-semibold text-chatter mb-3"><i class="bi bi-telephone-fill me-2"></i>Bantuan & Kontak</h4>
-        <div class="row g-3 mb-5">
-            @foreach ($faqData['kontak'] as $slug => $faq)
-                <div class="col-md-6">
-                    <a href="{{ route('faq.show', ['slug' => $slug]) }}" 
-                       class="card p-3 text-decoration-none text-dark shadow-sm h-100">
-                        <div class="d-flex align-items-center">
-                            <i class="bi {{ $faq['icon'] }} fs-3 text-chatter me-3"></i>
-                            <span class="fw-semibold">{{ $faq['title'] }}</span>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- TOMBOL HUBUNGI --}}
-        <div class="text-center mt-5">
-            <p class="mb-2 text-muted">Tidak menemukan jawaban?</p>
-            <a href="https://wa.me/6281234567890" class="btn btn-chatter px-4 py-2">
-                <i class="bi bi-whatsapp me-2"></i>Hubungi Kami
-            </a>
-        </div>
+{{-- Akun & Profil --}}
+<div class="faq-section">
+    <h3><i class="fa fa-user-circle"></i> Akun & Profil</h3>
+    <div class="faq-list">
+        <a href="{{ route('faq.show', 0) }}" class="faq-item"><i class="fa fa-id-card"></i> Bagaimana cara mengubah nama profil?</a>
+        <a href="{{ route('faq.show', 1) }}" class="faq-item"><i class="fa fa-envelope"></i> Bagaimana cara mengganti alamat email?</a>
     </div>
+</div>
 
-</body>
-</html>
+{{-- Postingan & Komentar --}}
+<div class="faq-section">
+    <h3><i class="fa fa-edit"></i> Postingan & Komentar</h3>
+    <div class="faq-list">
+        <a href="{{ route('faq.show', 2) }}" class="faq-item"><i class="fa fa-trash"></i> Bagaimana cara menghapus postingan?</a>
+        <a href="{{ route('faq.show', 3) }}" class="faq-item"><i class="fa fa-pen"></i> Bagaimana cara mengedit postingan?</a>
+    </div>
+</div>
+
+{{-- Pengaturan & Keamanan --}}
+<div class="faq-section">
+    <h3><i class="fa fa-shield-alt"></i> Pengaturan & Keamanan</h3>
+    <div class="faq-list">
+        <a href="{{ route('faq.show', 4) }}" class="faq-item"><i class="fa fa-lock"></i> Bagaimana cara mengatur ulang kata sandi?</a>
+        <a href="{{ route('faq.show', 5) }}" class="faq-item"><i class="fa fa-key"></i> Apa itu verifikasi dua langkah?</a>
+    </div>
+</div>
+
+{{-- Kendala Teknis --}}
+<div class="faq-section">
+    <h3><i class="fa fa-bug"></i> Kendala Teknis</h3>
+    <div class="faq-list">
+        <a href="{{ route('faq.show', 6) }}" class="faq-item"><i class="fa fa-wrench"></i> Bagaimana melaporkan bug?</a>
+        <a href="{{ route('faq.show', 7) }}" class="faq-item"><i class="fa fa-exclamation-triangle"></i> Mengapa saya tidak bisa login?</a>
+    </div>
+</div>
+
+{{-- Bantuan & Kontak --}}
+<div class="faq-section">
+    <h3><i class="fa fa-phone"></i> Bantuan & Kontak</h3>
+    <div class="faq-list">
+        <a href="{{ route('faq.show', 8) }}" class="faq-item"><i class="fa fa-headset"></i> Bagaimana cara menghubungi admin?</a>
+        <a href="{{ route('faq.show', 9) }}" class="faq-item"><i class="fa fa-info-circle"></i> Apakah ada pusat bantuan resmi?</a>
+    </div>
+</div>
+
+<div class="faq-footer">
+    Tidak menemukan jawaban?<br>
+    <a href="#">💬 Hubungi Kami</a>
+</div>
+@endsection
