@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard | Chatter Box</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postingan | Chatter Box</title>
     <style>
         body {
             background: #f5f6fa;
@@ -63,26 +64,16 @@
             border-radius: 6px;
             color: #40A09C;
         }
+        .menu-list li a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
         .menu-list li i {
             margin-right: 10px;
             font-size: 1.07em;
-        }
-        .faq-box {
-            margin: 32px 10px 12px 10px;
-            padding: 11px 12px;
-            background: #e3f6f8;
-            border-radius: 7px;
-            text-align: center;
-        }
-        .faq-btn {
-            background: #40A09C;
-            border: none;
-            color: #fff;
-            padding: 5px 16px;
-            border-radius: 5px;
-            margin-top: 7px;
-            font-size: 0.97em;
-            cursor: pointer;
         }
         .dashboard-content {
             flex: 1;
@@ -93,90 +84,30 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .search-bar {
-            width: 270px;
-            padding: 7px 10px;
-            border: 1px solid #ddd;
-            border-radius: 7px;
-            font-size: 0.99em;
-            background: #fff;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #40A09C;
-            background-size: cover;
-            background-position: center;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-        .user-avatar:hover { opacity: 0.8; }
-        .notif-icon {
-            font-size: 1.1em;
-            color: #aaa;
-            cursor: pointer;
-        }
-
-        /* Logout button style */
-        .logout-form button {
-            background: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 6px 12px;
-            font-size: 0.9em;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .logout-form button:hover {
-            background: #b02a37;
-        }
-
-        .content-list-controls {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            margin-bottom: 8px;
-            margin-top: 5px;
-        }
-        .btn-filter, .btn-category {
-            background: #e7f6fa;
-            color: #40a09c;
-            border: none;
-            padding: 6px 17px;
-            border-radius: 16px;
-            font-size: 0.97em;
-            cursor: pointer;
+            margin-bottom: 20px;
         }
         .btn-post {
             background: #40A09C;
             color: #fff;
             border: none;
-            padding: 7px 17px;
+            padding: 10px 20px;
             border-radius: 7px;
             font-size: 0.97em;
             font-weight: 500;
-            margin-left: auto;
-            transition: background 0.2s;
+            cursor: pointer;
             text-decoration: none;
             display: inline-block;
-            cursor: pointer;
+            transition: background 0.2s;
         }
         .btn-post:hover { background: #278a84; }
+        .alert {
+            padding: 12px 16px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
         .cards-list {
             display: flex;
             flex-direction: column;
@@ -215,10 +146,21 @@
             margin-bottom: 4px;
             color: #4b5d6b;
         }
+        .post-title a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .post-title a:hover {
+            color: #40A09C;
+        }
         .post-desc {
             font-size: 0.98em;
             color: #314057;
             margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .post-stats {
             display: flex;
@@ -240,6 +182,55 @@
             font-size: 0.91em;
             border: none;
         }
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .btn-edit, .btn-delete {
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+        }
+        .btn-edit {
+            background: #40A09C;
+            color: #fff;
+        }
+        .btn-edit:hover {
+            background: #278a84;
+        }
+        .btn-delete {
+            background: #dc3545;
+            color: #fff;
+        }
+        .btn-delete:hover {
+            background: #c82333;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #40A09C;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+        }
+        .pagination .active {
+            background: #40A09C;
+            color: #fff;
+            border-color: #40A09C;
+        }
         @media (max-width: 980px) {
             .main-container { flex-direction: column; }
             .dashboard-header { flex-direction: column; gap: 9px;}
@@ -259,52 +250,24 @@
             </div>
         </div>
         <ul class="menu-list">
-            <li class="active"><a href="{{ route('dashboard') }}" style="text-decoration: none; color: inherit; display: flex; align-items: center; width: 100%;"><i class="fa fa-comments"></i>Diskusi</a></li>
+            <li class="active"><a href="{{ route('posts.index') }}"><i class="fa fa-comments"></i>Diskusi</a></li>
             <li><i class="fa fa-compass"></i>Jelajahi Topik-Topik</li>
-            <li><a href="{{ route('my-posts') }}" style="text-decoration: none; color: inherit; display: flex; align-items: center; width: 100%;"><i class="fa fa-file-alt"></i>Postingan Saya</a></li>
+            <li><i class="fa fa-file-alt"></i>Postingan Saya</li>
             <li><i class="fa fa-heart"></i>Daftar Suka</li>
             <li><i class="fa fa-cog"></i>Pengaturan</li>
         </ul>
-        <div class="faq-box">
-            <div>Ada Kendala?</div>
-            <button class="faq-btn">Lihat Bantuan & FAQ</button>
-        </div>
     </aside>
-
     <!-- Main Content -->
     <section class="dashboard-content">
         <div class="dashboard-header">
-            <input type="text" class="search-bar" placeholder="Cari postingan ngtren saat ini?">
-            <div class="user-info">
-                <i class="fa fa-bell notif-icon"></i>
-
-                {{-- Avatar --}}
-                <a href="{{ route('profile.edit') }}" style="text-decoration: none;">
-                    <div class="user-avatar" style="@if(Auth::user()->profile_picture) background-image: url('{{ Storage::url(Auth::user()->profile_picture) }}'); @endif">
-                        @if(!Auth::user()->profile_picture)
-                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                        @endif
-                    </div>
-                </a>
-
-                {{-- Logout button --}}
-                <form action="{{ route('logout') }}" method="POST" class="logout-form">
-                    @csrf
-                    <button type="submit" title="Logout">
-                        <i class="fa fa-sign-out-alt"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <div class="content-list-controls">
-            <button class="btn-filter">Baru</button>
-            <button class="btn-category"><i class="fa fa-filter"></i> Kategori</button>
-            <a href="{{ route('posts.create') }}" class="btn-post">+ Buat Postingan</a>
+            <h1 style="margin: 0; color: #4b5d6b;">Semua Postingan</h1>
+            <a href="{{ route('posts.create') }}" class="btn-post">
+                <i class="fa fa-plus"></i> Buat Postingan Baru
+            </a>
         </div>
 
         @if(session('success'))
-            <div style="padding: 12px 16px; border-radius: 7px; margin-bottom: 20px; background: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
+            <div class="alert">
                 {{ session('success') }}
             </div>
         @endif
@@ -325,9 +288,9 @@
                     </div>
                     <div class="post-meta">{{ $post->created_at->format('d M Y, H:i') }}</div>
                     <div class="post-title">
-                        <a href="{{ route('posts.show', $post) }}" style="text-decoration: none; color: inherit;">{{ $post->title }}</a>
+                        <a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
                     </div>
-                    <div class="post-desc">{{ \Illuminate\Support\Str::limit($post->content, 150) }}</div>
+                    <div class="post-desc">{{ $post->content }}</div>
                     <div class="post-stats">
                         <span><i class="fa fa-eye"></i> {{ $post->views }}</span>
                         <span><i class="fa fa-comment"></i> {{ $post->comments_count }}</span>
@@ -340,14 +303,14 @@
                         </div>
                     @endif
                     @if(Auth::id() === $post->user_id)
-                        <div style="display: flex; gap: 10px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
-                            <a href="{{ route('posts.edit', $post) }}" style="padding: 6px 12px; border-radius: 5px; font-size: 0.9em; text-decoration: none; background: #40A09C; color: #fff;">
+                        <div class="post-actions">
+                            <a href="{{ route('posts.edit', $post) }}" class="btn-edit">
                                 <i class="fa fa-edit"></i> Edit
                             </a>
                             <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" style="padding: 6px 12px; border-radius: 5px; font-size: 0.9em; background: #dc3545; color: #fff; border: none; cursor: pointer;" onclick="return confirm('Apakah Anda yakin ingin menghapus postingan ini?')">
+                                <button type="submit" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus postingan ini?')">
                                     <i class="fa fa-trash"></i> Hapus
                                 </button>
                             </form>
@@ -365,7 +328,7 @@
 
         <!-- Pagination -->
         @if($posts->hasPages())
-            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 30px;">
+            <div class="pagination">
                 {{ $posts->links() }}
             </div>
         @endif
@@ -373,3 +336,4 @@
 </div>
 </body>
 </html>
+
