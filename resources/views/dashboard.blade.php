@@ -18,7 +18,7 @@
                     <a href="{{ route('profile.edit') }}" style="text-decoration:none;">
                         <div 
                             class="user-avatar" 
-                            style="width:32px;height:32px;border-radius:50%;
+                            style="width:32px;height:32px;border-radius:50%; cvxxccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
                                    background:#40A09C;background-size:cover;background-position:center;
                                    cursor:pointer;display:flex;align-items:center;justify-content:center;
                                    color:#fff;font-weight:bold;font-size:0.9em;
