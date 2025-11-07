@@ -158,8 +158,11 @@
                 onclick="window.location='{{ url('/dashboard') }}'">
                 <i class="fa fa-comments"></i> Diskusi
             </li>
-            <li><i class="fa fa-compass"></i> Jelajahi Topik</li>
-            <li><i class="fa fa-file-alt"></i> Postingan Saya</li>
+        <li><i class="fa fa-compass"></i> Jelajahi Topik</li>
+            <li class="{{ request()->is('my-posts*') ? 'active' : '' }}"
+                onclick="window.location='{{ url('/my-posts') }}'">
+                <i class="fa fa-file-alt"></i> Postingan Saya
+            </li>
             <li><i class="fa fa-heart"></i> Daftar Suka</li>
             <li><i class="fa fa-cog"></i> Pengaturan</li>
         </ul>
