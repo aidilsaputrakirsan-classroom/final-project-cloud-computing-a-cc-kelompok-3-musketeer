@@ -7,15 +7,18 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FAQController;
 
+// Redirect ke halaman login jika mengakses root
+Route::get('/', function() {
+    return redirect('/login');
+});
+
+// Comment
 Route::middleware('auth')->group(function () {
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
-});
-
-Route::get('/', function() {
-    return redirect('/login');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
@@ -23,9 +26,13 @@ Route::get('/login', [LoginController::class, 'index'])->name('login')->middlewa
 Route::post('/login', [LoginController::class, 'authenticate'])->middleware('guest');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Register
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store'])->middleware('guest');
 
+// FAQ / Bantuan
+Route::get('/faq', [FAQController::class, 'index'])->name('faq.index');
+Route::get('/faq/{id}', [FAQController::class, 'show'])->name('faq.show');
 // Profile routes
 Route::get('/my-posts', [ProfileController::class, 'myPosts'])->name('my-posts')->middleware('auth');
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');

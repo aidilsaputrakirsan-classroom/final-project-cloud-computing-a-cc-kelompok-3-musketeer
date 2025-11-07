@@ -8,7 +8,7 @@
         body {
             background: #f5f6fa;
             font-family: 'Montserrat', Arial, sans-serif;
-            margin: 0;
+            margin: 0; 
             padding: 20px;
         }
         .container {
