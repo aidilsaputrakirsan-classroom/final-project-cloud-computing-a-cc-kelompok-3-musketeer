@@ -14,7 +14,8 @@
             display: flex;
             min-height: 100vh;
         }
-        /* SIDEBAR */
+
+        /* ==== SIDEBAR ==== */
         .sidebar {
             background: #fff;
             width: 230px;
@@ -22,6 +23,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: fixed; /* tetap di tempat */
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
         }
         .logo-row {
             display: flex;
@@ -56,6 +62,7 @@
             display: flex;
             align-items: center;
             font-size: 0.97em;
+            transition: all 0.2s ease;
         }
         .menu-list li.active,
         .menu-list li:hover {
@@ -68,32 +75,56 @@
         }
         .faq-box {
             margin: 32px 10px 12px 10px;
-            padding: 11px 12px;
+            padding: 18px 12px;
             background: #e3f6f8;
-            border-radius: 7px;
+            border-radius: 10px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        .faq-image {
+            width: 120px;
+            margin-bottom: 10px;
+        }
+
+        .faq-text {
+            font-size: 1em;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
         .faq-btn {
             background: #40A09C;
             border: none;
             color: #fff;
-            padding: 5px 16px;
-            border-radius: 5px;
-            margin-top: 7px;
-            font-size: 0.97em;
+            padding: 8px 18px;
+            border-radius: 7px;
+            font-size: 0.95em;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
+            transition: background 0.2s;
         }
-        .faq-btn:hover { background: #2e8985; }
 
-        /* KONTEN UTAMA */
+        .faq-btn:hover {
+            background: #2e8985;
+        }
+
+
+        /* ==== KONTEN UTAMA ==== */
         .dashboard-content {
             flex: 1;
             padding: 16px 22px 24px 22px;
-            background: #d5f0f2;
+            background: #f5f6fa;
+            margin-left: 230px; /* offset sidebar */
             min-width: 0;
+            height: 100vh;
+            overflow-y: auto; /* hanya konten yang scroll */
         }
+
+        /* ==== KOMPONEN TAMBAHAN ==== */
         .post-card {
             background: #fff;
             border-radius: 7px;
@@ -108,19 +139,6 @@
         .post-card p {
             color: #314057;
         }
-        .back-btn {
-            background: #40A09C;
-            color: #fff;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.95em;
-            cursor: pointer;
-        }
-        .back-btn:hover {
-            background: #2f7f7a;
-        }
     </style>
 </head>
 <body>
@@ -134,20 +152,25 @@
                 <div class="logo-sub">Express yourself everyday</div>
             </div>
         </div>
+
         <ul class="menu-list">
-            <li class="{{ request()->is('dashboard') ? 'active' : '' }}"><i class="fa fa-comments"></i>Diskusi</li>
-            <li><i class="fa fa-compass"></i>Jelajahi Topik</li>
-            <li><i class="fa fa-file-alt"></i>Postingan Saya</li>
-            <li><i class="fa fa-heart"></i>Daftar Suka</li>
-            <li><i class="fa fa-cog"></i>Pengaturan</li>
+            <li class="{{ request()->is('dashboard') ? 'active' : '' }}" 
+                onclick="window.location='{{ url('/dashboard') }}'">
+                <i class="fa fa-comments"></i> Diskusi
+            </li>
+            <li><i class="fa fa-compass"></i> Jelajahi Topik</li>
+            <li><i class="fa fa-file-alt"></i> Postingan Saya</li>
+            <li><i class="fa fa-heart"></i> Daftar Suka</li>
+            <li><i class="fa fa-cog"></i> Pengaturan</li>
         </ul>
+
         <div class="faq-box">
-            <div>Ada Kendala?</div>
+            <div class="faq-text">Ada Kendala?</div>
             <a href="{{ route('faq.index') }}" class="faq-btn">Lihat Bantuan & FAQ</a>
         </div>
-    </aside>
+        </aside>
 
-    <!-- Konten -->
+    <!-- Konten Utama -->
     <section class="dashboard-content">
         @yield('content')
     </section>

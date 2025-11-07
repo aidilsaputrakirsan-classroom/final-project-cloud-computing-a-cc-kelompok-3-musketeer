@@ -18,9 +18,50 @@
 </div>
 
 <div class="cards-list" style="display:flex;flex-direction:column;gap:25px;">
-    <div class="post-card" style="background:white;border-radius:7px;box-shadow:0 1px 6px rgba(0,0,0,0.05);padding:20px;">
-        <div class="post-title" style="font-weight:600;color:#4b5d6b;">Contoh Postingan Dashboard</div>
-        <p style="color:#314057;">Isi postingan atau konten dashboard di sini.</p>
+
+    {{-- Postingan 1 --}}
+    <div class="post-card" style="background:white;border-radius:10px;box-shadow:0 1px 6px rgba(0,0,0,0.05);padding:20px;">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+            <span style="font-weight:600;color:#f1a23c;">Sci-Fi Enthusiast</span>
+            <span style="font-size:13px;color:#f1a23c;">Sci-Fi Enthusiast</span>
+        </div>
+        <div style="font-weight:600;font-size:16px;color:#314057;margin-bottom:3px;">Which of sci-fi's favourite technologies would you like to see become a reality?</div>
+        <div style="color:#8b9aa6;font-size:13px;margin-bottom:6px;">09:00 pm</div>
+        <p style="color:#314057;font-size:14px;margin-bottom:10px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Augue magna justo, volutpat, non amet massa viverra euismod id.</p>
+
+        <div style="display:flex;align-items:center;gap:18px;margin-bottom:10px;">
+            <span style="color:#60717d;font-size:13px;"><i class="fa fa-eye"></i> 60</span>
+            <span style="color:#60717d;font-size:13px;"><i class="fa fa-comment"></i> 3</span>
+            <span style="color:#60717d;font-size:13px;"><i class="fa fa-thumbs-up"></i> 3</span>
+        </div>
+
+        <div style="display:flex;gap:8px;">
+            <button style="background:#e7f6fa;color:#40a09c;border:none;padding:5px 14px;border-radius:14px;font-size:13px;">Sci-fi</button>
+            <button style="background:#e7f6fa;color:#40a09c;border:none;padding:5px 14px;border-radius:14px;font-size:13px;">Sci-fi</button>
+        </div>
     </div>
+
+    {{-- Postingan 2 --}}
+    <div class="post-card" style="background:white;border-radius:10px;box-shadow:0 1px 6px rgba(0,0,0,0.05);padding:20px;">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;">
+            <span style="font-weight:600;color:#e38b2b;">User Lain</span>
+            <span style="font-size:13px;color:#e38b2b;">User Lain</span>
+        </div>
+        <div style="font-weight:600;font-size:16px;color:#314057;margin-bottom:3px;">Something just happened</div>
+        <div style="color:#8b9aa6;font-size:13px;margin-bottom:6px;">09:00 pm</div>
+        <p style="color:#314057;font-size:14px;margin-bottom:10px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Augue magna justo, volutpat, non amet massa viverra euismod id.</p>
+
+        <div style="display:flex;align-items:center;gap:18px;margin-bottom:10px;">
+            <span style="color:#60717d;font-size:13px;"><i class="fa fa-eye"></i> 60</span>
+            <span style="color:#60717d;font-size:13px;"><i class="fa fa-comment"></i> 3</span>
+            <span style="color:#60717d;font-size:13px;"><i class="fa fa-thumbs-up"></i> 3</span>
+        </div>
+
+        <div style="display:flex;gap:8px;">
+            <button style="background:#e7f6fa;color:#40a09c;border:none;padding:5px 14px;border-radius:14px;font-size:13px;">Sci-fi</button>
+            <button style="background:#e7f6fa;color:#40a09c;border:none;padding:5px 14px;border-radius:14px;font-size:13px;">Sci-fi</button>
+        </div>
+    </div>
+
 </div>
 @endsection

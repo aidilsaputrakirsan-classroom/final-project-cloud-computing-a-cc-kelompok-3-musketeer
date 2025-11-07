@@ -102,7 +102,7 @@
         @switch($id)
             @case(0)
                 <ol>
-                    <li>Masuk ke halaman profil Anda.</li>
+                    <li>Klik icon akun anda di pojok atas kanan</li>
                     <li>Klik tombol "Edit Profil".</li>
                     <li>Ganti nama pada kolom "Nama Pengguna".</li>
                     <li>Klik "Simpan Perubahan".</li>
@@ -112,7 +112,8 @@
             @case(1)
                 <ol>
                     <li>Buka menu Pengaturan.</li>
-                    <li>Pilih bagian "Akun" → "Email".</li>
+                    <li>Klik "Akun"  
+                    <li>Klik "Email".</li>
                     <li>Masukkan alamat email baru Anda.</li>
                     <li>Klik "Simpan" dan lakukan verifikasi jika diminta.</li>
                 </ol>
@@ -122,7 +123,7 @@
                 <ol>
                     <li>Buka postingan yang ingin dihapus.</li>
                     <li>Klik ikon titik tiga di pojok kanan atas.</li>
-                    <li>Pilih "Hapus Postingan".</li>
+                    <li>Klik "Hapus Postingan".</li>
                     <li>Konfirmasi penghapusan saat diminta.</li>
                 </ol>
                 @break
@@ -130,7 +131,7 @@
             @case(3)
                 <ol>
                     <li>Pilih postingan yang ingin Anda ubah.</li>
-                    <li>Klik ikon pensil (Edit).</li>
+                    <li>Klik "edit".</li>
                     <li>Ubah isi atau judul postingan.</li>
                     <li>Klik "Simpan Perubahan".</li>
                 </ol>
@@ -139,31 +140,13 @@
             @case(4)
                 <ol>
                     <li>Buka menu Pengaturan.</li>
-                    <li>Pilih "Keamanan" → "Ubah Kata Sandi".</li>
+                    <li>Klik "Keamanan" kemudian pilih "Ubah Kata Sandi".</li>
                     <li>Masukkan kata sandi lama dan baru.</li>
                     <li>Klik "Simpan".</li>
                 </ol>
                 @break
 
             @case(5)
-                <ol>
-                    <li>Masuk ke menu Pengaturan.</li>
-                    <li>Pilih “Keamanan Akun”.</li>
-                    <li>Aktifkan opsi “Verifikasi Dua Langkah”.</li>
-                    <li>Ikuti petunjuk untuk menautkan nomor telepon Anda.</li>
-                </ol>
-                @break
-
-            @case(6)
-                <ol>
-                    <li>Buka menu “Bantuan & Kontak”.</li>
-                    <li>Pilih opsi “Laporkan Bug”.</li>
-                    <li>Isi formulir laporan beserta deskripsi masalahnya.</li>
-                    <li>Kirim laporan dan tunggu tanggapan tim teknis.</li>
-                </ol>
-                @break
-
-            @case(7)
                 <ol>
                     <li>Pastikan koneksi internet Anda stabil.</li>
                     <li>Periksa kembali email dan kata sandi.</li>
@@ -172,20 +155,20 @@
                 </ol>
                 @break
 
-            @case(8)
+            @case(6)
                 <ol>
-                    <li>Buka halaman “Bantuan & Kontak”.</li>
+                    <li>Klik “Bantuan & Faq”.</li>
                     <li>Klik tombol “Hubungi Kami”.</li>
-                    <li>Pilih saluran komunikasi (Email / WhatsApp).</li>
+                    <li>Anda akan otomatis menuju halaman whatsapp.</li>
                     <li>Kirim pertanyaan Anda ke admin.</li>
                 </ol>
                 @break
 
-            @case(9)
+             @case(7)
                 <ol>
-                    <li>Ya, terdapat pusat bantuan resmi melalui menu “Bantuan & Kontak”.</li>
+                    <li>Klik “Lihat Bantuan & Faq”.</li>
                     <li>Kami juga menyediakan halaman FAQ dan dukungan chat admin.</li>
-                    <li>Klik tombol “Hubungi Kami” untuk informasi lebih lanjut.</li>
+                    <li>Klik “Hubungi Kami” untuk informasi lebih lanjut.</li>
                 </ol>
                 @break
         @endswitch
@@ -194,6 +177,6 @@
 
 <div class="faq-footer">
     Masih butuh bantuan?<br>
-    <a href="#">💬 Hubungi Kami</a>
+    <a href="https://wa.me/6283140266116" target="_blank">💬 Hubungi Kami</a>
 </div>
 @endsection

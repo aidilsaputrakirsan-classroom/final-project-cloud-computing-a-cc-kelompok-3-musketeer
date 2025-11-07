@@ -23,12 +23,6 @@ class FAQController extends Controller
             'question' => 'Bagaimana cara mengatur ulang kata sandi?',
         ],
         [
-            'question' => 'Apa itu verifikasi dua langkah?',
-        ],
-        [
-            'question' => 'Bagaimana melaporkan bug?',
-        ],
-        [
             'question' => 'Mengapa saya tidak bisa login?',
         ],
         [
