@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FAQController;
 
 // Redirect ke halaman login jika mengakses root
@@ -10,12 +13,7 @@ Route::get('/', function() {
     return redirect('/login');
 });
 
-// Dashboard (hanya bisa diakses jika sudah login)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth');
-
-// Login
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate'])->middleware('guest');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -27,3 +25,15 @@ Route::post('/register', [RegisterController::class, 'store'])->middleware('gues
 // FAQ / Bantuan
 Route::get('/faq', [FAQController::class, 'index'])->name('faq.index');
 Route::get('/faq/{id}', [FAQController::class, 'show'])->name('faq.show');
+// Profile routes
+Route::get('/my-posts', [ProfileController::class, 'myPosts'])->name('my-posts')->middleware('auth');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
+
+// Posts routes (keep for create, edit, show, delete)
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')->middleware('auth');
+Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit')->middleware('auth');
+Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update')->middleware('auth');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy')->middleware('auth');
