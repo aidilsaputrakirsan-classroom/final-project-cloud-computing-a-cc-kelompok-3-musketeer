@@ -97,19 +97,11 @@
     </div>
 </div>
 
-{{-- Pengaturan & Keamanan --}}
-<div class="faq-section">
-    <h3><i class="fa fa-shield-alt"></i> Pengaturan & Keamanan</h3>
-    <div class="faq-list">
-        <a href="{{ route('faq.show', 4) }}" class="faq-item"><i class="fa fa-lock"></i> Bagaimana cara mengatur ulang kata sandi?</a>
-    </div>
-</div>
-
 {{-- Kendala Teknis --}}
 <div class="faq-section">
     <h3><i class="fa fa-bug"></i> Kendala Teknis</h3>
     <div class="faq-list">
-        <a href="{{ route('faq.show', 5) }}" class="faq-item"><i class="fa fa-exclamation-triangle"></i> Mengapa saya tidak bisa login?</a>
+        <a href="{{ route('faq.show', 4) }}" class="faq-item"><i class="fa fa-exclamation-triangle"></i> Mengapa saya tidak bisa login?</a>
     </div>
 </div>
 
@@ -117,8 +109,8 @@
 <div class="faq-section">
     <h3><i class="fa fa-phone"></i> Bantuan & Kontak</h3>
     <div class="faq-list">
-        <a href="{{ route('faq.show', 6) }}" class="faq-item"><i class="fa fa-headset"></i> Bagaimana cara menghubungi admin?</a>
-        <a href="{{ route('faq.show', 7) }}" class="faq-item"><i class="fa fa-info-circle"></i> Apakah ada pusat bantuan resmi?</a>
+        <a href="{{ route('faq.show', 5) }}" class="faq-item"><i class="fa fa-headset"></i> Bagaimana cara menghubungi admin?</a>
+        <a href="{{ route('faq.show', 6) }}" class="faq-item"><i class="fa fa-info-circle"></i> Apakah ada pusat bantuan resmi?</a>
     </div>
 </div>
 

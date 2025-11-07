@@ -103,7 +103,6 @@
             @case(0)
                 <ol>
                     <li>Klik icon akun anda di pojok atas kanan</li>
-                    <li>Klik tombol "Edit Profil".</li>
                     <li>Ganti nama pada kolom "Nama Pengguna".</li>
                     <li>Klik "Simpan Perubahan".</li>
                 </ol>
@@ -111,18 +110,16 @@
 
             @case(1)
                 <ol>
-                    <li>Buka menu Pengaturan.</li>
-                    <li>Klik "Akun"  
-                    <li>Klik "Email".</li>
-                    <li>Masukkan alamat email baru Anda.</li>
-                    <li>Klik "Simpan" dan lakukan verifikasi jika diminta.</li>
+                    <li>Klik icon akun anda di pojok atas kanan</li>
+                    <li>Ganti nama pada kolom "Email".</li>
+                    <li>Klik "Simpan Perubahan".</li>
                 </ol>
                 @break
 
             @case(2)
                 <ol>
-                    <li>Buka postingan yang ingin dihapus.</li>
-                    <li>Klik ikon titik tiga di pojok kanan atas.</li>
+                    <li>Klik Postingan Saya</li>
+                    <li>Klik judul postingan anda</li>
                     <li>Klik "Hapus Postingan".</li>
                     <li>Konfirmasi penghapusan saat diminta.</li>
                 </ol>
@@ -130,32 +127,21 @@
 
             @case(3)
                 <ol>
-                    <li>Pilih postingan yang ingin Anda ubah.</li>
-                    <li>Klik "edit".</li>
-                    <li>Ubah isi atau judul postingan.</li>
-                    <li>Klik "Simpan Perubahan".</li>
+                    <li>Klik Postingan Saya</li>
+                    <li>Klik judul postingan anda</li>
+                    <li>Klik "Edit Postingan".</li>
                 </ol>
                 @break
 
             @case(4)
                 <ol>
-                    <li>Buka menu Pengaturan.</li>
-                    <li>Klik "Keamanan" kemudian pilih "Ubah Kata Sandi".</li>
-                    <li>Masukkan kata sandi lama dan baru.</li>
-                    <li>Klik "Simpan".</li>
-                </ol>
-                @break
-
-            @case(5)
-                <ol>
                     <li>Pastikan koneksi internet Anda stabil.</li>
                     <li>Periksa kembali email dan kata sandi.</li>
-                    <li>Jika lupa kata sandi, gunakan fitur “Lupa Password”.</li>
                     <li>Hubungi admin jika masalah berlanjut.</li>
                 </ol>
                 @break
 
-            @case(6)
+            @case(5)
                 <ol>
                     <li>Klik “Bantuan & Faq”.</li>
                     <li>Klik tombol “Hubungi Kami”.</li>
@@ -164,7 +150,7 @@
                 </ol>
                 @break
 
-             @case(7)
+             @case(6)
                 <ol>
                     <li>Klik “Lihat Bantuan & Faq”.</li>
                     <li>Kami juga menyediakan halaman FAQ dan dukungan chat admin.</li>

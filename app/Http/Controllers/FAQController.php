@@ -20,9 +20,6 @@ class FAQController extends Controller
             'question' => 'Bagaimana cara mengedit postingan?',
         ],
         [
-            'question' => 'Bagaimana cara mengatur ulang kata sandi?',
-        ],
-        [
             'question' => 'Mengapa saya tidak bisa login?',
         ],
         [
