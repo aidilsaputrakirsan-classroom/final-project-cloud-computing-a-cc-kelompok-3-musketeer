@@ -17,7 +17,7 @@ class PostController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('posts.index', compact('posts'));
+        return view('my-posts.index', compact('posts'));
     }
 
     /**
