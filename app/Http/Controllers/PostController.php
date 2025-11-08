@@ -42,7 +42,7 @@ class PostController extends Controller
         $validated['user_id'] = Auth::id();
 
         try {
-            $post = Post::create($validated);
+            Post::create($validated);
             return redirect()->route('dashboard')
                 ->with('success', 'Postingan berhasil dibuat!');
         } catch (\Exception $e) {
@@ -56,12 +56,24 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post->load('user');
-        
-        // Increment views
+        // muat relasi post dengan user dan komentar beserta usernya
+        // termasuk komentar anak (replies)
+        $post->load(['user']);
+
+        // tambahkan views count
         $post->increment('views');
 
-        return view('posts.show', compact('post'));
+        // ambil komentar top-level (parent_id = null)
+        $comments = $post->comments()
+            ->whereNull('parent_id')
+            ->with(['user', 'children.user'])
+            ->latest()
+            ->get();
+
+        // hitung jumlah komentar
+        $post->comments_count = $post->comments()->count();
+
+        return view('posts.show', compact('post', 'comments'));
     }
 
     /**

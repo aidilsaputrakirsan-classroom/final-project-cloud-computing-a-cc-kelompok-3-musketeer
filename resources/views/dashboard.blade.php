@@ -3,22 +3,23 @@
 @section('title', 'Dashboard | Chatter Box')
 
 @section('content')
-    <!-- Main Content -->
     @php
         $user = auth()->user();
     @endphp
 
     <section class="dashboard-content" style="flex:1;padding:16px 30px 24px 0;min-width:0;margin-left:0;">
         <div class="dashboard-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <input type="text" class="search-bar" placeholder="Cari postingan ngtren saat ini?" style="width:270px;padding:7px 10px;border:1px solid #ddd;border-radius:7px;font-size:0.99em;background:#fff;">
+            <input type="text" class="search-bar" placeholder="Cari postingan ngetren saat ini?" style="width:270px;padding:7px 10px;border:1px solid #ddd;border-radius:7px;font-size:0.99em;background:#fff;">
             
             <div class="user-info" style="display:flex;align-items:center;gap:15px;">
                 <i class="fa fa-bell" style="font-size:1.1em;color:#aaa;cursor:pointer;"></i>
+                
+                {{-- Avatar --}}
                 @if($user)
                     <a href="{{ route('profile.edit') }}" style="text-decoration:none;">
                         <div 
                             class="user-avatar" 
-                            style="width:32px;height:32px;border-radius:50%; cvxxccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+                            style="width:32px;height:32px;border-radius:50%;
                                    background:#40A09C;background-size:cover;background-position:center;
                                    cursor:pointer;display:flex;align-items:center;justify-content:center;
                                    color:#fff;font-weight:bold;font-size:0.9em;
@@ -31,6 +32,25 @@
                         </div>
                     </a>
                 @endif
+
+                {{-- Logout button --}}
+                <form action="{{ route('logout') }}" method="POST" style="margin:0;">
+                    @csrf
+                    <button type="submit" title="Logout" style="
+                        background:#dc3545;
+                        color:#fff;
+                        border:none;
+                        border-radius:6px;
+                        padding:6px 10px;
+                        font-size:0.9em;
+                        cursor:pointer;
+                        display:flex;
+                        align-items:center;
+                        gap:5px;
+                    ">
+                        <i class="fa fa-sign-out-alt"></i>
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -54,7 +74,7 @@
             </div>
         @endif
 
-        <div class="cards-list" style="display:flex;flex-direction:column;gap:25px;margin-top:12px;">
+        <div class="cards-list" style="display:flex;flex-direction:column;gap:5px;margin-top:12px;">
             @forelse($posts as $post)
                 <div class="post-card" style="
                     background:#fff;
@@ -79,6 +99,8 @@
                     </div>
 
                     <div style="margin-top:5px;margin-bottom:8px;">
+
+                        {{-- Judul Postingan --}}
                         <a href="{{ route('posts.show', $post) }}" style="
                             font-weight:700;
                             font-size:1.05em;
@@ -87,14 +109,25 @@
                             display:block;
                             margin-bottom:4px;
                         ">{{ $post->title }}</a>
+
+                        {{-- Isi Konten Postingan --}}
                         <p style="font-size:0.95em;color:#4a5568;margin:0 0 10px;">
-                            {{ \Illuminate\Support\Str::limit($post->content, 150) }}
+                            <a href="{{ route('posts.show', $post) }}" style="color:inherit;text-decoration:none;display:block;">
+                                {{ \Illuminate\Support\Str::limit($post->content, 150) }}
+                            </a>
                         </p>
                     </div>
 
+                    {{-- Icon Komentar --}}
                     <div style="display:flex;align-items:center;gap:16px;font-size:0.9em;color:#666;margin-bottom:10px;">
                         <span><i class="fa fa-eye"></i> {{ $post->views }}</span>
-                        <span><i class="fa fa-comment"></i> {{ $post->comments_count }}</span>
+
+                        <span>
+                            <a href="{{ route('posts.show', $post) }}" style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                                <i class="fa fa-comment"></i> <span>{{ $post->comments_count }}</span>
+                            </a>
+                        </span>
+
                         <span><i class="fa fa-thumbs-up"></i> {{ $post->likes }}</span>
                         <span><i class="fa fa-thumbs-down"></i> {{ $post->dislikes }}</span>
                     </div>
@@ -166,6 +199,11 @@
         .post-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .post-card a {
+            color: inherit;
+            text-decoration: none;
         }
     </style>
 @endsection

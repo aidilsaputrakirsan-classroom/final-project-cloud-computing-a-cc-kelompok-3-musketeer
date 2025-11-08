@@ -87,7 +87,7 @@
         color: #155724;
         border: 1px solid #c3e6cb;
     }
-    .cards-list { display: flex; flex-direction: column; gap: 25px; margin-top: 12px; }
+    .cards-list { display: flex; flex-direction: column; gap: 5px; margin-top: 12px; }
     .post-card {
         background: #fff;
         border-radius: 7px;
@@ -154,6 +154,10 @@
         gap: 10px;
         margin-top: 30px;
     }
+
+    /* small helpers for the clickable description and comment icon */
+    .post-desc a { color: inherit; text-decoration: none; display:block; }
+    .post-stats a { color: inherit; text-decoration: none; display:inline-flex; align-items:center; gap:6px; }
 </style>
 
 <div class="profile-header">
@@ -203,10 +207,24 @@
         <div class="post-card">
             <div class="post-meta">{{ $post->created_at->format('d M Y, H:i') }}</div>
             <div class="post-title"><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></div>
-            <div class="post-desc">{{ $post->content }}</div>
+
+            {{-- === REVISI: Deskripsi/isi sekarang clickable ke halaman show === --}}
+            <div class="post-desc">
+                <a href="{{ route('posts.show', $post) }}">
+                    {{ $post->content }}
+                </a>
+            </div>
+
             <div class="post-stats">
                 <span><i class="fa fa-eye"></i> {{ $post->views }}</span>
-                <span><i class="fa fa-comment"></i> {{ $post->comments_count }}</span>
+
+                {{-- === REVISI: Icon komentar juga mengarah ke halaman show === --}}
+                <span>
+                    <a href="{{ route('posts.show', $post) }}">
+                        <i class="fa fa-comment"></i> {{ $post->comments_count }}
+                    </a>
+                </span>
+
                 <span><i class="fa fa-thumbs-up"></i> {{ $post->likes }}</span>
                 <span><i class="fa fa-thumbs-down"></i> {{ $post->dislikes }}</span>
             </div>

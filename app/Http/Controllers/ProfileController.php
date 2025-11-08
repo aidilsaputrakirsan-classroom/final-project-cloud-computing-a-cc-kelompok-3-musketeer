@@ -16,6 +16,7 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $posts = $user->posts()
+            ->withCount('comments')
             ->latest()
             ->paginate(10);
 
