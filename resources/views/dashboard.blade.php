@@ -99,6 +99,8 @@
                     </div>
 
                     <div style="margin-top:5px;margin-bottom:8px;">
+
+                        {{-- Judul Postingan --}}
                         <a href="{{ route('posts.show', $post) }}" style="
                             font-weight:700;
                             font-size:1.05em;
@@ -107,14 +109,25 @@
                             display:block;
                             margin-bottom:4px;
                         ">{{ $post->title }}</a>
+
+                        {{-- Isi Konten Postingan --}}
                         <p style="font-size:0.95em;color:#4a5568;margin:0 0 10px;">
-                            {{ \Illuminate\Support\Str::limit($post->content, 150) }}
+                            <a href="{{ route('posts.show', $post) }}" style="color:inherit;text-decoration:none;display:block;">
+                                {{ \Illuminate\Support\Str::limit($post->content, 150) }}
+                            </a>
                         </p>
                     </div>
 
+                    {{-- Icon Komentar --}}
                     <div style="display:flex;align-items:center;gap:16px;font-size:0.9em;color:#666;margin-bottom:10px;">
                         <span><i class="fa fa-eye"></i> {{ $post->views }}</span>
-                        <span><i class="fa fa-comment"></i> {{ $post->comments_count }}</span>
+
+                        <span>
+                            <a href="{{ route('posts.show', $post) }}" style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                                <i class="fa fa-comment"></i> <span>{{ $post->comments_count }}</span>
+                            </a>
+                        </span>
+
                         <span><i class="fa fa-thumbs-up"></i> {{ $post->likes }}</span>
                         <span><i class="fa fa-thumbs-down"></i> {{ $post->dislikes }}</span>
                     </div>
@@ -186,6 +199,11 @@
         .post-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .post-card a {
+            color: inherit;
+            text-decoration: none;
         }
     </style>
 @endsection

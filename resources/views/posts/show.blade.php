@@ -49,14 +49,14 @@
 
         .post-header {
             border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
+            padding-bottom:
+            margin-bottom: 10px;
         }
         .post-author-row {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
         .author-avatar {
             width: 40px;
@@ -72,18 +72,19 @@
         .post-meta {
             font-size: 0.9em;
             color: #999;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         .post-title {
             font-weight: 600;
             font-size: 1.5em;
             color: #4b5d6b;
-            margin-bottom: 15px;
+            margin-bottom: 6px; 
         }
         .post-content {
             font-size: 1.05em;
             color: #314057;
             line-height: 1.6;
+            margin-top: 0;
             margin-bottom: 20px;
             white-space: pre-wrap;
         }
@@ -149,7 +150,7 @@
             background:#5a6268;
         }
 
-        /* komentar styles (ringkas: partial masih punya beberapa style spesifik) */
+        /* komentar styles */
         .comments-section { margin-top: 24px; }
         .comment-form textarea { width: 100%; padding: .6rem; border:1px solid #e6e6e6; border-radius:6px; resize:vertical; }
         .comment-item { padding: .75rem 0; border-bottom: 1px solid #f0f0f0; }
@@ -165,7 +166,7 @@
         /* replies styling */
         .replies { margin-top:12px; padding-left:18px; border-left:1px solid #eee; }
 
-        /* responsive tweak: keep comfortable padding on small screens */
+        /* responsive tweak */
         @media (max-width: 640px) {
             .post-container { padding: 18px; }
             .post-title { font-size: 1.25em; }
