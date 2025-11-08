@@ -19,11 +19,11 @@ class Post extends Model
         'user_id',
         'title',
         'content',
-        'category',
         'views',
         'likes',
         'dislikes',
         'comments_count',
+        'category_id', // gunakan relasi ke tabel categories
     ];
 
     /**
@@ -34,9 +34,33 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function comments()
+    /**
+     * Relasi ke kategori (setiap post hanya punya satu kategori)
+     */
+    public function category()
     {
-        return $this->hasMany(Comment::class)->latest(); // latest agar paling baru muncul di atas
+        return $this->belongsTo(\App\Models\Category::class);
     }
 
+
+    /**
+     * Relasi ke komentar
+     */
+    public function comments()
+    {
+        // latest() agar komentar terbaru muncul di atas
+        return $this->hasMany(Comment::class)->latest();
+    }
+
+    /**
+     * Scope untuk filter berdasarkan slug kategori (opsional)
+     */
+    public function scopeFilterCategory($query, $categorySlug)
+    {
+        if (! $categorySlug) return $query;
+
+        return $query->whereHas('category', function ($q) use ($categorySlug) {
+            $q->where('slug', $categorySlug);
+        });
+    }
 }

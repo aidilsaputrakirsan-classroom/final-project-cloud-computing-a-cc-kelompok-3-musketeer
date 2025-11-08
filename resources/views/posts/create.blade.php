@@ -32,7 +32,7 @@
             color: #4b5d6b;
             font-weight: 600;
         }
-        input[type="text"], textarea {
+        input[type="text"], textarea, select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -95,9 +95,7 @@
     <h1>Buat Postingan Baru</h1>
 
     @if(session('error'))
-        <div style="padding: 12px 16px; border-radius: 7px; margin-bottom: 20px; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
-            {{ session('error') }}
-        </div>
+        <div class="alert-error">{{ session('error') }}</div>
     @endif
 
     <form action="{{ route('posts.store') }}" method="POST">
@@ -120,9 +118,16 @@
         </div>
 
         <div class="form-group">
-            <label for="category">Kategori</label>
-            <input type="text" id="category" name="category" value="{{ old('category') }}" placeholder="Contoh: Teknologi, Olahraga, dll">
-            @error('category')
+            <label for="category_id">Kategori</label>
+            <select id="category_id" name="category_id">
+                <option value="">{{ __('-- Pilih Kategori --') }}</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
+                        {{ $cat->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('category_id')
                 <div class="error">{{ $message }}</div>
             @enderror
         </div>
@@ -135,4 +140,3 @@
 </div>
 </body>
 </html>
-

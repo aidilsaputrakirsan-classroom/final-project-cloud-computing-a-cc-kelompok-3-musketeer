@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('user')
+        $posts = Post::with(['user', 'category'])
+            ->where('user_id', Auth::id()) // hanya postingan milik user login
             ->latest()
             ->paginate(10);
 
@@ -25,7 +27,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        // ambil semua kategori untuk dropdown
+        $categories = Category::all();
+
+        return view('posts.create', compact('categories'));
     }
 
     /**
@@ -34,15 +39,16 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'category' => 'nullable|string|max:100',
+            'title'       => 'required|string|max:255',
+            'content'     => 'required|string',
+            'category_id' => 'nullable|exists:categories,id', // relasi baru
         ]);
 
         $validated['user_id'] = Auth::id();
 
         try {
             Post::create($validated);
+            // redirect ke dashboard (ada di projectmu)
             return redirect()->route('dashboard')
                 ->with('success', 'Postingan berhasil dibuat!');
         } catch (\Exception $e) {
@@ -56,21 +62,19 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        // muat relasi post dengan user dan komentar beserta usernya
-        // termasuk komentar anak (replies)
-        $post->load(['user']);
+        $post->load(['user', 'category']); // tambahkan relasi category
 
-        // tambahkan views count
+        // Tambahkan views count
         $post->increment('views');
 
-        // ambil komentar top-level (parent_id = null)
+        // Ambil komentar top-level (parent_id = null)
         $comments = $post->comments()
             ->whereNull('parent_id')
             ->with(['user', 'children.user'])
             ->latest()
             ->get();
 
-        // hitung jumlah komentar
+        // Hitung jumlah komentar (tidak menyimpan, hanya untuk tampilan)
         $post->comments_count = $post->comments()->count();
 
         return view('posts.show', compact('post', 'comments'));
@@ -81,12 +85,12 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        // Check if user owns the post
         if ($post->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
 
-        return view('posts.edit', compact('post'));
+        $categories = Category::all();
+        return view('posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -94,20 +98,20 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        // Check if user owns the post
         if ($post->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'category' => 'nullable|string|max:100',
+            'title'       => 'required|string|max:255',
+            'content'     => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         try {
             $post->update($validated);
-            return redirect()->route('my-posts')
+            // arahkan ke dashboard agar tidak bergantung pada route 'my-posts.index'
+            return redirect()->route('dashboard')
                 ->with('success', 'Postingan berhasil diperbarui!');
         } catch (\Exception $e) {
             return back()->withInput()
@@ -120,17 +124,18 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        // Check if user owns the post
         if ($post->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
 
         try {
             $post->delete();
-            return redirect()->route('my-posts')
+            // gunakan dashboard atau back() — dashboard biasanya ada di projectmu
+            return redirect()->route('dashboard')
                 ->with('success', 'Postingan berhasil dihapus!');
         } catch (\Exception $e) {
-            return redirect()->route('my-posts')
+            // jika terjadi error, kembali ke halaman sebelumnya agar tidak memicu RouteNotFoundException
+            return redirect()->back()
                 ->with('error', 'Gagal menghapus postingan: ' . $e->getMessage());
         }
     }
