@@ -149,17 +149,20 @@
                         <span><i class="fa fa-thumbs-down"></i> {{ $post->dislikes }}</span>
                     </div>
 
-                    {{-- Kategori --}}
+                    {{-- Kategori Postingan --}}
                     @if($post->category)
                         <div style="margin-bottom:12px;">
-                            <span style="
+                            <a href="{{ route('categories.show', $post->category->slug) }}" title="Lihat semua postingan di kategori {{ $post->category->name }}" style="
                                 display:inline-block;
                                 background:#40A09C;
                                 color:#fff;
                                 padding:5px 14px;
                                 border-radius:20px;
                                 font-size:0.88em;
-                            ">{{ $post->category }}</span>
+                                text-decoration:none;
+                            ">
+                                {{ ($post->category)->name }}
+                            </a>
                         </div>
                     @endif
 

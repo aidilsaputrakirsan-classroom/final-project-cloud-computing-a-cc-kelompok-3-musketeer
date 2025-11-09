@@ -32,7 +32,7 @@
             color: #4b5d6b;
             font-weight: 600;
         }
-        input[type="text"], textarea {
+        input[type="text"], textarea, select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -113,9 +113,16 @@
         </div>
 
         <div class="form-group">
-            <label for="category">Kategori</label>
-            <input type="text" id="category" name="category" value="{{ old('category', $post->category) }}" placeholder="Contoh: Teknologi, Olahraga, dll">
-            @error('category')
+            <label for="category_id">Kategori</label>
+            <select id="category_id" name="category_id">
+                <option value="">{{ __('-- Pilih Kategori --') }}</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ old('category_id', $post->category_id) == $cat->id ? 'selected' : '' }}>
+                        {{ $cat->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('category_id')
                 <div class="error">{{ $message }}</div>
             @enderror
         </div>
@@ -128,4 +135,3 @@
 </div>
 </body>
 </html>
-

@@ -110,6 +110,8 @@
             color: #fff;
             border-radius: 5px;
             font-size: 0.91em;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .post-actions {
@@ -275,7 +277,12 @@
 
         @if($post->category)
             <div class="post-categories">
-                <span class="post-category-badge">{{ $post->category }}</span>
+                {{-- kategori sekarang link ke categories.show --}}
+                <a href="{{ route('categories.show', $post->category->slug) }}"
+                   class="post-category-badge"
+                   title="Lihat semua postingan di kategori {{ $post->category->name }}">
+                    {{ $post->category->name }}
+                </a>
             </div>
         @endif
 

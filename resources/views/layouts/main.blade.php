@@ -23,7 +23,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: fixed; /* tetap di tempat */
+            position: fixed;
             top: 0;
             left: 0;
             height: 100vh;
@@ -84,11 +84,6 @@
             align-items: center;
         }
 
-        .faq-image {
-            width: 120px;
-            margin-bottom: 10px;
-        }
-
         .faq-text {
             font-size: 1em;
             font-weight: 500;
@@ -112,7 +107,6 @@
             background: #2e8985;
         }
 
-
         /* ==== KONTEN UTAMA ==== */
         .dashboard-content {
             flex: 1;
@@ -121,23 +115,7 @@
             margin-left: 230px; /* offset sidebar */
             min-width: 0;
             height: 100vh;
-            overflow-y: auto; /* hanya konten yang scroll */
-        }
-
-        /* ==== KOMPONEN TAMBAHAN ==== */
-        .post-card {
-            background: #fff;
-            border-radius: 7px;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-            padding: 19px 15px;
-            margin-bottom: 20px;
-        }
-        .post-card h4 {
-            color: #4b5d6b;
-            font-weight: 600;
-        }
-        .post-card p {
-            color: #314057;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -154,24 +132,40 @@
         </div>
 
         <ul class="menu-list">
+            {{-- Menu Diskusi --}}
             <li class="{{ request()->is('dashboard') ? 'active' : '' }}" 
                 onclick="window.location='{{ url('/dashboard') }}'">
                 <i class="fa fa-comments"></i> Diskusi
             </li>
-        <li><i class="fa fa-compass"></i> Jelajahi Topik</li>
+
+            {{-- Menu Jelajahi Topik --}}
+            <li class="{{ request()->is('topics*') ? 'active' : '' }}"
+                onclick="window.location='{{ route('categories.index') }}'">
+                <i class="fa fa-compass"></i> Jelajahi Topik
+            </li>
+
+            {{-- Menu Postingan Saya --}}
             <li class="{{ request()->is('my-posts*') ? 'active' : '' }}"
                 onclick="window.location='{{ url('/my-posts') }}'">
                 <i class="fa fa-file-alt"></i> Postingan Saya
             </li>
-            <li><i class="fa fa-heart"></i> Daftar Suka</li>
-            <li><i class="fa fa-cog"></i> Pengaturan</li>
+
+            {{-- Menu Daftar Suka --}}
+            <li>
+                <i class="fa fa-heart"></i> Daftar Suka
+            </li>
+
+            {{-- Menu Pengaturan --}}
+            <li>
+                <i class="fa fa-cog"></i> Pengaturan
+            </li>
         </ul>
 
         <div class="faq-box">
             <div class="faq-text">Ada Kendala?</div>
             <a href="{{ route('faq.index') }}" class="faq-btn">Lihat Bantuan & FAQ</a>
         </div>
-        </aside>
+    </aside>
 
     <!-- Konten Utama -->
     <section class="dashboard-content">
