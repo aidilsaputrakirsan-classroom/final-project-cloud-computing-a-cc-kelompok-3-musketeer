@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FAQController;
+use App\Http\Controllers\ReportController;
 
 // Redirect ke halaman login jika mengakses root
 Route::get('/', function() {
@@ -45,3 +46,7 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit')->middleware('auth');
 Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update')->middleware('auth');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy')->middleware('auth');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/posts/{post}/report', [ReportController::class, 'store'])->name('reports.store');
+});
