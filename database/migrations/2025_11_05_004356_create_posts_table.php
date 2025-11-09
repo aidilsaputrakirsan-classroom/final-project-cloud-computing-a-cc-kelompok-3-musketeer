@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('content');
-            $table->string('category')->nullable();
+           $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->integer('views')->default(0);
             $table->integer('likes')->default(0);
             $table->integer('dislikes')->default(0);

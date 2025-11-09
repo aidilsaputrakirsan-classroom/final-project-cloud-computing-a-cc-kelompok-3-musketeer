@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FAQController;
+use App\Http\Controllers\CategoryController;
 
 // Redirect ke halaman login jika mengakses root
 Route::get('/', function() {
@@ -20,6 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
+
+// Category
+Route::get('/topics', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/topics/{category:slug}', [CategoryController::class, 'show'])->name('categories.show');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
