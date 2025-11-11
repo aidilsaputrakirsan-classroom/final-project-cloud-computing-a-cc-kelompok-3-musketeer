@@ -11,75 +11,73 @@
             padding: 0;
         }
 
-        .post-content {
-            padding-left: 20px !important;
-        }
-
         .post-container {
             max-width: none;
             width: 95%;
-            margin: 0;
+            margin: 0 auto;
             background: #fff;
             padding: 30px;
             border-radius: 7px;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
 
-        /* tombol atas */
-        .top-controls {
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 16px;
-        }
-        .top-controls .btn {
-            padding: 8px 14px;
-            border-radius: 7px;
-            font-size: 0.95em;
-            font-weight: 500;
-            text-decoration: none;
+        /* Tombol laporkan di pojok kanan atas */
+        .report-btn-top {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
             border: none;
+            color: #dc3545;
+            font-size: 20px;
             cursor: pointer;
-            background: #6c757d;
-            color: #fff;
-            transition: background 0.2s;
+            transition: color 0.2s;
         }
-        .top-controls .btn:hover {
-            background: #5a6268;
+
+        .report-btn-top:hover {
+            color: #b02a37;
         }
 
         .post-header {
             border-bottom: 1px solid #eee;
-            padding-bottom:
+            padding-bottom: 10px;
             margin-bottom: 10px;
         }
+
         .post-author-row {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 6px;
         }
+
         .author-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             background: #40A09C;
         }
+
         .author-name {
             font-weight: 600;
             color: #d49d3d;
             font-size: 1em;
         }
+
         .post-meta {
             font-size: 0.9em;
             color: #999;
             margin-bottom: 10px;
         }
+
         .post-title {
             font-weight: 600;
             font-size: 1.5em;
             color: #4b5d6b;
-            margin-bottom: 6px; 
+            margin-bottom: 6px;
         }
+
         .post-content {
             font-size: 1.05em;
             color: #314057;
@@ -88,6 +86,7 @@
             margin-bottom: 20px;
             white-space: pre-wrap;
         }
+
         .post-stats {
             display: flex;
             gap: 20px;
@@ -98,11 +97,13 @@
             background: #f8f9fa;
             border-radius: 7px;
         }
+
         .post-categories {
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
         }
+
         .post-category-badge {
             padding: 5px 14px;
             background: #40A09C;
@@ -112,6 +113,7 @@
             text-decoration: none;
             display: inline-block;
         }
+
         .post-actions {
             display: flex;
             gap: 10px;
@@ -119,6 +121,7 @@
             padding-top: 20px;
             border-top: 1px solid #eee;
         }
+
         .btn {
             padding: 10px 20px;
             border-radius: 7px;
@@ -130,59 +133,123 @@
             border: none;
             transition: background 0.2s;
         }
+
         .btn-primary {
             background: #40A09C;
             color: #fff;
         }
+
         .btn-primary:hover {
             background: #278a84;
         }
+
         .btn-danger {
             background: #dc3545;
             color: #fff;
         }
+
         .btn-danger:hover {
             background: #c82333;
         }
-        .btn-secondary {
-            background: #6c757d;
-            color:#fff;
-        }
-        .btn-secondary:hover {
-            background:#5a6268;
-        }
 
         /* komentar styles */
-        .comments-section { margin-top: 24px; }
-        .comment-form textarea { width: 100%; padding: .6rem; border:1px solid #e6e6e6; border-radius:6px; resize:vertical; }
-        .comment-item { padding: .75rem 0; border-bottom: 1px solid #f0f0f0; }
-        .comment-meta strong { color: #2c3e50; }
-        .comment-body { white-space: pre-wrap; color: #333; margin-top: .4rem; margin-bottom: .4rem; }
-        .comments-empty { color:#666; padding:.6rem 0; }
-        .small-muted { color:#777; font-size:.9em; }
+        .comments-section {
+            margin-top: 24px;
+        }
 
-        /* flash */
-        .flash-success { background:#d4edda;color:#155724;padding:10px;border-radius:6px;margin-bottom:12px; }
-        .flash-error { background:#f8d7da;color:#721c24;padding:10px;border-radius:6px;margin-bottom:12px; }
+        .comment-form textarea {
+            width: 100%;
+            padding: .6rem;
+            border: 1px solid #e6e6e6;
+            border-radius: 6px;
+            resize: vertical;
+        }
 
-        /* replies styling */
-        .replies { margin-top:12px; padding-left:18px; border-left:1px solid #eee; }
+        .comment-item {
+            padding: .75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
 
-        /* responsive tweak */
-        @media (max-width: 640px) {
-            .post-container { padding: 18px; }
-            .post-title { font-size: 1.25em; }
+        .comment-meta strong {
+            color: #2c3e50;
+        }
+
+        .comment-body {
+            white-space: pre-wrap;
+            color: #333;
+            margin-top: .4rem;
+            margin-bottom: .4rem;
+        }
+
+        .comments-empty {
+            color: #666;
+            padding: .6rem 0;
+        }
+
+        /* modal */
+        #report-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #report-modal .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
         }
     </style>
 
     <div class="post-container" id="post-show-container">
 
+        {{-- Tombol laporkan di pojok kanan atas (tidak muncul untuk pemilik postingan) --}}
+        @if(Auth::check() && Auth::id() !== $post->user_id)
+            <button class="report-btn-top" title="Laporkan"
+                onclick="document.getElementById('report-modal').style.display='flex'">
+                <i class="fa fa-flag"></i>
+            </button>
+        @endif
+
+        {{-- Tombol Laporkan di pojok kanan atas --}}
+                    @if(Auth::check() && Auth::id() !== $post->user_id)
+                        <button onclick="openReportModal({{ $post->id }})" style="
+                            position:absolute;
+                            top:15px;
+                            right:15px;
+                            padding:6px 12px;
+                            background:#f44336;
+                            color:#fff;
+                            border:none;
+                            border-radius:6px;
+                            cursor:pointer;
+                            font-size:0.85em;
+                        ">
+                            <i class="fa fa-flag"></i>
+                        </button>
+                    @endif
+
         {{-- flash messages --}}
+        {{-- Pesan --}}
         @if(session('success'))
-            <div class="flash-success">{{ session('success') }}</div>
+            <div style="padding:12px 16px;border-radius:7px;margin-bottom:20px;
+                        background:#d4edda;color:#155724;border:1px solid #c3e6cb;">
+                {{ session('success') }}
+            </div>
         @endif
         @if(session('error'))
-            <div class="flash-error">{{ session('error') }}</div>
+            <div style="padding:12px 16px;border-radius:7px;margin-bottom:20px;background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;
+                        background:#d4edda;color:#155724;border:1px solid #c3e6cb;"></div>">
+                {{ session('error') }}
+            </div>
         @endif
 
         <div class="post-header">
@@ -219,23 +286,109 @@
             </div>
         @endif
 
+        {{-- tombol aksi --}}
         <div class="post-actions">
-            @if(Auth::id() === $post->user_id)
+            @if(Auth::check() && Auth::id() === $post->user_id)
                 <a href="{{ route('posts.edit', $post) }}" class="btn btn-primary">
                     <i class="fa fa-edit"></i> Edit Postingan
                 </a>
                 <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus postingan ini?')">
+                    <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Apakah Anda yakin ingin menghapus postingan ini?')">
                         <i class="fa fa-trash"></i> Hapus Postingan
                     </button>
                 </form>
             @endif
         </div>
 
-        {{-- Partial komentar --}}
+        {{-- partial komentar --}}
         @include('partials.comments', ['post' => $post, 'comments' => $comments ?? null])
 
+        {{-- modal laporan --}}
+        <div id="report-modal">
+            <div class="modal-content">
+                <h4 style="margin-bottom:10px;">Laporkan Postingan</h4>
+                <form action="{{ route('reports.store', $post->id) }}" method="POST">
+                    @csrf
+                    <textarea name="reason" rows="4" placeholder="Alasan pelaporan..."
+                        style="width:100%;border:1px solid #ccc;border-radius:7px;padding:8px;"></textarea>
+                    <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end;">
+                        <button type="button"
+                            onclick="document.getElementById('report-modal').style.display='none'"
+                            style="background:#ccc;padding:6px 12px;border:none;border-radius:6px;cursor:pointer;">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            style="background:#40A09C;color:#fff;padding:6px 12px;border:none;border-radius:6px;cursor:pointer;">
+                            Kirim
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </div>
+
+ {{-- Modal Laporan --}}
+    <div id="reportModal" style="
+        display:none;
+        position:fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        background:rgba(0,0,0,0.5);
+        align-items:center;
+        justify-content:center;
+        z-index:1000;
+    ">
+        <div style="
+            background:#fff;
+            padding:20px;
+            border-radius:10px;
+            width:320px;
+        ">
+            <h3 style="margin-top:0;">Laporkan Postingan</h3>
+            <form id="reportForm" method="POST">
+                @csrf
+                <label for="reason">Alasan:</label>
+                <select name="reason" id="reason" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:5px;">
+                    <option value="">-- Pilih Alasan --</option>
+                    <option value="Konten tidak pantas">Konten tidak pantas</option>
+                    <option value="Spam atau penipuan">Spam atau penipuan</option>
+                    <option value="Ujaran kebencian">Ujaran kebencian</option>
+                    <option value="Pelecehan atau intimidasi">Pelecehan atau intimidasi</option>
+                    <option value="Informasi palsu">Informasi palsu</option>
+                </select>
+
+                <label for="details" style="margin-top:10px;display:block;">Detail (opsional):</label>
+                <textarea name="details" id="details" rows="3" style="width:100%;border:1px solid #ddd;border-radius:5px;padding:8px;"></textarea>
+
+                <div style="margin-top:15px;display:flex;justify-content:flex-end;gap:10px;">
+                    <button type="button" onclick="closeReportModal()" style="background:#ccc;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;">Batal</button>
+                    <button type="submit" style="background:#f44336;color:#fff;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;">Kirim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openReportModal(postId) {
+            const modal = document.getElementById('reportModal');
+            const form = document.getElementById('reportForm');
+            form.action = `/posts/${postId}/report`;
+            modal.style.display = 'flex';
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        window.onclick = function(e) {
+            const modal = document.getElementById('reportModal');
+            if (e.target === modal) {
+                closeReportModal();
+            }
+        };
+    </script>
 @endsection

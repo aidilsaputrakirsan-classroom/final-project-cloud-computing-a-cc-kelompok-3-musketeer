@@ -33,7 +33,7 @@
                     </a>
                 @endif
 
-                {{-- Logout button --}}
+                {{-- Logout --}}
                 <form action="{{ route('logout') }}" method="POST" style="margin:0;">
                     @csrf
                     <button type="submit" title="Logout" style="
@@ -62,18 +62,23 @@
             <a href="{{ route('posts.create') }}" class="btn-post" style="background:#40A09C;color:#fff;border:none;padding:7px 17px;border-radius:7px;font-size:0.97em;font-weight:500;margin-left:auto;text-decoration:none;display:inline-block;">+ Buat Postingan</a>
         </div>
 
+        {{-- Pesan --}}
         @if(session('success'))
-            <div style="padding:12px 16px;border-radius:7px;margin-bottom:20px;background:#d4edda;color:#155724;border:1px solid #c3e6cb;">
+            <div style="padding:12px 16px;border-radius:7px;margin-bottom:20px;
+                        background:#d4edda;color:#155724;border:1px solid #c3e6cb;">
                 {{ session('success') }}
             </div>
         @endif
 
+
         @if(session('error'))
-            <div style="padding:12px 16px;border-radius:7px;margin-bottom:20px;background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;">
+            <div style="padding:12px 16px;border-radius:7px;margin-bottom:20px;background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;
+                        background:#d4edda;color:#155724;border:1px solid #c3e6cb;"></div>">
                 {{ session('error') }}
             </div>
         @endif
 
+        {{-- Daftar Postingan --}}
         <div class="cards-list" style="display:flex;flex-direction:column;gap:5px;margin-top:12px;">
             @forelse($posts as $post)
                 <div class="post-card" style="
@@ -82,7 +87,27 @@
                     box-shadow:0 2px 8px rgba(0,0,0,0.05);
                     padding:20px 22px;
                     transition:transform 0.2s ease, box-shadow 0.2s ease;
+                    position:relative;
                 ">
+                    {{-- Tombol Laporkan di pojok kanan atas --}}
+                    @if(Auth::check() && Auth::id() !== $post->user_id)
+                        <button onclick="openReportModal({{ $post->id }})" style="
+                            position:absolute;
+                            top:15px;
+                            right:15px;
+                            padding:6px 12px;
+                            background:#f44336;
+                            color:#fff;
+                            border:none;
+                            border-radius:6px;
+                            cursor:pointer;
+                            font-size:0.85em;
+                        ">
+                            <i class="fa fa-flag"></i>
+                        </button>
+                    @endif
+
+                    {{-- Header --}}
                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
                         <div style="
                             width:40px;
@@ -98,9 +123,8 @@
                         </div>
                     </div>
 
+                    {{-- Isi --}}
                     <div style="margin-top:5px;margin-bottom:8px;">
-
-                        {{-- Judul Postingan --}}
                         <a href="{{ route('posts.show', $post) }}" style="
                             font-weight:700;
                             font-size:1.05em;
@@ -110,7 +134,6 @@
                             margin-bottom:4px;
                         ">{{ $post->title }}</a>
 
-                        {{-- Isi Konten Postingan --}}
                         <p style="font-size:0.95em;color:#4a5568;margin:0 0 10px;">
                             <a href="{{ route('posts.show', $post) }}" style="color:inherit;text-decoration:none;display:block;">
                                 {{ \Illuminate\Support\Str::limit($post->content, 150) }}
@@ -118,16 +141,10 @@
                         </p>
                     </div>
 
-                    {{-- Icon Komentar --}}
+                    {{-- Statistik --}}
                     <div style="display:flex;align-items:center;gap:16px;font-size:0.9em;color:#666;margin-bottom:10px;">
                         <span><i class="fa fa-eye"></i> {{ $post->views }}</span>
-
-                        <span>
-                            <a href="{{ route('posts.show', $post) }}" style="color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
-                                <i class="fa fa-comment"></i> <span>{{ $post->comments_count }}</span>
-                            </a>
-                        </span>
-
+                        <span><i class="fa fa-comment"></i> {{ $post->comments_count }}</span>
                         <span><i class="fa fa-thumbs-up"></i> {{ $post->likes }}</span>
                         <span><i class="fa fa-thumbs-down"></i> {{ $post->dislikes }}</span>
                     </div>
@@ -149,6 +166,7 @@
                         </div>
                     @endif
 
+                    {{-- Edit/Hapus (hanya milik sendiri) --}}
                     @if(Auth::id() === $post->user_id)
                         <div style="display:flex;gap:10px;padding-top:10px;border-top:1px solid #eee;">
                             <a href="{{ route('posts.edit', $post) }}" style="
@@ -204,10 +222,66 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         }
-
-        .post-card a {
-            color: inherit;
-            text-decoration: none;
-        }
     </style>
+
+    {{-- Modal Laporan --}}
+    <div id="reportModal" style="
+        display:none;
+        position:fixed;
+        top:0; left:0;
+        width:100%; height:100%;
+        background:rgba(0,0,0,0.5);
+        align-items:center;
+        justify-content:center;
+        z-index:1000;
+    ">
+        <div style="
+            background:#fff;
+            padding:20px;
+            border-radius:10px;
+            width:320px;
+        ">
+            <h3 style="margin-top:0;">Laporkan Postingan</h3>
+            <form id="reportForm" method="POST">
+                @csrf
+                <label for="reason">Alasan:</label>
+                <select name="reason" id="reason" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:5px;">
+                    <option value="">-- Pilih Alasan --</option>
+                    <option value="Konten tidak pantas">Konten tidak pantas</option>
+                    <option value="Spam atau penipuan">Spam atau penipuan</option>
+                    <option value="Ujaran kebencian">Ujaran kebencian</option>
+                    <option value="Pelecehan atau intimidasi">Pelecehan atau intimidasi</option>
+                    <option value="Informasi palsu">Informasi palsu</option>
+                </select>
+
+                <label for="details" style="margin-top:10px;display:block;">Detail (opsional):</label>
+                <textarea name="details" id="details" rows="3" style="width:100%;border:1px solid #ddd;border-radius:5px;padding:8px;"></textarea>
+
+                <div style="margin-top:15px;display:flex;justify-content:flex-end;gap:10px;">
+                    <button type="button" onclick="closeReportModal()" style="background:#ccc;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;">Batal</button>
+                    <button type="submit" style="background:#f44336;color:#fff;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;">Kirim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openReportModal(postId) {
+            const modal = document.getElementById('reportModal');
+            const form = document.getElementById('reportForm');
+            form.action = `/posts/${postId}/report`;
+            modal.style.display = 'flex';
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        window.onclick = function(e) {
+            const modal = document.getElementById('reportModal');
+            if (e.target === modal) {
+                closeReportModal();
+            }
+        };
+    </script>
 @endsection
