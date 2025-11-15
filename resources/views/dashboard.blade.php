@@ -144,7 +144,9 @@
                     {{-- Statistik --}}
                     <div style="display:flex;align-items:center;gap:16px;font-size:0.9em;color:#666;margin-bottom:10px;">
                         <span><i class="fa fa-eye"></i> {{ $post->views }}</span>
-                        <span><i class="fa fa-comment"></i> {{ $post->comments_count }}</span>
+                    <a href="{{ route('posts.show', $post) }}" style="color:inherit;text-decoration:none;">
+                        <i class="fa fa-comment"></i> {{ $post->comments_count }}
+                    </a>
                         <span><i class="fa fa-thumbs-up"></i> {{ $post->likes }}</span>
                         <span><i class="fa fa-thumbs-down"></i> {{ $post->dislikes }}</span>
                     </div>
