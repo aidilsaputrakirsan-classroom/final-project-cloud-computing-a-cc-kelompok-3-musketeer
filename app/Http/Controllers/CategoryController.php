@@ -23,6 +23,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         $posts = Post::with(['user', 'category'])
+            ->withCount('comments')  
             ->where('category_id', $category->id)
             ->latest()
             ->paginate(12);

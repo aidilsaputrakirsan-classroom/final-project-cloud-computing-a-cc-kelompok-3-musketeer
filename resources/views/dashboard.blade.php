@@ -144,7 +144,9 @@
                     {{-- Statistik --}}
                     <div style="display:flex;align-items:center;gap:16px;font-size:0.9em;color:#666;margin-bottom:10px;">
                         <span><i class="fa fa-eye"></i> {{ $post->views }}</span>
-                        <span><i class="fa fa-comment"></i> {{ $post->comments_count }}</span>
+                    <a href="{{ route('posts.show', $post) }}" style="color:inherit;text-decoration:none;">
+                        <i class="fa fa-comment"></i> {{ $post->comments_count }}
+                    </a>
                         <span><i class="fa fa-thumbs-up"></i> {{ $post->likes }}</span>
                         <span><i class="fa fa-thumbs-down"></i> {{ $post->dislikes }}</span>
                     </div>
@@ -254,8 +256,20 @@
                     <option value="Informasi palsu">Informasi palsu</option>
                 </select>
 
-                <label for="details" style="margin-top:10px;display:block;">Detail (opsional):</label>
-                <textarea name="details" id="details" rows="3" style="width:100%;border:1px solid #ddd;border-radius:5px;padding:8px;"></textarea>
+               <label for="details" style="margin-top:10px;display:block;">Detail (opsional):</label>
+                <textarea 
+                    name="details" 
+                    id="details" 
+                    rows="3" 
+                    style="
+                        width:100%;
+                        border:1px solid #ddd;
+                        border-radius:5px;
+                        padding:8px;
+                        resize: none;
+                    "
+                ></textarea>
+
 
                 <div style="margin-top:15px;display:flex;justify-content:flex-end;gap:10px;">
                     <button type="button" onclick="closeReportModal()" style="background:#ccc;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;">Batal</button>
