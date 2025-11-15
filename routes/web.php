@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FAQController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CategoryController;
 
 // Redirect ke halaman login jika mengakses root
