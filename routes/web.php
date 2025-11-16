@@ -10,11 +10,23 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 
 // Redirect ke halaman login jika mengakses root
 Route::get('/', function() {
     return redirect('/login');
 });
+
+// Admin
+Route::middleware([\Illuminate\Auth\Middleware\Authenticate::class, \App\Http\Middleware\IsAdmin::class])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
+        Route::get('/reports/history', [AdminReportController::class, 'history'])->name('reports.history');
+        Route::get('/reports/{report}', [AdminReportController::class, 'show'])->name('reports.show');
+        Route::post('/reports/{report}/status', [AdminReportController::class, 'changeStatus'])->name('reports.status');
+    });
 
 // Comment
 Route::middleware('auth')->group(function () {

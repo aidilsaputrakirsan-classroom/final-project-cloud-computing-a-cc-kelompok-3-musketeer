@@ -21,6 +21,13 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            // Jika admin -> arahkan ke dashboard admin
+            if (Auth::user()->is_admin) {
+                return redirect()->route('admin.reports.index');
+            }
+
+            // Selain admin -> dashboard biasa
             return redirect()->intended('/dashboard');
         }
 
