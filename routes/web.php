@@ -43,9 +43,6 @@ Route::middleware([\Illuminate\Auth\Middleware\Authenticate::class, \App\Http\Mi
         // (sekaligus hapus post jika status = accepted, sesuai logic di Admin\ReportController::changeStatus)
         Route::post('/reports/{report}/status', [AdminReportController::class, 'changeStatus'])
             ->name('reports.status');
-
-        // ROUTE LAMA ACCEPT / REJECT DIHAPUS
-        // karena sekarang semua terima/tolak lewat admin.reports.status
     });
 
 // Comment

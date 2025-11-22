@@ -17,6 +17,31 @@
     </div>
 
     <div class="panel" style="background:#fff;padding:22px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)">
+
+        {{-- FILTER STATUS HISTORY --}}
+        <div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <form method="GET" action="{{ route('admin.reports.history') }}">
+                <label for="status" style="font-size:14px;margin-right:6px;">Filter Status:</label>
+                <select name="status" id="status"
+                        onchange="this.form.submit()"
+                        style="padding:6px 10px;border-radius:6px;border:1px solid #ccc;min-width:150px;">
+                    <option value="">Semua</option>
+                    <option value="accepted" {{ request('status') === 'accepted' ? 'selected' : '' }}>Diterima</option>
+                    <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Ditolak</option>
+                </select>
+            </form>
+
+            @isset($counts)
+                <div style="font-size:13px;color:#444;">
+                    <strong>Total:</strong> {{ $counts['total'] ?? 0 }} |
+                    <span style="color:#0c665d;">Diterima: {{ $counts['accepted'] ?? 0 }}</span> |
+                    <span style="color:#b02020;">Ditolak: {{ $counts['rejected'] ?? 0 }}</span> |
+                    <span>Pending: {{ $counts['pending'] ?? 0 }}</span>
+                </div>
+            @endisset
+        </div>
+        {{-- END FILTER STATUS HISTORY --}}
+
         <div class="table-card" style="border:4px solid #40A09C;border-radius:6px;padding:12px;">
 
             <div class="table-responsive" style="overflow-x:auto;">

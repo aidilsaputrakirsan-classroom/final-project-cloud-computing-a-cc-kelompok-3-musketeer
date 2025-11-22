@@ -40,6 +40,7 @@ class ReportController extends Controller
                        ->whereIn('status', ['accepted','rejected'])
                        ->latest();
 
+        // filter status accepted / rejected jika dipilih
         if ($request->filled('status') && in_array($request->status, ['accepted','rejected'])) {
             $query->where('status', $request->status);
         }
