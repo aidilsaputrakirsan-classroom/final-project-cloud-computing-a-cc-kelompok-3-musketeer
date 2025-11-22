@@ -191,7 +191,14 @@
 
             <label for="reason">Alasan:</label>
             <select name="reason" id="reason" required
-                style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:5px;">
+                style="
+                    width:100%;
+                    box-sizing:border-box;   /* penting biar sejajar */
+                    padding:8px;
+                    border:1px solid #ddd;
+                    border-radius:5px;
+                    margin-top:5px;
+                ">
                 <option value="">-- Pilih Alasan --</option>
                 <option value="Konten tidak pantas">Konten tidak pantas</option>
                 <option value="Spam atau penipuan">Spam atau penipuan</option>
@@ -201,8 +208,19 @@
             </select>
 
             <label for="details" style="margin-top:10px;display:block;">Detail (opsional):</label>
-            <textarea name="details" rows="3"
-                style="width:100%;border:1px solid #ddd;border-radius:5px;padding:8px;resize:none"></textarea>
+            <textarea
+                name="details"
+                id="details"
+                rows="3"
+                style="
+                    width:100%;
+                    box-sizing:border-box;   /* supaya lebar sama dengan select */
+                    border:1px solid #ddd;
+                    border-radius:5px;
+                    padding:8px;
+                    resize:none;
+                "
+            ></textarea>
 
             <div style="margin-top:15px;display:flex;justify-content:flex-end;gap:10px;">
                 <button type="button" onclick="closeReportModal()"

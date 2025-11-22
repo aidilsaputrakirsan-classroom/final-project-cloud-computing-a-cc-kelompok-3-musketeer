@@ -56,9 +56,7 @@
 
         <div class="content-list-controls" style="display:flex;align-items:center;gap:7px;margin-bottom:8px;margin-top:5px;">
             <button class="btn-filter" style="background:#e7f6fa;color:#40a09c;border:none;padding:6px 17px;border-radius:16px;font-size:0.97em;cursor:pointer;">Baru</button>
-            <button class="btn-category" style="background:#e7f6fa;color:#40a09c;border:none;padding:6px 17px;border-radius:16px;font-size:0.97em;cursor:pointer;">
-                <i class="fa fa-filter"></i> Kategori
-            </button>
+            
             <a href="{{ route('posts.create') }}" class="btn-post" style="background:#40A09C;color:#fff;border:none;padding:7px 17px;border-radius:7px;font-size:0.97em;font-weight:500;margin-left:auto;text-decoration:none;display:inline-block;">+ Buat Postingan</a>
         </div>
 
@@ -263,6 +261,7 @@
                     rows="3" 
                     style="
                         width:100%;
+                        box-sizing: border-box;
                         border:1px solid #ddd;
                         border-radius:5px;
                         padding:8px;

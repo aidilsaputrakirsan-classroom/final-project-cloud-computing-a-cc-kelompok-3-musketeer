@@ -14,6 +14,8 @@ class Report extends Model
         'post_id',
         'reason',
         'details',
+        'status',
+        'handled_by',
     ];
 
     public function user()
@@ -23,6 +25,12 @@ class Report extends Model
 
     public function post()
     {
-        return $this->belongsTo(Post::class);
+        // pakai withTrashed supaya post yang sudah soft delete tetap bisa diakses dari report
+        return $this->belongsTo(Post::class)->withTrashed();
+    }
+
+    public function handledBy()
+    {
+        return $this->belongsTo(User::class, 'handled_by');
     }
 }
