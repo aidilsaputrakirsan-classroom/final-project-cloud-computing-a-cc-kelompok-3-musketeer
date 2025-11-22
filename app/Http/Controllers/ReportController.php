@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
+    // USER KIRIM LAPORAN
     public function store(Request $request, $postId)
     {
         $request->validate([
-            'reason' => 'required|string|max:255',
+            'reason'  => 'required|string|max:255',
             'details' => 'nullable|string',
         ]);
 
@@ -21,10 +22,44 @@ class ReportController extends Controller
         Report::create([
             'user_id' => Auth::id(),
             'post_id' => $post->id,
-            'reason' => $request->reason,
+            'reason'  => $request->reason,
             'details' => $request->details,
         ]);
 
         return redirect()->back()->with('success', 'Laporan Anda telah dikirim. Terima kasih!');
+    }
+
+    // ADMIN MENERIMA LAPORAN -> HAPUS POST
+    public function accept(Report $report)
+    {
+        // Hapus postingan yang dilaporkan (beserta komentar kalau ada relasi comments)
+        if ($report->post) {
+            if (method_exists($report->post, 'comments')) {
+                $report->post->comments()->delete();
+            }
+
+            $report->post->delete();
+        }
+
+        // Update status laporan
+        $report->status     = 'accepted';
+        $report->handled_by = Auth::id();
+        $report->save();
+
+        return redirect()
+            ->route('admin.reports.index')
+            ->with('success', 'Laporan diterima, postingan telah dihapus.');
+    }
+
+    // ADMIN MENOLAK LAPORAN -> TIDAK HAPUS POST
+    public function reject(Report $report)
+    {
+        $report->status     = 'rejected';
+        $report->handled_by = Auth::id();
+        $report->save();
+
+        return redirect()
+            ->route('admin.reports.index')
+            ->with('success', 'Laporan ditolak, postingan tetap ada.');
     }
 }

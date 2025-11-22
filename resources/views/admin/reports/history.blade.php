@@ -68,7 +68,7 @@
                                 </div>
 
                                 <div style="margin-top:10px;">
-                                    <a href="{{ route('admin.reports.show', $r) }}"
+                                    <a href="{{ route('admin.reports.history.show', $r) }}"
                                        style="display:inline-block;padding:7px 10px;border-radius:6px;background:#40A09C;color:#fff;text-decoration:none">
                                         Detail
                                     </a>

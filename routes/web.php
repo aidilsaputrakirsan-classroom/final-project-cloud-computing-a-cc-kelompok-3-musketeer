@@ -22,10 +22,34 @@ Route::middleware([\Illuminate\Auth\Middleware\Authenticate::class, \App\Http\Mi
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
-        Route::get('/reports/history', [AdminReportController::class, 'history'])->name('reports.history');
-        Route::get('/reports/{report}', [AdminReportController::class, 'show'])->name('reports.show');
-        Route::post('/reports/{report}/status', [AdminReportController::class, 'changeStatus'])->name('reports.status');
+
+        // === LAPORAN PENDING ===
+        Route::get('/reports', [AdminReportController::class, 'index'])
+            ->name('reports.index');
+
+        // === LAPORAN HISTORY (ACCEPTED / REJECTED) ===
+        Route::get('/reports/history', [AdminReportController::class, 'history'])
+            ->name('reports.history');
+
+        // DETAIL HISTORY
+        Route::get('/reports/history/{report}', [AdminReportController::class, 'showHistory'])
+            ->name('reports.history.show');
+
+        // DETAIL PENDING
+        Route::get('/reports/{report}', [AdminReportController::class, 'show'])
+            ->name('reports.show');
+
+        // UBAH STATUS (TERIMA / TOLAK) UNTUK PENDING
+        Route::post('/reports/{report}/status', [AdminReportController::class, 'changeStatus'])
+            ->name('reports.status');
+
+        // === AKSI TERIMA / TOLAK YANG LAMA (OPTIONAL)
+        // jika kamu pakai controller pengguna untuk accept/reject, tetap dibiarkan
+        Route::patch('/reports/{report}/accept', [\App\Http\Controllers\ReportController::class, 'accept'])
+            ->name('reports.accept');
+
+        Route::patch('/reports/{report}/reject', [\App\Http\Controllers\ReportController::class, 'reject'])
+            ->name('reports.reject');
     });
 
 // Comment

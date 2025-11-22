@@ -2,29 +2,25 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>Detail Laporan</title>
+    <title>Detail Laporan (History)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
-<div class="container my-4" style="
-    max-width: 95%;      
-    margin-left: auto;
-    margin-right: auto;
-">
+<div class="container my-4" style="max-width:95%;margin-left:auto;margin-right:auto;">
 
     {{-- TOMBOL KEMBALI --}}
-    <a href="{{ url()->previous() }}" 
-    style="
-            background:#40A09C;
-            color:#fff;
-            padding:6px 14px;
-            border-radius:6px;
-            font-size:0.9rem;
-            text-decoration:none;
-            display:inline-block;
-            margin-bottom:15px;
-    ">
+    <a href="{{ route('admin.reports.history') }}"
+       style="
+          background:#40A09C;
+          color:#fff;
+          padding:6px 14px;
+          border-radius:6px;
+          font-size:0.9rem;
+          text-decoration:none;
+          display:inline-block;
+          margin-bottom:15px;
+       ">
         Kembali
     </a>
 
@@ -89,7 +85,7 @@
         </div>
     </div>
 
-    <!-- CARD KOMENTAR -->
+    {{-- ========== CARD KOMENTAR (preview saja) ========== --}}
     <div class="card mb-4">
         <div class="card-header bg-white fw-semibold">
             Komentar
@@ -98,30 +94,34 @@
 
             @forelse ($report->post->comments as $comment)
                 <div class="d-flex mb-3">
-                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
-                         style="width:38px;height:38px;">
+                    <div style="
+                        width:38px;height:38px;border-radius:50%;
+                        background:#40A09C;color:#fff;
+                        display:flex;align-items:center;justify-content:center;
+                        font-weight:600;
+                    ">
                         {{ strtoupper(substr($comment->user->name ?? 'U', 0, 1)) }}
                     </div>
 
                     <div class="ms-3 flex-grow-1">
-
                         <div class="d-flex align-items-center">
                             <span class="fw-semibold me-2">{{ $comment->user->name ?? '-' }}</span>
                             <small class="text-muted">{{ $comment->created_at->format('d M Y, H:i') }}</small>
                         </div>
-
-                        <!-- isi komentar -->
                         <div class="mt-1 text-dark">
                             {{ $comment->body }}
                         </div>
 
-                        {{-- Balasan --}}
                         @if($comment->replies && $comment->replies->count())
                             <div class="border-start ps-3 mt-2">
                                 @foreach($comment->replies as $reply)
                                     <div class="d-flex mb-2">
-                                        <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center"
-                                             style="width:28px;height:28px;">
+                                        <div style="
+                                            width:28px;height:28px;border-radius:50%;
+                                            background:#40A09C;color:#fff;
+                                            display:flex;align-items:center;justify-content:center;
+                                            font-weight:600;
+                                        ">
                                             {{ strtoupper(substr($reply->user->name ?? 'U', 0, 1)) }}
                                         </div>
                                         <div class="ms-2">
@@ -137,10 +137,8 @@
                                 @endforeach
                             </div>
                         @endif
-
                     </div>
                 </div>
-
                 <hr>
             @empty
                 <p class="text-muted mb-0">Belum ada komentar pada postingan ini.</p>
@@ -149,38 +147,44 @@
         </div>
     </div>
 
-    <!-- CARD LAPORAN -->
+    {{-- ========== CARD RINGKASAN KEPUTUSAN ========== --}}
     <div class="card mb-4">
         <div class="card-header bg-white fw-semibold">
-            Laporan Pengguna
+            Ringkasan Keputusan Laporan
         </div>
         <div class="card-body">
 
             <div class="mb-3">
-                <label class="form-label">Pelapor</label>
-                <input class="form-control" readonly value="{{ $report->user->name }}">
+                <label class="form-label">Status Laporan</label><br>
+                @if($report->status === 'accepted')
+                    <span class="badge bg-success">Diterima</span>
+                @elseif($report->status === 'rejected')
+                    <span class="badge bg-danger">Ditolak</span>
+                @else
+                    <span class="badge bg-secondary">{{ ucfirst($report->status) }}</span>
+                @endif
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Alasan</label>
+                <label class="form-label">Diproses oleh</label>
+                <input type="text" class="form-control" readonly
+                       value="{{ $report->handledBy->name ?? '-' }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tanggal Diproses</label>
+                <input type="text" class="form-control" readonly
+                       value="{{ optional($report->updated_at)->format('d F Y, H:i') ?? '-' }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Alasan Pelapor</label>
                 <input class="form-control" readonly value="{{ $report->reason }}">
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Detail</label>
+                <label class="form-label">Detail Laporan</label>
                 <textarea class="form-control" rows="3" readonly>{{ $report->details }}</textarea>
-            </div>
-
-            <div class="d-flex justify-content-end gap-2">
-                <form action="{{ route('admin.reports.reject', $report->id) }}" method="POST">
-                    @csrf @method('PATCH')
-                    <button class="btn btn-danger">Tolak Laporan</button>
-                </form>
-
-                <form action="{{ route('admin.reports.accept', $report->id) }}" method="POST">
-                    @csrf @method('PATCH')
-                    <button class="btn btn-success">Terima Laporan</button>
-                </form>
             </div>
 
         </div>

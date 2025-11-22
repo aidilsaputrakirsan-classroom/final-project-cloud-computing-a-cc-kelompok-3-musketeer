@@ -72,4 +72,16 @@ class ReportController extends Controller
         $report->load(['user','post','handledBy']);
         return view('admin.reports.show', compact('report'));
     }
+
+    public function showHistory(Report $report)
+    {
+        $report->load(['user', 'post', 'handledBy']);
+
+        // pastikan hanya laporan yang SUDAH diproses boleh diakses
+        if (!in_array($report->status, ['accepted', 'rejected'])) {
+            abort(404);
+        }
+
+        return view('admin.reports.history_show', compact('report'));
+    }
 }

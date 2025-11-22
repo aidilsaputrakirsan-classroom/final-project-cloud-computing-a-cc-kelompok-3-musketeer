@@ -368,6 +368,7 @@
                     rows="3" 
                     style="
                         width:100%;
+                        box-sizing: border-box;
                         border:1px solid #ddd;
                         border-radius:5px;
                         padding:8px;
