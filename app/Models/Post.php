@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes; // <-- tambah ini
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes; // <-- pakai trait SoftDeletes
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +24,7 @@ class Post extends Model
         'likes',
         'dislikes',
         'comments_count',
-        'category_id', // gunakan relasi ke tabel categories
+        'category_id',
     ];
 
     /**
@@ -41,7 +42,6 @@ class Post extends Model
     {
         return $this->belongsTo(\App\Models\Category::class);
     }
-
 
     /**
      * Relasi ke komentar

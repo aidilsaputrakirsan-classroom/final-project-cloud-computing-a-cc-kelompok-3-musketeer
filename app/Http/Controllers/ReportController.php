@@ -32,7 +32,6 @@ class ReportController extends Controller
     // ADMIN MENERIMA LAPORAN -> HAPUS POST
     public function accept(Report $report)
     {
-        // Hapus postingan yang dilaporkan (beserta komentar kalau ada relasi comments)
         if ($report->post) {
             if (method_exists($report->post, 'comments')) {
                 $report->post->comments()->delete();
@@ -41,7 +40,6 @@ class ReportController extends Controller
             $report->post->delete();
         }
 
-        // Update status laporan
         $report->status     = 'accepted';
         $report->handled_by = Auth::id();
         $report->save();

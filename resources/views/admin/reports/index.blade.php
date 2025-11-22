@@ -81,32 +81,51 @@
                             <td style="padding:12px;border:2px solid #e6f4f1;text-align:center;vertical-align:top">
                                 <div class="action-row" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
                                     <!-- Terima -->
-                                    <form method="POST" action="{{ route('admin.reports.status', $r) }}" onsubmit="return confirm('Terima laporan ini?')" style="display:inline-block;">
+                                    <form method="POST"
+                                          action="{{ route('admin.reports.status', $r) }}"
+                                          onsubmit="return confirm('Terima laporan ini?')"
+                                          style="display:inline-block;">
                                         @csrf
                                         <input type="hidden" name="status" value="accepted">
-                                        <button type="submit" title="Terima" class="btn-accept" style="border:none;padding:8px 10px;border-radius:6px;background:#28a745;color:#fff;cursor:pointer">✔</button>
+                                        <button type="submit" title="Terima" class="btn-accept"
+                                                style="border:none;padding:8px 10px;border-radius:6px;background:#28a745;color:#fff;cursor:pointer">
+                                            ✔
+                                        </button>
                                     </form>
 
                                     <!-- Tolak -->
-                                    <form method="POST" action="{{ route('admin.reports.status', $r) }}" onsubmit="return confirm('Tolak laporan ini?')" style="display:inline-block;">
+                                    <form method="POST"
+                                          action="{{ route('admin.reports.status', $r) }}"
+                                          onsubmit="return confirm('Tolak laporan ini?')"
+                                          style="display:inline-block;">
                                         @csrf
                                         <input type="hidden" name="status" value="rejected">
-                                        <button type="submit" title="Tolak" class="btn-reject" style="border:none;padding:8px 10px;border-radius:6px;background:#e74c3c;color:#fff;cursor:pointer">✕</button>
+                                        <button type="submit" title="Tolak" class="btn-reject"
+                                                style="border:none;padding:8px 10px;border-radius:6px;background:#e74c3c;color:#fff;cursor:pointer">
+                                            ✕
+                                        </button>
                                     </form>
 
                                     <!-- Detail -->
-                                    <a href="{{ route('admin.reports.show', $r) }}" title="Detail" class="btn-detail" style="display:inline-block;padding:8px 10px;border-radius:6px;background:#40A09C;color:#fff;text-decoration:none">Detail</a>
+                                    <a href="{{ route('admin.reports.show', $r) }}" title="Detail" class="btn-detail"
+                                       style="display:inline-block;padding:8px 10px;border-radius:6px;background:#40A09C;color:#fff;text-decoration:none">
+                                        Detail
+                                    </a>
                                 </div>
 
                                 <!-- pending badge only (index = pending) -->
                                 <div style="margin-top:10px;font-size:13px;color:#333">
-                                    <span style="display:inline-block;padding:6px 10px;background:#e8f7f5;color:#066557;border-radius:6px">Pending</span>
+                                    <span style="display:inline-block;padding:6px 10px;background:#e8f7f5;color:#066557;border-radius:6px">
+                                        Pending
+                                    </span>
                                 </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" style="padding:18px;text-align:center;color:#777">Belum ada laporan pending.</td>
+                            <td colspan="4" style="padding:18px;text-align:center;color:#777">
+                                Belum ada laporan pending.
+                            </td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -123,26 +142,18 @@
 
 {{-- RESPONSIVE CSS --}} 
 <style>
-/* Pastikan halaman responsive */
-/* pada layar kecil, biarkan cards membungkus secara vertikal */
 @media (max-width: 880px) {
     .cards-row { justify-content:flex-start; }
-    .stat-card { min-width: calc(50% - 12px); } /* dua kolom */
+    .stat-card { min-width: calc(50% - 12px); }
 }
 @media (max-width: 520px) {
     .stat-card { min-width: 100%; }
 }
-
-/* agar tombol tidak terlalu sempit pada layar kecil */
 .reports-table button,
 .reports-table a.btn-detail {
     min-width:44px;
 }
-
-/* pastikan column teks akan wrap */
 .reports-table td { word-break: break-word; }
-
-/* optional: improve table scroll behavior on mobile */
 .table-responsive {
     -webkit-overflow-scrolling: touch;
 }

@@ -172,13 +172,21 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2">
-                <form action="{{ route('admin.reports.reject', $report->id) }}" method="POST">
-                    @csrf @method('PATCH')
+                {{-- TOLAK LAPORAN – pakai route status --}}
+                <form method="POST"
+                      action="{{ route('admin.reports.status', $report) }}"
+                      onsubmit="return confirm('Tolak laporan ini?')">
+                    @csrf
+                    <input type="hidden" name="status" value="rejected">
                     <button class="btn btn-danger">Tolak Laporan</button>
                 </form>
 
-                <form action="{{ route('admin.reports.accept', $report->id) }}" method="POST">
-                    @csrf @method('PATCH')
+                {{-- TERIMA LAPORAN – pakai route status --}}
+                <form method="POST"
+                      action="{{ route('admin.reports.status', $report) }}"
+                      onsubmit="return confirm('Terima laporan ini?')">
+                    @csrf
+                    <input type="hidden" name="status" value="accepted">
                     <button class="btn btn-success">Terima Laporan</button>
                 </form>
             </div>

@@ -25,7 +25,8 @@ class Report extends Model
 
     public function post()
     {
-        return $this->belongsTo(Post::class);
+        // pakai withTrashed supaya post yang sudah soft delete tetap bisa diakses dari report
+        return $this->belongsTo(Post::class)->withTrashed();
     }
 
     public function handledBy()

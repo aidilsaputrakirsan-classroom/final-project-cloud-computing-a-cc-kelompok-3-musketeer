@@ -24,130 +24,128 @@
         Kembali
     </a>
 
-    <!-- CARD POST -->
-    <div class="card mb-4">
-        <div class="card-body">
 
-            <div class="d-flex align-items-start mb-3">
-                <div class="rounded-circle text-white fw-bold d-flex align-items-center justify-content-center"
-                    style="width:48px;height:48px; background:#40A09C;">
-                    {{ strtoupper(substr($report->post->user->name ?? 'U', 0, 1)) }}
-                </div>
+    {{-- ========================
+         POST MASIH ADA?
+       ======================== --}}
+    @if($report->post)
 
-                <div class="ms-3">
-                    <div class="fw-semibold text-dark mb-1">
-                        {{ $report->post->user->name ?? '-' }}
+        <!-- CARD POST -->
+        <div class="card mb-4">
+            <div class="card-body">
+
+                <div class="d-flex align-items-start mb-3">
+                    <div class="rounded-circle text-white fw-bold d-flex align-items-center justify-content-center"
+                        style="width:48px;height:48px; background:#40A09C;">
+                        {{ strtoupper(substr($report->post->user->name ?? 'U', 0, 1)) }}
                     </div>
 
-                    <small class="text-muted d-block">
-                        Dipublikasikan pada {{ optional($report->post->created_at)->format('d F Y, H:i') ?? '-' }}
-                        • Diperbarui pada {{ optional($report->post->updated_at)->format('d F Y, H:i') ?? '-' }}
-                    </small>
-                </div>
-
-                <div class="ms-auto">
-                    <button class="btn btn-sm btn-danger rounded-circle">
-                        <i class="bi bi-flag-fill"></i>
-                    </button>
-                </div>
-            </div>
-
-            <h4 class="fw-bold mb-2">
-                {{ $report->post->title ?? '(Tanpa judul)' }}    
-            </h4>
-
-            <hr>
-
-            <p class="mb-3" style="white-space: pre-line; font-size:1.04rem; color:#333;">
-                {{ $report->post->body 
-                    ?? $report->post->content 
-                    ?? '(Tidak ada konten)' }}
-            </p>
-
-            <!-- Statistik -->
-            <div class="bg-light rounded p-3 mb-3 d-flex flex-wrap gap-4 text-muted">
-                <span><i class="bi bi-eye"></i> {{ $report->post->views ?? 0 }} Dilihat</span>
-                <span><i class="bi bi-chat"></i> {{ $report->post->comments->count() ?? 0 }} Komentar</span>
-                <span><i class="bi bi-hand-thumbs-up"></i> {{ $report->post->likes ?? 0 }} Suka</span>
-                <span><i class="bi bi-hand-thumbs-down"></i> {{ $report->post->dislikes ?? 0 }} Tidak Suka</span>
-            </div>
-
-            <span class="badge"
-                style="
-                    background:#40A09C;
-                    color:#fff;
-                    padding:5px 14px;
-                    border-radius:5px;
-                    font-size:0.91em;
-                ">
-                {{ $report->post->category->name ?? 'Random' }}
-            </span>
-        </div>
-    </div>
-
-    {{-- ========== CARD KOMENTAR (preview saja) ========== --}}
-    <div class="card mb-4">
-        <div class="card-header bg-white fw-semibold">
-            Komentar
-        </div>
-        <div class="card-body">
-
-            @forelse ($report->post->comments as $comment)
-                <div class="d-flex mb-3">
-                    <div style="
-                        width:38px;height:38px;border-radius:50%;
-                        background:#40A09C;color:#fff;
-                        display:flex;align-items:center;justify-content:center;
-                        font-weight:600;
-                    ">
-                        {{ strtoupper(substr($comment->user->name ?? 'U', 0, 1)) }}
-                    </div>
-
-                    <div class="ms-3 flex-grow-1">
-                        <div class="d-flex align-items-center">
-                            <span class="fw-semibold me-2">{{ $comment->user->name ?? '-' }}</span>
-                            <small class="text-muted">{{ $comment->created_at->format('d M Y, H:i') }}</small>
-                        </div>
-                        <div class="mt-1 text-dark">
-                            {{ $comment->body }}
+                    <div class="ms-3">
+                        <div class="fw-semibold text-dark mb-1">
+                            {{ $report->post->user->name ?? '-' }}
                         </div>
 
-                        @if($comment->replies && $comment->replies->count())
-                            <div class="border-start ps-3 mt-2">
-                                @foreach($comment->replies as $reply)
-                                    <div class="d-flex mb-2">
-                                        <div style="
-                                            width:28px;height:28px;border-radius:50%;
-                                            background:#40A09C;color:#fff;
-                                            display:flex;align-items:center;justify-content:center;
-                                            font-weight:600;
-                                        ">
-                                            {{ strtoupper(substr($reply->user->name ?? 'U', 0, 1)) }}
-                                        </div>
-                                        <div class="ms-2">
-                                            <div class="d-flex align-items-center">
-                                                <span class="fw-semibold me-2">{{ $reply->user->name }}</span>
-                                                <small class="text-muted">{{ $reply->created_at->format('d M Y, H:i') }}</small>
-                                            </div>
-                                            <div class="mt-1 text-dark">
-                                                {{ $reply->body }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
+                        <small class="text-muted d-block">
+                            Dipublikasikan pada {{ optional($report->post->created_at)->format('d F Y, H:i') ?? '-' }}
+                            • Diperbarui pada {{ optional($report->post->updated_at)->format('d F Y, H:i') ?? '-' }}
+                        </small>
+                    </div>
+
+                    <div class="ms-auto">
+                        <button class="btn btn-sm btn-danger rounded-circle">
+                            <i class="bi bi-flag-fill"></i>
+                        </button>
                     </div>
                 </div>
+
+                <h4 class="fw-bold mb-2">
+                    {{ $report->post->title ?? '(Tanpa judul)' }}    
+                </h4>
+
                 <hr>
-            @empty
-                <p class="text-muted mb-0">Belum ada komentar pada postingan ini.</p>
-            @endforelse
 
+                <p class="mb-3" style="white-space: pre-line; font-size:1.04rem; color:#333;">
+                    {{ $report->post->body 
+                        ?? $report->post->content 
+                        ?? '(Tidak ada konten)' }}
+                </p>
+
+                <!-- Statistik -->
+                <div class="bg-light rounded p-3 mb-3 d-flex flex-wrap gap-4 text-muted">
+                    <span>{{ $report->post->views ?? 0 }} Dilihat</span>
+                    <span>{{ $report->post->comments->count() ?? 0 }} Komentar</span>
+                    <span>{{ $report->post->likes ?? 0 }} Suka</span>
+                    <span>{{ $report->post->dislikes ?? 0 }} Tidak Suka</span>
+                </div>
+
+                <span class="badge"
+                    style="
+                        background:#40A09C;
+                        color:#fff;
+                        padding:5px 14px;
+                        border-radius:5px;
+                        font-size:0.91em;
+                    ">
+                    {{ $report->post->category->name ?? 'Random' }}
+                </span>
+            </div>
         </div>
-    </div>
 
-    {{-- ========== CARD RINGKASAN KEPUTUSAN ========== --}}
+
+        {{-- CARD KOMENTAR --}}
+        <div class="card mb-4">
+            <div class="card-header bg-white fw-semibold">
+                Komentar
+            </div>
+            <div class="card-body">
+
+                @forelse ($report->post->comments as $comment)
+                    <div class="d-flex mb-3">
+                        <div style="
+                            width:38px;height:38px;border-radius:50%;
+                            background:#40A09C;color:#fff;
+                            display:flex;align-items:center;justify-content:center;
+                            font-weight:600;
+                        ">
+                            {{ strtoupper(substr($comment->user->name ?? 'U', 0, 1)) }}
+                        </div>
+
+                        <div class="ms-3 flex-grow-1">
+                            <div class="d-flex align-items-center">
+                                <span class="fw-semibold me-2">{{ $comment->user->name ?? '-' }}</span>
+                                <small class="text-muted">{{ $comment->created_at->format('d M Y, H:i') }}</small>
+                            </div>
+                            <div class="mt-1 text-dark">
+                                {{ $comment->body }}
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                @empty
+                    <p class="text-muted mb-0">Belum ada komentar.</p>
+                @endforelse
+
+            </div>
+        </div>
+
+    @else
+        {{-- ============================
+             POST SUDAH DIHAPUS
+           ============================ --}}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="fw-bold mb-2" style="color:#d42b2b">Postingan Telah Dihapus</h5>
+                <p class="text-muted mb-0">
+                    Postingan yang dilaporkan telah dihapus oleh admin saat laporan diterima.
+                    Namun data laporan tetap disimpan untuk arsip.
+                </p>
+            </div>
+        </div>
+    @endif
+
+
+
+    {{-- ========== CARD RINGKASAN ========== --}}
     <div class="card mb-4">
         <div class="card-header bg-white fw-semibold">
             Ringkasan Keputusan Laporan
