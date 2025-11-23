@@ -6,7 +6,9 @@
 <div class="admin-reports-page" style="padding:28px;">
 
     <h1 style="font-size:40px;margin:0 0 18px">History Laporan</h1>
-    <p style="color:#666;margin-bottom:18px">Berikut riwayat laporan yang telah <strong>diterima</strong> atau <strong>ditolak</strong>.</p>
+    <p style="color:#666;margin-bottom:18px">
+        Berikut riwayat laporan yang telah <strong>diterima</strong> atau <strong>ditolak</strong>.
+    </p>
 
     <!-- tombol kembali ke pending -->
     <div style="margin-bottom:14px;">
@@ -55,58 +57,105 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($reports as $r)
-                        <tr>
-                            <td style="padding:12px;border:2px solid #e0f1ee;vertical-align:top">
-                                <div style="font-weight:600;color:#0a3836">{{ $r->post->title ?? '(post tidak ditemukan)' }}</div>
-                                <div style="font-size:12px;color:#666;margin-top:6px">
-                                    Pelapor: {{ $r->user->name ?? '-' }} — {{ $r->created_at->format('Y-m-d H:i') }}
-                                </div>
-                            </td>
+                        @php
+                            // kelompokkan laporan history per post_id (accepted + rejected)
+                            $groupedReports = $reports->groupBy('post_id');
+                        @endphp
 
-                            <td style="padding:12px;border:2px solid #e0f1ee;vertical-align:top;max-width:240px;word-wrap:break-word;">
-                                {{ $r->reason }}
-                            </td>
+                        @forelse($groupedReports as $postId => $reportsForPost)
+                            @php
+                                /** @var \App\Models\Report $firstReport */
+                                $firstReport   = $reportsForPost->first();
+                                $post          = $firstReport->post;
+                                $jumlahLaporan = $reportsForPost->count();
+                                $lastReport    = $reportsForPost->sortByDesc('updated_at')->first();
+                                $status        = $firstReport->status; // diasumsikan sama utk semua
+                            @endphp
 
-                            <td style="padding:12px;border:2px solid #e0f1ee;vertical-align:top;max-width:380px;word-wrap:break-word;">
-                                {{ \Illuminate\Support\Str::limit($r->details, 400) }}
-                            </td>
+                            <tr>
+                                {{-- Judul Postingan --}}
+                                <td style="padding:12px;border:2px solid #e0f1ee;vertical-align:top">
+                                    <div style="font-weight:600;color:#0a3836">
+                                        {{ $post->title ?? '(post tidak ditemukan)' }}
+                                    </div>
+                                    <div style="font-size:12px;color:#666;margin-top:6px">
+                                        Total laporan: <strong>{{ $jumlahLaporan }}</strong><br>
+                                        Terakhir diproses: {{ $lastReport->updated_at->format('Y-m-d H:i') }}
+                                    </div>
+                                </td>
 
-                            <td style="padding:12px;border:2px solid #e0f1ee;text-align:center;vertical-align:top">
+                                {{-- Alasan Pelaporan per pengguna --}}
+                                <td style="padding:12px;border:2px solid #e0f1ee;vertical-align:top;max-width:260px;word-wrap:break-word;">
+                                    <div style="font-size:13px;margin-bottom:6px;color:#333;">
+                                        <strong>{{ $jumlahLaporan }}</strong> laporan dari pengguna.
+                                    </div>
 
-                                {{-- status --}}
-                                <div style="margin-bottom:8px">
-                                    @if($r->status === 'accepted')
-                                        <span style="display:inline-block;padding:6px 10px;background:#e2f7f3;color:#0c665d;border-radius:6px">
-                                            Diterima
-                                        </span>
-                                    @else
-                                        <span style="display:inline-block;padding:6px 10px;background:#fdeaea;color:#b02020;border-radius:6px">
-                                            Ditolak
-                                        </span>
+                                    @foreach($reportsForPost->take(3) as $r)
+                                        <div style="font-size:12px;color:#444;margin-bottom:4px;">
+                                            • {{ $r->reason }}
+                                            <span style="color:#777;">— {{ $r->user->name ?? 'User' }}</span>
+                                        </div>
+                                    @endforeach
+
+                                    @if($jumlahLaporan > 3)
+                                        <div style="font-size:12px;color:#999;">
+                                            + {{ $jumlahLaporan - 3 }} alasan laporan lainnya
+                                        </div>
                                     @endif
-                                </div>
+                                </td>
 
-                                <div style="font-size:12px;color:#666;">
-                                    oleh <strong>{{ $r->handledBy->name ?? '-' }}</strong><br>
-                                    <small>{{ $r->updated_at->format('Y-m-d H:i') }}</small>
-                                </div>
+                                {{-- Detail Pelaporan per pengguna --}}
+                                <td style="padding:12px;border:2px solid #e0f1ee;vertical-align:top;max-width:380px;word-wrap:break-word;">
+                                    @foreach($reportsForPost->take(3) as $r)
+                                        <div style="font-size:12px;color:#444;margin-bottom:6px;">
+                                            • {{ \Illuminate\Support\Str::limit($r->details, 160) }}
+                                            <span style="color:#777;display:block;margin-top:2px;">
+                                                — {{ $r->user->name ?? 'User' }}
+                                            </span>
+                                        </div>
+                                    @endforeach
 
-                                <div style="margin-top:10px;">
-                                    <a href="{{ route('admin.reports.history.show', $r) }}"
-                                       style="display:inline-block;padding:7px 10px;border-radius:6px;background:#40A09C;color:#fff;text-decoration:none">
-                                        Detail
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
+                                    @if($jumlahLaporan > 3)
+                                        <div style="font-size:12px;color:#999;">
+                                            + {{ $jumlahLaporan - 3 }} detail laporan lainnya
+                                        </div>
+                                    @endif
+                                </td>
 
+                                {{-- Status / Aksi --}}
+                                <td style="padding:12px;border:2px solid #e0f1ee;text-align:center;vertical-align:top">
+                                    {{-- status --}}
+                                    <div style="margin-bottom:8px">
+                                        @if($status === 'accepted')
+                                            <span style="display:inline-block;padding:6px 10px;background:#e2f7f3;color:#0c665d;border-radius:6px">
+                                                Diterima
+                                            </span>
+                                        @else
+                                            <span style="display:inline-block;padding:6px 10px;background:#fdeaea;color:#b02020;border-radius:6px">
+                                                Ditolak
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    <div style="font-size:12px;color:#666;margin-bottom:10px;">
+                                        oleh <strong>{{ $firstReport->handledBy->name ?? '-' }}</strong><br>
+                                        <small>{{ $firstReport->updated_at->format('Y-m-d H:i') }}</small>
+                                    </div>
+
+                                    <div style="margin-top:4px;">
+                                        <a href="{{ route('admin.reports.history.show', $firstReport) }}"
+                                           style="display:inline-block;padding:7px 10px;border-radius:6px;background:#40A09C;color:#fff;text-decoration:none">
+                                            Detail
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
                         @empty
-                        <tr>
-                            <td colspan="4" style="padding:18px;text-align:center;color:#777">
-                                Belum ada laporan history.
-                            </td>
-                        </tr>
+                            <tr>
+                                <td colspan="4" style="padding:18px;text-align:center;color:#777">
+                                    Belum ada laporan history.
+                                </td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -119,4 +168,20 @@
         </div>
     </div>
 </div>
+
+{{-- KECILKAN ICON PANAH PAGINATION (TAILWIND DEFAULT) --}}
+<style>
+    /* nav pagination bawaan laravel (role="navigation") */
+    nav[role="navigation"] svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+
+    /* opsional: rapikan teks halaman */
+    nav[role="navigation"] span,
+    nav[role="navigation"] a {
+        font-size: 0.9rem;
+    }
+</style>
+
 @endsection

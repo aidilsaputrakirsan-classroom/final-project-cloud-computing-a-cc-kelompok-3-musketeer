@@ -156,26 +156,46 @@
         </div>
         <div class="card-body">
 
-            <div class="mb-3">
-                <label class="form-label">Pelapor</label>
-                <input class="form-control" readonly value="{{ $report->user->name }}">
-            </div>
+            <p class="text-muted">
+                Total <strong>{{ $allReportsForPost->count() }}</strong> laporan untuk postingan ini.
+            </p>
 
-            <div class="mb-3">
-                <label class="form-label">Alasan</label>
-                <input class="form-control" readonly value="{{ $report->reason }}">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Detail</label>
-                <textarea class="form-control" rows="3" readonly>{{ $report->details }}</textarea>
+            <div class="table-responsive mb-4">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Pelapor</th>
+                            <th>Alasan</th>
+                            <th>Detail</th>
+                            <th>Waktu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($allReportsForPost as $r)
+                            <tr>
+                                <td>{{ $r->user->name ?? '-' }}</td>
+                                <td>{{ $r->reason }}</td>
+                                <td style="max-width:360px;white-space:pre-line;">
+                                    {{ $r->details }}
+                                </td>
+                                <td>{{ $r->created_at->format('d M Y, H:i') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">
+                                    Belum ada laporan lain untuk postingan ini.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
 
             <div class="d-flex justify-content-end gap-2">
                 {{-- TOLAK LAPORAN – pakai route status --}}
                 <form method="POST"
                       action="{{ route('admin.reports.status', $report) }}"
-                      onsubmit="return confirm('Tolak laporan ini?')">
+                      onsubmit="return confirm('Tolak semua laporan untuk postingan ini?')">
                     @csrf
                     <input type="hidden" name="status" value="rejected">
                     <button class="btn btn-danger">Tolak Laporan</button>
@@ -184,7 +204,7 @@
                 {{-- TERIMA LAPORAN – pakai route status --}}
                 <form method="POST"
                       action="{{ route('admin.reports.status', $report) }}"
-                      onsubmit="return confirm('Terima laporan ini?')">
+                      onsubmit="return confirm('Terima semua laporan untuk postingan ini?')">
                     @csrf
                     <input type="hidden" name="status" value="accepted">
                     <button class="btn btn-success">Terima Laporan</button>

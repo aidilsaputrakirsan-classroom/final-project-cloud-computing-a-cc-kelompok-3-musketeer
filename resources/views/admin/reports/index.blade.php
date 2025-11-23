@@ -61,72 +61,88 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($reports as $r)
-                        <tr>
-                            <td style="padding:12px;border:2px solid #e6f4f1;vertical-align:top">
-                                <div style="font-weight:600;color:#0f3936">{{ $r->post->title ?? '(post tidak ditemukan)' }}</div>
-                                <div style="font-size:12px;color:#666;margin-top:6px">
-                                    Pelapor: {{ $r->user->name ?? '-' }} — {{ $r->created_at->format('Y-m-d H:i') }}
-                                </div>
-                            </td>
+                        @forelse($groupedReports as $postId => $reportsForPost)
+                            @php
+                                /** @var \App\Models\Report $firstReport */
+                                $firstReport   = $reportsForPost->first();
+                                $post          = $firstReport->post;
+                                $jumlahLaporan = $reportsForPost->count();
+                                $lastReport    = $reportsForPost->sortByDesc('created_at')->first();
+                            @endphp
+                            <tr>
+                                {{-- Judul Postingan --}}
+                                <td style="padding:12px;border:2px solid #e6f4f1;vertical-align:top">
+                                    <div style="font-weight:600;color:#0f3936">
+                                        {{ $post->title ?? '(post tidak ditemukan)' }}
+                                    </div>
+                                    <div style="font-size:12px;color:#666;margin-top:6px">
+                                        Total laporan: <strong>{{ $jumlahLaporan }}</strong><br>
+                                        Laporan terakhir: {{ $lastReport->created_at->format('Y-m-d H:i') }}
+                                    </div>
+                                </td>
 
-                            <td style="padding:12px;border:2px solid #e6f4f1;vertical-align:top;max-width:240px;word-wrap:break-word;color:#333;">
-                                {{ $r->reason }}
-                            </td>
+                                {{-- Ringkasan Alasan dari beberapa pelapor --}}
+                                <td style="padding:12px;border:2px solid #e6f4f1;vertical-align:top;max-width:260px;word-wrap:break-word;color:#333;">
+                                    <div style="font-size:13px;margin-bottom:6px;">
+                                        <strong>{{ $jumlahLaporan }}</strong> laporan dari pengguna.
+                                    </div>
 
-                            <td style="padding:12px;border:2px solid #e6f4f1;vertical-align:top;max-width:380px;word-wrap:break-word;color:#333;">
-                                {{ \Illuminate\Support\Str::limit($r->details, 300) }}
-                            </td>
+                                    @foreach($reportsForPost->take(2) as $r)
+                                        <div style="font-size:12px;color:#444;margin-bottom:4px;">
+                                            • {{ $r->reason }}
+                                            <span style="color:#777;">— dari {{ $r->user->name ?? 'User' }}</span>
+                                        </div>
+                                    @endforeach
 
-                            <td style="padding:12px;border:2px solid #e6f4f1;text-align:center;vertical-align:top">
-                                <div class="action-row" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
-                                    <!-- Terima -->
-                                    <form method="POST"
-                                          action="{{ route('admin.reports.status', $r) }}"
-                                          onsubmit="return confirm('Terima laporan ini?')"
-                                          style="display:inline-block;">
-                                        @csrf
-                                        <input type="hidden" name="status" value="accepted">
-                                        <button type="submit" title="Terima" class="btn-accept"
-                                                style="border:none;padding:8px 10px;border-radius:6px;background:#28a745;color:#fff;cursor:pointer">
-                                            ✔
-                                        </button>
-                                    </form>
+                                    @if($jumlahLaporan > 2)
+                                        <div style="font-size:12px;color:#999;">
+                                            + {{ $jumlahLaporan - 2 }} laporan lainnya
+                                        </div>
+                                    @endif
+                                </td>
 
-                                    <!-- Tolak -->
-                                    <form method="POST"
-                                          action="{{ route('admin.reports.status', $r) }}"
-                                          onsubmit="return confirm('Tolak laporan ini?')"
-                                          style="display:inline-block;">
-                                        @csrf
-                                        <input type="hidden" name="status" value="rejected">
-                                        <button type="submit" title="Tolak" class="btn-reject"
-                                                style="border:none;padding:8px 10px;border-radius:6px;background:#e74c3c;color:#fff;cursor:pointer">
-                                            ✕
-                                        </button>
-                                    </form>
+                                {{-- Detail Pelaporan per pengguna --}}
+                                <td style="padding:12px;border:2px solid #e6f4f1;vertical-align:top;max-width:380px;word-wrap:break-word;color:#333;">
+                                    @foreach($reportsForPost->take(2) as $r)
+                                        <div style="font-size:12px;color:#444;margin-bottom:6px;">
+                                            • {{ \Illuminate\Support\Str::limit($r->details, 140) }}
+                                            <span style="color:#777;display:block;margin-top:2px;">
+                                                — dari {{ $r->user->name ?? 'User' }}
+                                            </span>
+                                        </div>
+                                    @endforeach
 
-                                    <!-- Detail -->
-                                    <a href="{{ route('admin.reports.show', $r) }}" title="Detail" class="btn-detail"
-                                       style="display:inline-block;padding:8px 10px;border-radius:6px;background:#40A09C;color:#fff;text-decoration:none">
-                                        Detail
-                                    </a>
-                                </div>
+                                    @if($jumlahLaporan > 2)
+                                        <div style="font-size:12px;color:#999;">
+                                            + {{ $jumlahLaporan - 2 }} detail laporan lainnya
+                                        </div>
+                                    @endif
+                                </td>
 
-                                <!-- pending badge only (index = pending) -->
-                                <div style="margin-top:10px;font-size:13px;color:#333">
-                                    <span style="display:inline-block;padding:6px 10px;background:#e8f7f5;color:#066557;border-radius:6px">
-                                        Pending
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
+                                {{-- Aksi: hanya tombol Detail --}}
+                                <td style="padding:12px;border:2px solid #e6f4f1;text-align:center;vertical-align:top">
+                                    <div class="action-row" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+                                        <!-- Detail semua laporan untuk postingan ini -->
+                                        <a href="{{ route('admin.reports.show', $firstReport) }}" title="Detail" class="btn-detail"
+                                           style="display:inline-block;padding:8px 10px;border-radius:6px;background:#40A09C;color:#fff;text-decoration:none">
+                                            Detail
+                                        </a>
+                                    </div>
+
+                                    <!-- pending badge -->
+                                    <div style="margin-top:10px;font-size:13px;color:#333">
+                                        <span style="display:inline-block;padding:6px 10px;background:#e8f7f5;color:#066557;border-radius:6px">
+                                            {{ $jumlahLaporan }} laporan pending
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
                         @empty
-                        <tr>
-                            <td colspan="4" style="padding:18px;text-align:center;color:#777">
-                                Belum ada laporan pending.
-                            </td>
-                        </tr>
+                            <tr>
+                                <td colspan="4" style="padding:18px;text-align:center;color:#777">
+                                    Belum ada laporan pending.
+                                </td>
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>

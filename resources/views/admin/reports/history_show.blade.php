@@ -24,7 +24,6 @@
         Kembali
     </a>
 
-
     {{-- ========================
          POST MASIH ADA?
        ======================== --}}
@@ -91,7 +90,6 @@
             </div>
         </div>
 
-
         {{-- CARD KOMENTAR --}}
         <div class="card mb-4">
             <div class="card-header bg-white fw-semibold">
@@ -144,8 +142,7 @@
     @endif
 
 
-
-    {{-- ========== CARD RINGKASAN ========== --}}
+    {{-- ========== CARD RINGKASAN & DAFTAR LAPORAN ========== --}}
     <div class="card mb-4">
         <div class="card-header bg-white fw-semibold">
             Ringkasan Keputusan Laporan
@@ -175,14 +172,42 @@
                        value="{{ optional($report->updated_at)->format('d F Y, H:i') ?? '-' }}">
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Alasan Pelapor</label>
-                <input class="form-control" readonly value="{{ $report->reason }}">
-            </div>
+            <hr class="my-3">
 
-            <div class="mb-3">
-                <label class="form-label">Detail Laporan</label>
-                <textarea class="form-control" rows="3" readonly>{{ $report->details }}</textarea>
+            <h6 class="fw-semibold mb-2">Daftar Laporan dari Pengguna</h6>
+            <p class="text-muted" style="font-size:0.9rem;">
+                Total <strong>{{ $allReportsForPost->count() }}</strong> laporan untuk postingan ini.
+            </p>
+
+            <div class="table-responsive">
+                <table class="table table-sm align-middle">
+                    <thead>
+                        <tr>
+                            <th>Pelapor</th>
+                            <th>Alasan</th>
+                            <th>Detail Laporan</th>
+                            <th>Dibuat Pada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($allReportsForPost as $r)
+                            <tr>
+                                <td>{{ $r->user->name ?? '-' }}</td>
+                                <td>{{ $r->reason }}</td>
+                                <td style="max-width:360px;white-space:pre-line;">
+                                    {{ $r->details }}
+                                </td>
+                                <td>{{ $r->created_at->format('d M Y, H:i') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">
+                                    Tidak ada data laporan lain untuk postingan ini.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
 
         </div>
