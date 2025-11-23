@@ -14,14 +14,18 @@ class ReportController extends Controller
         $this->middleware([\Illuminate\Auth\Middleware\Authenticate::class, \App\Http\Middleware\IsAdmin::class]);
     }
 
-    // index sekarang hanya menampilkan pending
+    // index sekarang hanya menampilkan pending, DI-KELOMPOKKAN per post
     public function index(Request $request)
     {
         $query = Report::with(['user','post','handledBy'])
                        ->where('status', 'pending')
                        ->latest();
 
+        // tetap pakai pagination seperti biasa
         $reports = $query->paginate(12)->withQueryString();
+
+        // kelompokkan collection berdasarkan post_id → 1 baris = 1 postingan
+        $groupedReports = $reports->getCollection()->groupBy('post_id');
 
         $counts = [
             'total'    => Report::count(),
@@ -30,7 +34,11 @@ class ReportController extends Controller
             'pending'  => Report::where('status','pending')->count(),
         ];
 
-        return view('admin.reports.index', compact('reports','counts'));
+        return view('admin.reports.index', [
+            'reports'        => $reports,        // untuk pagination
+            'groupedReports' => $groupedReports, // untuk tabel
+            'counts'         => $counts,
+        ]);
     }
 
     // history: menampilkan laporan yang sudah diproses (accepted & rejected)
@@ -78,10 +86,21 @@ class ReportController extends Controller
             $post->delete();
         }
 
-        // Update status laporan + admin yang menangani
+        // Update status laporan + admin yang menangani (report yang dipilih)
         $report->status     = $request->status;
         $report->handled_by = auth()->id();
         $report->save();
+
+        // Tambahan: update juga semua laporan pending lain di postingan yang sama
+        if ($report->post_id) {
+            Report::where('post_id', $report->post_id)
+                ->where('id', '!=', $report->id)
+                ->where('status', 'pending')
+                ->update([
+                    'status'     => $request->status,
+                    'handled_by' => auth()->id(),
+                ]);
+        }
 
         $message = $request->status === 'accepted'
             ? 'Laporan diterima, postingan telah dihapus.'
@@ -95,7 +114,20 @@ class ReportController extends Controller
     public function show(Report $report)
     {
         $report->load(['user','post','handledBy']);
-        return view('admin.reports.show', compact('report'));
+
+        // ambil semua laporan lain pada postingan yang sama
+        $allReportsForPost = collect();
+        if ($report->post_id) {
+            $allReportsForPost = Report::with(['user'])
+                ->where('post_id', $report->post_id)
+                ->orderBy('created_at')
+                ->get();
+        }
+
+        return view('admin.reports.show', [
+            'report'            => $report,
+            'allReportsForPost' => $allReportsForPost,
+        ]);
     }
 
     public function showHistory(Report $report)
@@ -107,6 +139,20 @@ class ReportController extends Controller
             abort(404);
         }
 
-        return view('admin.reports.history_show', compact('report'));
+        // ambil semua laporan accepted/rejected untuk postingan yang sama
+        $allReportsForPost = collect();
+
+        if ($report->post_id) {
+            $allReportsForPost = Report::with(['user'])
+                ->where('post_id', $report->post_id)
+                ->whereIn('status', ['accepted', 'rejected'])
+                ->orderBy('created_at')
+                ->get();
+        }
+
+        return view('admin.reports.history_show', [
+            'report'            => $report,
+            'allReportsForPost' => $allReportsForPost,
+        ]);
     }
 }
