@@ -38,6 +38,16 @@ class CommentController extends Controller
 
         $comment = Comment::create($data);
 
+        // Kirim notifikasi ke pemilik post (asal bukan dirinya sendiri)
+        $post = $comment->post;
+        $owner = $post->user;
+        if ($owner && $owner->id !== $request->user()->id) {
+            $owner->notify(new \App\Notification\GeneralNotification(
+                'post_commented',
+                "Postingan Anda berjudul '{$post->title}': telah dikomentari oleh " . $request->user()->name
+            ));
+        }
+
         // Jika request dari AJAX
         if ($request->wantsJson()) {
             return response()->json([
