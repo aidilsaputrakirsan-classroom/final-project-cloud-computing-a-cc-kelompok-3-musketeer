@@ -1,7 +1,14 @@
 @extends('layouts.main')
 
 @section('title', 'Postingan Saya | Chatter Box')
+
 @section('content')
+@php
+    // pastikan $user sudah dikirim dari controller,
+    // kalau belum, ini fallback aman:
+    $user = $user ?? auth()->user();
+@endphp
+
 <style>
     .profile-header {
         background: #fff;
@@ -119,6 +126,8 @@
         font-size: 0.95em;
         color: #787878;
         margin-bottom: 7px;
+        flex-wrap: wrap;
+        align-items: center;
     }
     .post-categories { display: flex; gap: 8px; margin-bottom: 3px; }
     .post-category-badge {
@@ -155,21 +164,32 @@
         margin-top: 30px;
     }
 
-    /* small helpers for the clickable description and comment icon */
-    .post-desc a { color: inherit; text-decoration: none; display:block; }
-    .post-stats a { color: inherit; text-decoration: none; display:inline-flex; align-items:center; gap:6px; }
+    /* clickable description & comment icon */
+    .post-desc a {
+        color: inherit;
+        text-decoration: none;
+        display: block;
+    }
+    .post-stats a {
+        color: inherit;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
 </style>
 
 <div class="profile-header">
     <div class="profile-info">
-        <div class="profile-avatar" style="@if($user->profile_picture) background-image: url('{{ Storage::url($user->profile_picture) }}'); @endif">
-            @if(!$user->profile_picture)
-                {{ strtoupper(substr($user->name, 0, 1)) }}
+        <div class="profile-avatar"
+             style="@if($user && $user->profile_picture) background-image: url('{{ Storage::url($user->profile_picture) }}'); @endif">
+            @if(!$user || !$user->profile_picture)
+                {{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}
             @endif
         </div>
         <div class="profile-details">
-            <h1>{{ $user->name }}</h1>
-            <p>{{ $user->email }}</p>
+            <h1>{{ $user->name ?? 'User' }}</h1>
+            <p>{{ $user->email ?? '' }}</p>
         </div>
         <div style="margin-left: auto;">
             <a href="{{ route('profile.edit') }}" style="padding: 8px 16px; background: #40A09C; color: #fff; border-radius: 7px; text-decoration: none; font-size: 0.9em;">
@@ -179,15 +199,15 @@
     </div>
     <div class="profile-stats">
         <div class="stat-item">
-            <span class="stat-value">{{ $user->posts()->count() }}</span>
+            <span class="stat-value">{{ $user?->posts()->count() ?? 0 }}</span>
             <span class="stat-label">Total Postingan</span>
         </div>
         <div class="stat-item">
-            <span class="stat-value">{{ $user->posts()->sum('views') }}</span>
+            <span class="stat-value">{{ $user?->posts()->sum('views') ?? 0 }}</span>
             <span class="stat-label">Total Views</span>
         </div>
         <div class="stat-item">
-            <span class="stat-value">{{ $user->posts()->sum('likes') }}</span>
+            <span class="stat-value">{{ $user?->posts()->sum('likes') ?? 0 }}</span>
             <span class="stat-label">Total Likes</span>
         </div>
     </div>
@@ -195,7 +215,9 @@
 
 <div class="dashboard-header">
     <h1 style="margin: 0; color: #4b5d6b;">Postingan Saya</h1>
-    <a href="{{ route('posts.create') }}" class="btn-post"><i class="fa fa-plus"></i> Buat Postingan Baru</a>
+    <a href="{{ route('posts.create') }}" class="btn-post">
+        <i class="fa fa-plus"></i> Buat Postingan Baru
+    </a>
 </div>
 
 @if(session('success'))
@@ -204,37 +226,118 @@
 
 <div class="cards-list">
     @forelse($posts as $post)
-        <div class="post-card">
+        {{-- penting: data-post-id untuk dipakai JS like/dislike global --}}
+        <div class="post-card" data-post-id="{{ $post->id }}">
             <div class="post-meta">{{ $post->created_at->format('d M Y, H:i') }}</div>
-            <div class="post-title"><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></div>
+            <div class="post-title">
+                <a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a>
+            </div>
 
-            {{-- === REVISI: Deskripsi/isi sekarang clickable ke halaman show === --}}
+            {{-- Deskripsi yang bisa diklik --}}
             <div class="post-desc">
                 <a href="{{ route('posts.show', $post) }}">
                     {{ $post->content }}
                 </a>
             </div>
 
+            @php
+                try {
+                    $likesCount = method_exists($post, 'likes') ? $post->likes()->count() : ($post->likes ?? 0);
+                    $dislikesCount = method_exists($post, 'dislikes') ? $post->dislikes()->count() : ($post->dislikes ?? 0);
+                } catch (\Throwable $e) {
+                    $likesCount = $post->likes ?? 0;
+                    $dislikesCount = $post->dislikes ?? 0;
+                }
+
+                $userReaction = null;
+                if (Auth::check()) {
+                    try {
+                        $r = $post->reactions()->where('user_id', Auth::id())->first();
+                        $userReaction = $r ? $r->reaction : null;
+                    } catch (\Throwable $e) {
+                        $userReaction = null;
+                    }
+                }
+            @endphp
+
             <div class="post-stats">
                 <span><i class="fa fa-eye"></i> {{ $post->views }}</span>
 
-                {{-- === REVISI: Icon komentar juga mengarah ke halaman show === --}}
                 <span>
                     <a href="{{ route('posts.show', $post) }}">
                         <i class="fa fa-comment"></i> {{ $post->comments_count }}
                     </a>
                 </span>
 
-                <span><i class="fa fa-thumbs-up"></i> {{ $post->likes }}</span>
-                <span><i class="fa fa-thumbs-down"></i> {{ $post->dislikes }}</span>
+                @if(Auth::check())
+                    {{-- tombol LIKE / DISLIKE interaktif, sama pola dengan dashboard --}}
+                    <button
+                        type="button"
+                        class="reaction-btn like-btn {{ $userReaction == 1 ? 'active' : '' }}"
+                        data-post-id="{{ $post->id }}"
+                        title="Suka"
+                    >
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                        <span class="likes-count">{{ $likesCount }}</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        class="reaction-btn dislike-btn {{ $userReaction == -1 ? 'active' : '' }}"
+                        data-post-id="{{ $post->id }}"
+                        title="Tidak Suka"
+                    >
+                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                        <span class="dislikes-count">{{ $dislikesCount }}</span>
+                    </button>
+                @else
+                    {{-- Kalau belum login, tampilkan angka saja --}}
+                    <span style="display:inline-flex;align-items:center;gap:6px;color:#999;">
+                        <i class="fa fa-thumbs-up"></i>
+                        <span class="likes-count">{{ $likesCount }}</span>
+                    </span>
+                    <span style="display:inline-flex;align-items:center;gap:6px;color:#999;">
+                        <i class="fa fa-thumbs-down"></i>
+                        <span class="dislikes-count">{{ $dislikesCount }}</span>
+                    </span>
+                @endif
+            </div>
+
+            @if($post->category)
+                <div class="post-categories">
+                    <span class="post-category-badge">
+                        {{ $post->category->name }}
+                    </span>
+                </div>
+            @endif
+
+            <div class="post-actions">
+                <a href="{{ route('posts.edit', $post) }}" class="btn-edit">
+                    <i class="fa fa-edit"></i> Edit
+                </a>
+                <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-delete"
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus postingan ini?')">
+                        <i class="fa fa-trash"></i> Hapus
+                    </button>
+                </form>
             </div>
         </div>
     @empty
         <div class="post-card">
             <p style="text-align: center; color: #999; padding: 20px;">
-                Belum ada postingan. <a href="{{ route('posts.create') }}" style="color: #40A09C;">Buat postingan pertama Anda!</a>
+                Belum ada postingan.
+                <a href="{{ route('posts.create') }}" style="color: #40A09C;">Buat postingan pertama Anda!</a>
             </p>
         </div>
     @endforelse
 </div>
+
+@if($posts->hasPages())
+    <div class="pagination">
+        {{ $posts->links() }}
+    </div>
+@endif
 @endsection
