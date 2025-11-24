@@ -44,7 +44,9 @@ class CommentController extends Controller
         if ($owner && $owner->id !== $request->user()->id) {
             $owner->notify(new \App\Notification\GeneralNotification(
                 'post_commented',
-                "Postingan Anda berjudul '{$post->title}': telah dikomentari oleh " . $request->user()->name
+                "Postingan Anda berjudul '{$post->title}': telah dikomentari oleh " . 
+                $request->user()->name,
+                ["post_id" => $post->id]
             ));
         }
 

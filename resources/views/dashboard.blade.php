@@ -57,27 +57,33 @@ $user = auth()->user();
             padding:10px 0;
             z-index:999;
         ">
-
             @forelse($notifications as $notif)
                 <div style="padding:10px 15px; border-bottom:1px solid #eee;">
                     <div style="font-size:0.92em; color:#333;">
                         @php
-                            $message = $notif->data['message'];
+                            $message = $notif->data['message'] ?? '';
                             $parts = explode(':', $message, 2);
                             $title = $parts[0] ?? '';
                             $content = $parts[1] ?? '';
+                            $postId = $notif->data['post_id'] ?? null;
                         @endphp
 
-                        @if($title)
-                            <span style="color:black; font-weight:600;">{{ $title }}</span>
-                            @if($content)
-                                : {{ $content }}
-                            @endif
+                        @if(str_contains($message, 'telah dikomentari') && $postId)
+                            <a href="{{ route('posts.show', $postId) }}" style="color:#1d9bf0; text-decoration:none;">
+                                <span style="color:black; font-weight:600;">{{ $title }}</span>
+                                @if($content) : {{ $content }} @endif
+                            </a>
                         @else
-                            {{ $message }}
+                            @if($title)
+                                <span style="color:black; font-weight:600;">{{ $title }}</span>
+                                @if($content)
+                                    : {{ $content }}
+                                @endif
+                            @else
+                                {{ $message }}
+                            @endif
                         @endif
                     </div>
-
                     <div style="font-size:0.77em; color:#999; margin-top:4px;">
                         {{ $notif->created_at->diffForHumans() }}
                     </div>
