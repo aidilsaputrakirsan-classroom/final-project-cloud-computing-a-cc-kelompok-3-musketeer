@@ -65,4 +65,24 @@ class ProfileController extends Controller
         return redirect()->route('profile.edit')
             ->with('success', 'Profile berhasil diperbarui!');
     }
+
+    /**
+     * Show a public profile page for a given user.
+     *
+     * This is a public view (no auth required). It displays the user's info
+     * and their posts (paginated). This method is safe to add and won't affect
+     * edit/update/myPosts behavior.
+     */
+    public function show(User $user)
+    {
+        // Eager load counts for posts to reduce queries
+        $posts = $user->posts()
+            ->withCount('comments')
+            ->latest()
+            ->paginate(10);
+
+        // We can show a lightweight public profile view. Create resource/views/profile/show.blade.php
+        // If you prefer another view name, update route accordingly.
+        return view('profile.show', compact('user', 'posts'));
+    }
 }

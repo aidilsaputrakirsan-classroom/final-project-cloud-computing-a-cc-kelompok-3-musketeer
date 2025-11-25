@@ -49,7 +49,7 @@ Route::get('/topics/{category:slug}', [CategoryController::class, 'show'])->name
 
 /*
 |--------------------------------------------------------------------------
-| Authentication
+| Authentication & Dashboard
 |--------------------------------------------------------------------------
 */
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -79,18 +79,21 @@ Route::get('/faq/{id}', [FAQController::class, 'show'])->name('faq.show');
 
 /*
 |--------------------------------------------------------------------------
-| Profile
+| Profile (auth)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
+    // halaman postingan saya
     Route::get('/my-posts', [ProfileController::class, 'myPosts'])->name('my-posts');
+
+    // edit profile (private)
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 /*
 |--------------------------------------------------------------------------
-| POSTS (must login)
+| POSTS (create/edit/delete) — must login
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -145,8 +148,18 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| Public profile (anyone can view a user's public profile)
+| - This allows links like route('profile.show', $user->id) to work for public profiles.
+| - Put this before the generic post show route.
+|--------------------------------------------------------------------------
+*/
+Route::get('/users/{user}', [ProfileController::class, 'show'])
+    ->name('profile.show');
+
+/*
+|--------------------------------------------------------------------------
 | PUBLIC — anyone can see a single post
-|  LETAKKAN PALING BAWAH, setelah semua /posts/... lain
+| LETAKKAN PALING BAWAH, setelah semua /posts/... lain
 |--------------------------------------------------------------------------
 */
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
