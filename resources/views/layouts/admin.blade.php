@@ -114,6 +114,12 @@
                 <i class="fa fa-history"></i> History Laporan
             </li>
 
+            {{-- Activity Logs --}}
+            <li class="{{ request()->is('admin/activity-logs') ? 'active' : '' }}"
+                onclick="window.location='{{ route('admin.activity-logs.index') }}'">
+                <i class="fa fa-clipboard-list"></i> Activity Logs
+            </li>
+
             {{-- Menu Pengaturan --}}
             <li>
                 <i class="fa fa-cog"></i> Pengaturan

@@ -11,6 +11,7 @@ use App\Http\Controllers\FAQController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\PostReactionController;
 
 /*
@@ -37,6 +38,8 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])
         Route::get('/reports/history/{report}', [AdminReportController::class, 'showHistory'])->name('reports.history.show');
         Route::get('/reports/{report}', [AdminReportController::class, 'show'])->name('reports.show');
         Route::post('/reports/{report}/status', [AdminReportController::class, 'changeStatus'])->name('reports.status');
+
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     });
 
 /*
