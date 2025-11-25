@@ -66,4 +66,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\PostReaction::class);
     }
+
+    /**
+     * Activity logs that belong to the user.
+     */
+    public function activityLogs(): HasMany
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
 }
