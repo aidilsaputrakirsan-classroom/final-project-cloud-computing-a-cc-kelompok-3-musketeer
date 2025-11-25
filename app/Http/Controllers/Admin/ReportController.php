@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Report;
+use App\Notification\GeneralNotification;
 
 class ReportController extends Controller
 {
@@ -74,18 +75,16 @@ class ReportController extends Controller
         // Simpan dulu referensi post (kalau ada)
         $post = $report->post;
 
-        // Jika admin menerima laporan, hapus postingan & komentar
-        if ($request->status === 'accepted' && $post) {
+                if ($request->status === 'accepted' && $post) {
+            $owner = $post->user;
 
-            // hapus komentar kalau ada relasi comments
-            if (method_exists($post, 'comments')) {
-                $post->comments()->delete();
-            }
-
-            // hapus post
-            $post->delete();
+            $owner->notify(new GeneralNotification(
+                'post_deleted',
+                "Postingan Anda berjudul '{$post->title}': telah dihapus oleh admin karena melanggar ketentuan."
+            ));
+                // Hapus postingan dari database
+                $post->delete();
         }
-
         // Update status laporan + admin yang menangani (report yang dipilih)
         $report->status     = $request->status;
         $report->handled_by = auth()->id();

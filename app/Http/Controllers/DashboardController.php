@@ -10,25 +10,22 @@ class DashboardController extends Controller
     /**
      * Display the dashboard with posts.
      */
-
     public function index()
     {
+        $user = auth()->user();
+
+        // Ambil postingan terbaru dengan jumlah komentar
         $posts = Post::with('user')
             ->withCount('comments')
             ->latest()
             ->paginate(10);
 
-        return view('dashboard', compact('posts'));
-    }
+        // Ambil semua notifikasi user
+        $notifications = $user ? $user->notifications()->latest()->get() : collect();
 
-    /*
-    public function index()
-    {
-        $posts = Post::with('user')
-            ->latest()
-            ->paginate(10);
+        // Hitung notifikasi yang belum dibaca
+        $unreadCount = $user ? $user->unreadNotifications()->count() : 0;
 
-        return view('dashboard', compact('posts'));
+        return view('dashboard', compact('posts', 'notifications', 'unreadCount'));
     }
-    */
 }

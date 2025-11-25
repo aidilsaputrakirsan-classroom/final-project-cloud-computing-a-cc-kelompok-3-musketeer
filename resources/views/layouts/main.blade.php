@@ -107,8 +107,10 @@
             padding: 16px 22px 24px;
             background: #f5f6fa;
             margin-left: 230px;
-            height: 100vh;
-            overflow-y: auto;
+            min-width: 0;
+            /* keep layout flexible: allow pages to overflow naturally */
+            overflow-y: visible;
+            height: auto;
         }
 
         /* ==== REACTION BUTTON ==== */
