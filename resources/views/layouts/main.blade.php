@@ -112,10 +112,11 @@
             flex: 1;
             padding: 16px 22px 24px 22px;
             background: #f5f6fa;
-            margin-left: 230px; /* offset sidebar */
+            margin-left: 230px;
             min-width: 0;
-            height: 100vh;
-            overflow-y: auto;
+            /* hilangkan height dan overflow */
+            overflow-y: visible;
+            height: auto;
         }
     </style>
 </head>

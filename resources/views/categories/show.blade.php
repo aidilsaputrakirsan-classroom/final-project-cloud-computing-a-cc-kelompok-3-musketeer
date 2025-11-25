@@ -57,24 +57,14 @@
             position:relative;
         ">
 
-            {{-- Tombol Report (hanya muncul jika bukan pemilik postingan) --}}
-            @if(Auth::check() && Auth::id() !== $post->user_id)
-                <button onclick="openReportModal({{ $post->id }})"
-                    style="
-                        position:absolute;
-                        top:15px;
-                        right:15px;
-                        padding:6px 12px;
-                        background:#f44336;
-                        color:#fff;
-                        border:none;
-                        border-radius:6px;
-                        cursor:pointer;
-                        font-size:0.85em;
-                    ">
-                    <i class="fa fa-flag"></i>
-                </button>
-            @endif
+                {{-- BUTTON LAPOR --}}
+                @if(Auth::check() && Auth::id() !== $post->user_id)
+                    <button onclick="openReportModal({{ $post->id }})"
+                            style="position:absolute;top:15px;right:15px;padding:6px 12px;background:#f44336;
+                                   color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.85em;">
+                        <i class="fa fa-flag"></i>
+                    </button>
+                @endif
 
             {{-- Avatar dan User --}}
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
