@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\ActivityLog; // <<< TAMBAH INI
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -45,22 +46,34 @@ class ProfileController extends Controller
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Tentukan field apa saja yang dikirim user
+        // (hanya yang relevan, sesuai request form)
+        $updatedFields = array_keys($request->only(['name', 'email', 'profile_picture']));
+
         // Handle profile picture upload
         if ($request->hasFile('profile_picture')) {
-            // Delete old profile picture if exists
             if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
                 Storage::disk('public')->delete($user->profile_picture);
             }
 
-            // Store new profile picture
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
             $validated['profile_picture'] = $path;
         } else {
-            // Keep existing profile picture
             $validated['profile_picture'] = $user->profile_picture;
         }
 
         $user->update($validated);
+
+        // === ACTIVITY LOG: profile.updated ===
+        ActivityLog::record(
+            action: 'profile.updated',
+            description: 'User memperbarui profil',
+            context: 'profile',
+            detail: [
+                'user_id' => $user->id,
+                'fields'  => $updatedFields, // <--- sesuai permintaan
+            ]
+        );
 
         return redirect()->route('profile.edit')
             ->with('success', 'Profile berhasil diperbarui!');

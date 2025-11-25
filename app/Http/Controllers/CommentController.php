@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\ActivityLog; // <<< TAMBAH INI
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -38,13 +39,26 @@ class CommentController extends Controller
 
         $comment = Comment::create($data);
 
+        // === ACTIVITY LOG: comment.created ===
+        ActivityLog::record(
+            action: 'comment.created',
+            description: 'User menambahkan komentar baru',
+            context: 'comment',
+            detail: [
+                'comment_id' => $comment->id,
+                'post_id'    => $comment->post_id,
+                'body'       => $comment->body,
+                'parent_id'  => $comment->parent_id,
+            ]
+        );
+
         // Kirim notifikasi ke pemilik post (asal bukan dirinya sendiri)
-        $post = $comment->post;
+        $post  = $comment->post;
         $owner = $post->user;
         if ($owner && $owner->id !== $request->user()->id) {
             $owner->notify(new \App\Notification\GeneralNotification(
                 'post_commented',
-                "Postingan Anda berjudul '{$post->title}': telah dikomentari oleh " . 
+                "Postingan Anda berjudul '{$post->title}': telah dikomentari oleh " .
                 $request->user()->name,
                 ["post_id" => $post->id]
             ));
@@ -85,6 +99,21 @@ class CommentController extends Controller
 
         $comment->update(['body' => $data['body']]);
 
+        // ambil perubahan yang terjadi (akan ada body & updated_at)
+        $changes = $comment->getChanges();
+
+        // === ACTIVITY LOG: comment.updated ===
+        ActivityLog::record(
+            action: 'comment.updated',
+            description: 'User mengubah komentar',
+            context: 'comment',
+            detail: [
+                'comment_id' => $comment->id,
+                'post_id'    => $comment->post_id,
+                'changes'    => $changes,
+            ]
+        );
+
         if ($request->wantsJson()) {
             return response()->json([
                 'message' => 'Komentar berhasil diperbarui.',
@@ -107,7 +136,22 @@ class CommentController extends Controller
             abort(403, 'Aksi tidak diizinkan.');
         }
 
+        // simpan dulu info penting sebelum dihapus
+        $commentId = $comment->id;
+        $postId    = $comment->post_id;
+
         $comment->delete();
+
+        // === ACTIVITY LOG: comment.deleted ===
+        ActivityLog::record(
+            action: 'comment.deleted',
+            description: 'User menghapus komentar',
+            context: 'comment',
+            detail: [
+                'comment_id' => $commentId,
+                'post_id'    => $postId,
+            ]
+        );
 
         if (request()->wantsJson()) {
             return response()->json(['message' => 'Komentar dihapus.'], 200);

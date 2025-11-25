@@ -57,5 +57,17 @@ class ActivityLogController extends Controller
             'filters' => $request->only(['user', 'action', 'search', 'date_from', 'date_to']),
         ]);
     }
+
+    public function show(ActivityLog $log)
+    {
+        $log->load('user');
+
+        if (request()->wantsJson()) {
+            return response()->json($log);
+        }
+
+        return view('admin.activity-logs.show', compact('log'));
+    }
+
 }
 

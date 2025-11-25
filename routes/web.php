@@ -146,6 +146,9 @@ Route::middleware('auth')->group(function () {
         ->name('user.reactions');
 });
 
+Route::get('/activity-logs/{log}', [ActivityLogController::class, 'show'])
+    ->name('activity-logs.show');
+
 /*
 |--------------------------------------------------------------------------
 | PUBLIC — anyone can see a single post

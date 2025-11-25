@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\ActivityLog; // <<< TAMBAH INI
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,7 +48,20 @@ class PostController extends Controller
         $validated['user_id'] = Auth::id();
 
         try {
-            Post::create($validated);
+            // simpan post dan ambil instance-nya
+            $post = Post::create($validated);
+
+            // === ACTIVITY LOG: post.created ===
+            ActivityLog::record(
+                action: 'post.created',
+                description: 'User membuat postingan baru',
+                context: 'post',
+                detail: [
+                    'post_id' => $post->id,
+                    'title'   => $post->title,
+                ]
+            );
+
             // redirect ke dashboard (ada di projectmu)
             return redirect()->route('dashboard')
                 ->with('success', 'Postingan berhasil dibuat!');
@@ -109,7 +123,25 @@ class PostController extends Controller
         ]);
 
         try {
+            // simpan data lama dulu jika kamu ingin bandingkan manual (optional)
+            // $original = $post->getOriginal();
+
             $post->update($validated);
+
+            // ambil perubahan yang terjadi (include updated_at)
+            $changes = $post->getChanges();
+
+            // === ACTIVITY LOG: post.updated ===
+            ActivityLog::record(
+                action: 'post.updated',
+                description: 'User mengubah postingan',
+                context: 'post',
+                detail: [
+                    'post_id' => $post->id,
+                    'changes' => $changes,
+                ]
+            );
+
             // arahkan ke dashboard agar tidak bergantung pada route 'my-posts.index'
             return redirect()->route('dashboard')
                 ->with('success', 'Postingan berhasil diperbarui!');
@@ -129,7 +161,20 @@ class PostController extends Controller
         }
 
         try {
+            $postId = $post->id; // simpan dulu id-nya
+
             $post->delete();
+
+            // === ACTIVITY LOG: post.deleted ===
+            ActivityLog::record(
+                action: 'post.deleted',
+                description: 'User menghapus postingan',
+                context: 'post',
+                detail: [
+                    'post_id' => $postId,
+                ]
+            );
+
             // gunakan dashboard atau back() — dashboard biasanya ada di projectmu
             return redirect()->route('dashboard')
                 ->with('success', 'Postingan berhasil dihapus!');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Reaction;
+use App\Models\ActivityLog; // <<< TAMBAH INI
 use Illuminate\Support\Facades\Auth;
 
 class PostReactionController extends Controller
@@ -33,21 +34,34 @@ class PostReactionController extends Controller
             if ($type === 'remove') {
                 // hapus SEMUA reaksi user di post ini
                 $query->delete();
+                // NOTE: tidak ada activity log untuk remove (sesuai spesifikasi)
             } else {
                 $value = $type === 'like' ? 1 : -1;
 
                 if ($existing && $existing->reaction == $value) {
                     // klik ulang reaksi yang sama -> toggle OFF
                     $query->delete();
+                    // tidak log apa-apa di sini
                 } else {
                     // ganti reaksi: hapus semua, lalu buat 1 reaksi baru
                     $query->delete();
 
-                    Reaction::create([
+                    $reaction = Reaction::create([
                         'post_id'  => $post->id,
                         'user_id'  => $user->id,
                         'reaction' => $value,
                     ]);
+
+                    // === ACTIVITY LOG: reaction.added ===
+                    ActivityLog::record(
+                        action: 'reaction.added',
+                        description: 'User memberi reaksi pada postingan',
+                        context: 'reaction',
+                        detail: [
+                            'post_id'  => $post->id,
+                            'reaction' => $value, // 1 = like, -1 = dislike
+                        ]
+                    );
                 }
             }
 
