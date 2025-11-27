@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Reaction;
 use Illuminate\Support\Facades\Auth;
+use App\Notification\GeneralNotification;
 
 class PostReactionController extends Controller
 {
@@ -48,6 +49,18 @@ class PostReactionController extends Controller
                         'user_id'  => $user->id,
                         'reaction' => $value,
                     ]);
+
+                    // NOTIFIKASI: kirim ke pemilik postingan (gunakan GeneralNotification)
+                    $postOwner = $post->user;
+                    if ($postOwner && $user->id !== $postOwner->id) {
+                        $notifType = $type; // 'like' atau 'dislike'
+                        $notifMsg = "{$user->name} " . ($type === 'like' ? 'menyukai' : 'tidak menyukai') . " postingan Anda yaitu: {$post->title}";
+                        $extra = [
+                            'post_id' => $post->id,
+                            'reactor_id' => $user->id
+                        ];
+                        $postOwner->notify(new GeneralNotification($notifType, $notifMsg, $extra));
+                    }
                 }
             }
 

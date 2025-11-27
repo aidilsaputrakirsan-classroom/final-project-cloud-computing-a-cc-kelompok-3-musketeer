@@ -10,6 +10,7 @@
     $notifications = $notifications ?? collect();
 @endphp
 
+
 <section class="dashboard-content" style="flex:1; padding:16px 30px 24px 0; min-width:0; margin-left:0;">
 
     {{-- HEADER --}}
@@ -30,32 +31,51 @@
                     @endif
                 </div>
 
-                <div id="notifDropdown" style="display:none; position:absolute; top:28px; right:0; width:320px; background:#fff; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.12); padding:8px 0; z-index:999;">
-                    @forelse($notifications as $notif)
-                        <div style="padding:10px 12px; border-bottom:1px solid #eee;">
-                            <div style="font-size:0.92em; color:#333;">
-                                @php
-                                    $message = $notif->data['message'] ?? '';
-                                    $parts = explode(':', $message, 2);
-                                    $title = $parts[0] ?? '';
-                                    $content = $parts[1] ?? '';
-                                    $postId = $notif->data['post_id'] ?? null;
-                                @endphp
+                <div id="notifDropdown" style="
+                    display:none; 
+                    position:absolute; 
+                    top:28px; 
+                    right:0; 
+                    width:320px; 
+                    background:#fff; 
+                    border-radius:8px; 
+                    box-shadow:0 4px 10px rgba(0,0,0,0.12); 
+                    padding:8px 0; 
+                    z-index:999;
 
-                                @if(str_contains($message, 'telah dikomentari') && $postId)
-                                    <a href="{{ route('posts.show', $postId) }}" style="color:#1d9bf0; text-decoration:none;">
-                                        <span style="color:black; font-weight:600;">{{ $title }}</span>
-                                        @if($content) : {{ $content }} @endif
-                                    </a>
-                                @else
-                                    @if($title)
-                                        <span style="color:black; font-weight:600;">{{ $title }}</span>
-                                        @if($content) : {{ $content }} @endif
+                    /* FIX: limit height agar bisa scroll */
+                    max-height: 300px;
+                    overflow-y: auto;
+                ">
+                    @forelse($notifications as $notif)
+                        @php
+                            $type      = $notif->data['type'] ?? '';
+                            $message   = $notif->data['message'] ?? '';
+                            $postId    = $notif->data['post_id'] ?? null;
+                            $icon      = '';
+                            if($type === 'like')      $icon = '👍';
+                            elseif($type === 'dislike') $icon = '👎';
+                            elseif($type === 'comment') $icon = '💬';
+                            elseif($type === 'report')  $icon = '🏁';
+                            else $icon = '🔔';
+                        @endphp
+                        <div style="padding:10px 12px; border-bottom:1px solid #eee;">
+                            <div style="font-size:0.92em; color:#333; display:flex; gap:7px;">
+                                <span>{{ $icon }}</span>
+
+                                <div style="flex:1;">
+                                    @if($type == 'report')
+                                        {!! $notif->data['message'] !!}
+                                    @elseif($postId)
+                                        <a href="{{ route('posts.show', $postId) }}">
+                                            {!! $notif->data['message'] !!}
+                                        </a>
                                     @else
-                                        {{ $message }}
+                                        {!! $notif->data['message'] !!}
                                     @endif
-                                @endif
+                                </div>
                             </div>
+
                             <div style="font-size:0.77em; color:#999; margin-top:6px;">
                                 {{ $notif->created_at->diffForHumans() ?? '' }}
                             </div>
@@ -86,13 +106,8 @@
             </form>
         </div>
     </div>
+    
     {{-- END HEADER --}}
-
-    {{-- FILTER + BUTTON --}}
-    <div class="content-list-controls" style="display:flex; align-items:center; gap:7px; margin-bottom:8px; margin-top:5px;">
-        <button class="btn-filter" style="background:#e7f6fa; color:#40a09c; border:none; padding:6px 17px; border-radius:16px; font-size:0.97em; cursor:pointer;">Baru</button>
-        <a href="{{ route('posts.create') }}" class="btn-post" style="background:#40A09C; color:#fff; border:none; padding:7px 17px; border-radius:7px; font-size:0.97em; font-weight:500; margin-left:auto; text-decoration:none; display:inline-block;">+ Buat Postingan</a>
-    </div>
 
     {{-- FLASH --}}
     @if(session('success'))
@@ -105,16 +120,26 @@
             {{ session('error') }}
         </div>
     @endif
-
+    
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 22px;">
+            <h1 style="margin:0;color:#4b5d6b;"></h1>
+            <a href="{{ route('posts.create') }}" style="background:#40A09C;color:#fff;padding:10px 20px;border-radius:7px;text-decoration:none;">+ Buat Postingan Baru</a>
+        </div>
     {{-- POST LIST --}}
     <div class="cards-list" style="display:flex; flex-direction:column; gap:12px; margin-top:12px;">
         @forelse($posts as $post)
             <div class="post-card" data-post-id="{{ $post->id }}" style="background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);padding:20px 22px;position:relative;">
                 {{-- LAPOR --}}
                 @if(Auth::check() && Auth::id() !== $post->user_id)
-                    <button onclick="openReportModal({{ $post->id }})" style="position:absolute;top:15px;right:15px;padding:6px 12px;background:#f44336;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.85em;">
-                        <i class="fa fa-flag"></i>
-                    </button>
+                <button type="button"
+                        onclick="openReportModal({{ $post->id }})"
+                        style="position:absolute;top:15px;right:15px;
+                            padding:6px 14px;background:#f44336;color:#fff;
+                            border:none;border-radius:999px;cursor:pointer;
+                            font-size:0.85em;display:inline-flex;align-items:center;gap:6px;">
+                    <i class="fa fa-flag" aria-hidden="true"></i>
+                    <span>Laporkan</span>
+                </button>
                 @endif
 
                 {{-- HEADER --}}
@@ -142,7 +167,6 @@
                 <div style="display:flex; align-items:center; gap:16px; font-size:0.9em; color:#666; margin-bottom:10px; flex-wrap:wrap;">
                     <span><i class="fa fa-eye"></i> {{ $post->views }}</span>
                     <a href="{{ route('posts.show', $post) }}" style="color:inherit; text-decoration:none;"><i class="fa fa-comment"></i> {{ $post->comments_count }}</a>
-
                     @php
                         try {
                             $likesCount = method_exists($post, 'likes') ? $post->likes()->count() : ($post->likes ?? 0);
@@ -151,7 +175,6 @@
                             $likesCount = $post->likes ?? 0;
                             $dislikesCount = $post->dislikes ?? 0;
                         }
-
                         $userReaction = null;
                         if (Auth::check()) {
                             try {
@@ -168,7 +191,6 @@
                             <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                             <span class="likes-count">{{ $likesCount }}</span>
                         </button>
-
                         <button type="button" class="reaction-btn dislike-btn {{ $userReaction == -1 ? 'active' : '' }}" data-post-id="{{ $post->id }}" style="display:inline-flex;align-items:center;gap:8px;" title="Tidak Suka">
                             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                             <span class="dislikes-count">{{ $dislikesCount }}</span>
@@ -225,32 +247,66 @@
 
 </section>
 
-{{-- REPORT MODAL --}}
-<div id="reportModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000;">
-    <div style="background:#fff;padding:20px;border-radius:10px;width:320px;">
-        <h3 style="margin-top:0;">Laporkan Postingan</h3>
-        <form id="reportForm" method="POST">
-            @csrf
-            <label for="reason">Alasan:</label>
-            <select name="reason" id="reason" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:5px;">
-                <option value="">-- Pilih Alasan --</option>
-                <option value="Konten tidak pantas">Konten tidak pantas</option>
-                <option value="Spam atau penipuan">Spam atau penipuan</option>
-                <option value="Ujaran kebencian">Ujaran kebencian</option>
-                <option value="Pelecehan atau intimidasi">Pelecehan atau intimidasi</option>
-                <option value="Informasi palsu">Informasi palsu</option>
-            </select>
-
-            <label for="details" style="margin-top:10px;display:block;">Detail (opsional):</label>
-            <textarea name="details" id="details" rows="3" style="width:100%; border:1px solid #ddd; border-radius:5px; padding:8px; resize:none;"></textarea>
-
-            <div style="margin-top:15px; display:flex; justify-content:flex-end; gap:10px;">
-                <button type="button" onclick="closeReportModal()" style="background:#ccc;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;">Batal</button>
-                <button type="submit" style="background:#f44336;color:#fff;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;">Kirim</button>
+        {{-- Modal cukup satu kali di page, tidak perlu diulang di setiap post --}}
+        <div id="reportModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000;">
+            <div style="background:#fff;padding:20px;border-radius:10px;width:320px;">
+                <h3 style="margin-top:0;">Laporkan Postingan</h3>
+                <form id="reportForm" method="POST">
+                    @csrf
+                    <label for="reason">Alasan:</label>
+                    <select name="reason" id="reason" required style="width:100%;padding:8px;border:1px solid #ddd;border-radius:5px;margin-top:5px;">
+                        <option value="">-- Pilih Alasan --</option>
+                        <option value="Konten tidak pantas">Konten tidak pantas</option>
+                        <option value="Spam atau penipuan">Spam atau penipuan</option>
+                        <option value="Ujaran kebencian">Ujaran kebencian</option>
+                        <option value="Pelecehan atau intimidasi">Pelecehan atau intimidasi</option>
+                        <option value="Informasi palsu">Informasi palsu</option>
+                    </select>
+                    <label for="details" style="margin-top:10px;display:block;">Detail (opsional):</label>
+                    <textarea name="details" id="details" rows="3" style="width:95%; border:1px solid #ddd; border-radius:5px; padding:8px; resize:none;"></textarea>
+                    <div style="margin-top:15px; display:flex; justify-content:flex-end; gap:10px;">
+                        <button type="button" onclick="closeReportModal()" style="background:#ccc;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;">Batal</button>
+                        <button type="submit" style="background:#f44336;color:#fff;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;">Kirim</button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
+
+<script>
+function openReportModal(postId) {
+    const modal = document.getElementById("reportModal");
+    const form = document.getElementById("reportForm");
+    form.action = `/posts/${postId}/report`;
+    modal.style.display = "flex";
+}
+function closeReportModal() {
+    document.getElementById("reportModal").style.display = "none";
+}
+function toggleNotif() {
+    const dropdown = document.getElementById('notifDropdown');
+    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+}
+window.addEventListener('click', function(e) {
+    const bell = document.querySelector('.notification-wrapper');
+    const dropdown = document.getElementById('notifDropdown');
+    if (!bell || !dropdown) return;
+    if (!bell.contains(e.target)) {
+        dropdown.style.display = 'none';
+    }
+    #notifDropdown::-webkit-scrollbar {
+    width: 6px;
+    }
+    #notifDropdown::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 10px;
+    }
+    #notifDropdown::-webkit-scrollbar-thumb:hover {
+        background: #b4b4b4;
+    }
+
+});
+
+</script>
 
 <script>
 function openReportModal(postId) {
@@ -276,8 +332,59 @@ window.addEventListener('click', function(e) {
 });
 </script>
 
+
 <style>
-.post-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: 0.14s ease; }
+.post-card:hover { transform: Y(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: 0.14s ease; }
+.notifikasi-link {
+    color: #46B6B0;
+    text-decoration: none;
+}
+.notifikasi-link:hover {
+    color: #40A09C;
+}
+.notifikasi-admin-link {
+    color: #46B6B0;
+    font-weight: 500;
+}
+.notifikasi-admin-link:hover {
+    color: #40A09C;
+}
 </style>
+
+<script>
+(function() {
+  let lastScrollTop = 0;
+  let ticking = false;
+  const notif = document.getElementById('notification-wrapper');
+  let hideTimeout;
+
+  function showNotification() {
+    notif.style.display = 'block';
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      notif.style.display = 'none';
+    }, 1500); // Hide after 1.5 seconds
+  }
+
+  function onScroll() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      // User is scrolling down
+      showNotification();
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Avoid negative values
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      window.requestAnimationFrame(onScroll);
+      ticking = true;
+    }
+  });
+})();
+</script>
 
 @endsection
