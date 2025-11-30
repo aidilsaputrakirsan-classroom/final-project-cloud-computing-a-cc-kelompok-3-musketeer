@@ -14,11 +14,7 @@
 <section class="dashboard-content" style="flex:1; padding:16px 30px 24px 0; min-width:0; margin-left:0;">
 
     {{-- HEADER --}}
-    <div class="dashboard-header" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-
-        <input type="text" class="search-bar"
-               placeholder="Cari postingan ngetren saat ini?"
-               style="width:270px; padding:7px 10px; border:1px solid #ddd; border-radius:7px; font-size:0.99em; background:#fff;">
+    <div class="dashboard-header" style="display:flex; align-items:center; justify-content:flex-end; margin-bottom:10px;">
 
         <div style="display:flex; align-items:center; gap:15px;">
             {{-- NOTIFICATION BELL --}}
@@ -27,7 +23,7 @@
                     <i class="fa fa-bell" style="font-size:1.25em; color:#555;"></i>
 
                     @if($unreadCount > 0)
-                        <span style="position:absolute; top:-5px; right:-6px; background:red; color:white; font-size:0.7em; padding:2px 5px; border-radius:50%;">{{ $unreadCount }}</span>
+                        <span id="notifBadge" style="position:absolute; top:-5px; right:-6px; background:red; color:white; font-size:0.7em; padding:2px 5px; border-radius:50%;">{{ $unreadCount }}</span>
                     @endif
                 </div>
 
@@ -65,11 +61,13 @@
 
                                 <div style="flex:1;">
                                     @if($type == 'report')
+                                        <span style="text-decoration:none; color:#d9534f; font-weight:600;">
                                         {!! $notif->data['message'] !!}
+                                        </span>
                                     @elseif($postId)
-                                        <a href="{{ route('posts.show', $postId) }}">
-                                            {!! $notif->data['message'] !!}
-                                        </a>
+                                <a href="{{ route('posts.show', $postId) }}" style="text-decoration:none; color:#2c7774;">
+                                    {!! $notif->data['message'] !!}
+                                </a>
                                     @else
                                         {!! $notif->data['message'] !!}
                                     @endif
@@ -246,8 +244,6 @@
     @endif
 
 </section>
-
-        {{-- Modal cukup satu kali di page, tidak perlu diulang di setiap post --}}
         <div id="reportModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000;">
             <div style="background:#fff;padding:20px;border-radius:10px;width:320px;">
                 <h3 style="margin-top:0;">Laporkan Postingan</h3>
@@ -272,40 +268,6 @@
             </div>
         </div>
 
-<script>
-function openReportModal(postId) {
-    const modal = document.getElementById("reportModal");
-    const form = document.getElementById("reportForm");
-    form.action = `/posts/${postId}/report`;
-    modal.style.display = "flex";
-}
-function closeReportModal() {
-    document.getElementById("reportModal").style.display = "none";
-}
-function toggleNotif() {
-    const dropdown = document.getElementById('notifDropdown');
-    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
-}
-window.addEventListener('click', function(e) {
-    const bell = document.querySelector('.notification-wrapper');
-    const dropdown = document.getElementById('notifDropdown');
-    if (!bell || !dropdown) return;
-    if (!bell.contains(e.target)) {
-        dropdown.style.display = 'none';
-    }
-    #notifDropdown::-webkit-scrollbar {
-    width: 6px;
-    }
-    #notifDropdown::-webkit-scrollbar-thumb {
-        background: #ccc;
-        border-radius: 10px;
-    }
-    #notifDropdown::-webkit-scrollbar-thumb:hover {
-        background: #b4b4b4;
-    }
-
-});
-
 </script>
 
 <script>
@@ -319,8 +281,24 @@ function closeReportModal() {
     document.getElementById("reportModal").style.display = "none";
 }
 function toggleNotif() {
-    const dropdown = document.getElementById('notifDropdown');
+  const dropdown = document.getElementById('notifDropdown');
+    const badge = document.getElementById('notifBadge'); // atau pakai id notifBadge
+
+    // buka/tutup dropdown
     dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+
+    // kalau masih ada badge (artinya ada unread), kirim request mark-as-read
+    if (badge) {
+        fetch('{{ route('notifications.readAll') }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+            },
+        }).then(() => {
+            badge.remove();  
+        });
+    }
 }
 window.addEventListener('click', function(e) {
     const bell = document.querySelector('.notification-wrapper');

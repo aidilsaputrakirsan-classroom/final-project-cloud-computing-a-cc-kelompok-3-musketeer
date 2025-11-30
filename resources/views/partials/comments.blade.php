@@ -174,15 +174,16 @@
 
                             <div style="margin-top:5px;text-align:right;">
                                 <button type="submit"
-                                        style="padding:5px 13px;font-size:.97em;cursor:pointer;transition:.18s;">
-                                    Kirim
+                                    style="background:#40A09C;color:#fff;border:none;padding:7px 20px;border-radius:7px;
+                                        font-size:1em;font-weight:500;cursor:pointer;transition:.18s;">
+                                    <i class="fa fa-paper-plane"></i> Kirim
                                 </button>
 
                                 <button type="button"
                                         class="btn-reply-cancel"
                                         data-comment-id="{{ $comment->id }}"
-                                        style="padding:5px 12px;margin-left:7px;font-size:.97em;
-                                               cursor:pointer;transition:.18s;">
+                                        style="background:#dc3545;color:#fff;border:none;padding:7px 20px;border-radius:7px;
+                                        font-size:1em;font-weight:500;cursor:pointer;transition:.18s;">
                                     Batal
                                 </button>
                             </div>
