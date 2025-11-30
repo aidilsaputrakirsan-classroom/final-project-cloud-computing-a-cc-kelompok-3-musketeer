@@ -86,7 +86,7 @@ class ReportController extends Controller
 
             // Kirim hanya SATU notifikasi ke user (ada link WhatsApp admin)
             $adminUrl = "https://wa.me/6283140266116?text=" . urlencode("Halo admin, saya ingin menanyakan tentang laporan postingan saya yang dihapus.");
-            $notifMsg = "Postingan Anda telah dihapus oleh admin. <a href='{$adminUrl}' style='color:#46B6B0;' target='_blank'>Hubungi admin untuk informasi lebih lanjut</a>";
+            $notifMsg = "Postingan Anda telah dihapus oleh admin. <a href='{$adminUrl}' style='color:#2c7774;' target='_blank'>Hubungi admin untuk informasi lebih lanjut</a>";
 
             $extra = [
                 'post_id' => $report->post_id,

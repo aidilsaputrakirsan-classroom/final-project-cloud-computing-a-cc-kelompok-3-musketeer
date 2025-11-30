@@ -54,7 +54,7 @@ class PostReactionController extends Controller
                     $postOwner = $post->user;
                     if ($postOwner && $user->id !== $postOwner->id) {
                         $notifType = $type; // 'like' atau 'dislike'
-                        $notifMsg = "{$user->name} " . ($type === 'like' ? 'menyukai' : 'tidak menyukai') . " postingan Anda yaitu: {$post->title}";
+                        $notifMsg = "{$user->name} " . ($type === 'like' ? 'menyukai' : 'tidak menyukai') . " postingan Anda berjudul: {$post->title}";
                         $extra = [
                             'post_id' => $post->id,
                             'reactor_id' => $user->id
