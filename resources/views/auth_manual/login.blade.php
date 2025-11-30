@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title>Login | Chatterbox</title>
 
     <style>
@@ -94,10 +95,228 @@
         }
 
     </style>
+=======
+    <title>Login | Chatter Box</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #ffffff;
+    }
+
+    .page-wrapper {
+        max-width: 1200px;
+        margin: 12px auto;
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 40px 60px;
+        box-sizing: border-box;
+
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    /* KIRI: logo + form */
+    .left-side {
+        width: 52%;
+    }
+
+    .logo-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .logo-icon {
+        width: 90px;
+        height: auto;
+        margin-right: 18px;
+    }
+
+    .logo-text {
+        font-size: 40px;
+        font-weight: 700;
+        color: #2e9c96;
+        letter-spacing: 1px;
+    }
+
+    .logo-tagline {
+        font-size: 13px;
+        color: #555;
+        margin-top: 4px;
+    }
+
+    .form-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #5a2e2e;
+        margin: 0 0 4px;
+    }
+
+    .form-subtitle {
+        font-size: 15px;
+        color: #555;
+        margin-bottom: 26px;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 14px;
+        padding: 12px 14px;
+        font-size: 15px;
+        border-radius: 6px;
+        border: 1px solid #d4d4d4;
+        background: #f3f3f3;
+        transition: .2s;
+    }
+
+    .login-form input:focus {
+        border-color: #40A09C;
+        outline: none;
+        background: #ffffff;
+    }
+
+    .forgot-link {
+        text-align: right;
+        margin-bottom: 12px;
+        font-size: 13px;
+    }
+
+    .forgot-link a {
+        color: #40A09C;
+        text-decoration: none;
+    }
+
+    /* Wrapper bagian bawah form agar center */
+    .form-bottom {
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        width: 260px;
+        padding: 12px 0;
+        background: #40A09C;
+        color: #fff;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        margin-top: 10px;
+        transition: .2s;
+    }
+
+    .btn-primary:hover {
+        background: #2c7774;
+    }
+
+    .register-link {
+        margin-top: 18px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .register-link a {
+        color: #40A09C;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .error-message {
+        background: #fdeaea;
+        color: #b32626;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 14px;
+        font-size: 0.9rem;
+        border: 1px solid #f5c2c7;
+    }
+
+    /* KANAN: tombol Daftar + ilustrasi */
+    .right-side {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-start;
+    }
+
+    .btn-daftar-top {
+        padding: 12px 48px;
+        background: #63c0f1;
+        color: #fff;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        margin-bottom: 40px;
+    }
+
+    .btn-daftar-top:hover {
+        background: #4ba3d2;
+    }
+
+    .illustration {
+        width: 100%;
+        max-width: 400px;
+        margin-top: 20px; 
+    }
+
+    .illustration img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    @media (max-width: 992px) {
+        .page-wrapper {
+            max-width: 100%;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 20px;
+            flex-direction: column;
+            align-items: center;
+        }
+        .left-side,
+        .right-side {
+            width: 100%;
+        }
+        .right-side {
+            align-items: center;
+            margin-top: 30px;
+        }
+    }
+
+    .password-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 40%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 20px;   /* dari 14px -> 20px, boleh 22–24 kalau mau lebih besar */
+    color: #666;
+}
+
+</style>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+>>>>>>> b78a563 (style: memperbaiki tampilan login dan register)
 </head>
 
 <body>
 
+<<<<<<< HEAD
 <div class="login-container">
 
     <h2>Login ke Chatterbox</h2>
@@ -117,9 +336,78 @@
 
     <div class="register-link">
         <a href="/register">Belum punya akun? Register di sini</a>
+=======
+<div class="page-wrapper">
+
+    {{-- KIRI: logo + form --}}
+    <div class="left-side">
+        <div class="logo-row">
+            <img src="{{ asset('logochatterbox.png') }}" alt="Chatter Box" class="logo-icon">
+            <div>
+                <div class="logo-text">CHATTER BOX</div>
+                <div class="logo-tagline">Express yourself everyday</div>
+            </div>
+        </div>
+
+        <div class="form-title">SIGN IN</div>
+        <div class="form-subtitle">Silahkan masuk untuk melanjutkan</div>
+
+        @if(session()->has('failed'))
+            <div class="error-message">{{ session('failed') }}</div>
+        @endif
+
+            <form method="POST" action="{{ route('login') }}" class="login-form">
+            @csrf
+
+            <input type="text" name="email" placeholder="Nama Pengguna" required autofocus>
+
+            {{-- PASSWORD + ICON MATA --}}
+            <div class="password-wrapper">
+                <input id="password" type="password" name="password"
+                    placeholder="Password (min 6 karakter)" required>
+                <i class="password-toggle fa fa-eye"
+                onclick="togglePassword('password', this)"></i>
+            </div>
+
+            {{-- WRAPPER BAGIAN BAWAH FORM --}}
+            <div class="form-bottom">
+                <button type="submit" class="btn-primary">Masuk</button>
+                <div class="register-link">
+                    Belum punya akun? <a href="{{ route('register') }}">Daftar</a>
+                </div>
+            </div>
+        </form>
+
+        </div>
+
+        <div class="illustration">
+            <img src="{{ asset('bg.png') }}" alt="People Network Illustration">
+        </div>
+>>>>>>> b78a563 (style: memperbaiki tampilan login dan register)
     </div>
 
 </div>
+<<<<<<< HEAD
 
+=======
+<script>
+function togglePassword(inputId, el) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+
+    // toggle fa-eye <-> fa-eye-slash
+    if (isPassword) {
+        el.classList.remove('fa-eye');
+        el.classList.add('fa-eye-slash');
+    } else {
+        el.classList.remove('fa-eye-slash');
+        el.classList.add('fa-eye');
+    }
+}
+</script>
+>>>>>>> b78a563 (style: memperbaiki tampilan login dan register)
 </body>
 </html>
