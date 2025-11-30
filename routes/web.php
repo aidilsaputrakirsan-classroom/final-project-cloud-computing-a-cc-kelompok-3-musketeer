@@ -65,6 +65,7 @@ Route::post('/logout', [LoginController::class, 'logout'])
     ->name('logout');
 
 Route::get('/register', [RegisterController::class, 'index'])
+    ->name('register')
     ->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store'])
     ->middleware('guest');
@@ -134,7 +135,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/{post}/reactions', [PostReactionController::class, 'showReactions'])
         ->name('posts.reactions');
 
-    // Halaman "Daftar Suka" (semua postingan saya + siapa yang like/dislike)
+    // Halaman "Daftar Suka"
     Route::get('/daftar-suka', [PostReactionController::class, 'myPostReactions'])
         ->name('user.reactions.index');
 
@@ -145,8 +146,20 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| NOTIFICATIONS (AJAX mark all as read)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->post('/notifications/read-all', function () {
+    $user = auth()->user();
+    if ($user) {
+        $user->unreadNotifications()->update(['read_at' => now()]);
+    }
+    return response()->json(['success' => true]);
+})->name('notifications.readAll');
+
+/*
+|--------------------------------------------------------------------------
 | PUBLIC — anyone can see a single post
-|  LETAKKAN PALING BAWAH, setelah semua /posts/... lain
 |--------------------------------------------------------------------------
 */
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
