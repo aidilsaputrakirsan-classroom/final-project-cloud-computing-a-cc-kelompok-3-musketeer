@@ -70,7 +70,7 @@
                     gap:12px;
                     box-shadow:0 1px 4px rgba(0,0,0,0.03);">
 
-                    {{-- Avatar huruf awal nama --}}
+
                     <div style="
                         width:44px;
                         height:44px;
@@ -108,7 +108,6 @@
                     </div>
 
                     <div style="text-align:right;">
-                        {{-- kalau nanti ada halaman profil user, ganti '#' dengan routenya --}}
                         <a href="#"
                            style="text-decoration:none;color:#40A09C;font-weight:600;">
                             Lihat Profil
