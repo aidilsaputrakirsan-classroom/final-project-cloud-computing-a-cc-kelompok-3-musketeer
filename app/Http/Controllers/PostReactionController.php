@@ -26,22 +26,20 @@ class PostReactionController extends Controller
         }
 
         try {
-            // query semua reaction user untuk post ini
-            $query    = Reaction::where('post_id', $post->id)
-                                ->where('user_id', $user->id);
+            // query reaction user untuk post ini
+            $query = Reaction::where('post_id', $post->id)
+                             ->where('user_id', $user->id);
             $existing = $query->first();
 
             if ($type === 'remove') {
-                // hapus SEMUA reaksi user di post ini
                 $query->delete();
             } else {
                 $value = $type === 'like' ? 1 : -1;
 
                 if ($existing && $existing->reaction == $value) {
-                    // klik ulang reaksi yang sama -> toggle OFF
+                    // klik ulang reaksi yang sama -> toggle off
                     $query->delete();
                 } else {
-                    // ganti reaksi: hapus semua, lalu buat 1 reaksi baru
                     $query->delete();
 
                     Reaction::create([
@@ -50,11 +48,13 @@ class PostReactionController extends Controller
                         'reaction' => $value,
                     ]);
 
-                    // NOTIFIKASI: kirim ke pemilik postingan (gunakan GeneralNotification)
+                    // kirim notifikasi ke pemilik post
                     $postOwner = $post->user;
                     if ($postOwner && $user->id !== $postOwner->id) {
-                        $notifType = $type; // 'like' atau 'dislike'
-                        $notifMsg = "{$user->name} " . ($type === 'like' ? 'menyukai' : 'tidak menyukai') . " postingan Anda berjudul: {$post->title}";
+                        $notifType = $type; 
+                        $notifMsg = "{$user->name} " . ($type === 'like'
+                                    ? 'menyukai'
+                                    : 'tidak menyukai') . " postingan Anda berjudul: {$post->title}";
                         $extra = [
                             'post_id' => $post->id,
                             'reactor_id' => $user->id
@@ -64,7 +64,7 @@ class PostReactionController extends Controller
                 }
             }
 
-            // hitung ulang dari database (pasti hanya 0/1 record per user)
+            // hitung ulang
             $likes    = Reaction::where('post_id', $post->id)->where('reaction', 1)->count();
             $dislikes = Reaction::where('post_id', $post->id)->where('reaction', -1)->count();
 
@@ -75,7 +75,7 @@ class PostReactionController extends Controller
             return response()->json([
                 'likes'         => $likes,
                 'dislikes'      => $dislikes,
-                'user_reaction' => $current ? $current->reaction : 0, // 1 / -1 / 0
+                'user_reaction' => $current ? $current->reaction : 0,
             ], 200);
 
         } catch (\Throwable $e) {
@@ -85,28 +85,34 @@ class PostReactionController extends Controller
     }
 
     /**
-     * Halaman "Daftar Suka" (semua postingan milik user + reaksi orang)
+     * Halaman "Daftar Suka"
      */
     public function myPostReactions()
-{
-    $user = Auth::user();
-    if (!$user) return redirect()->route('login');
+    {
+        $user = Auth::user();
+        if (!$user) return redirect()->route('login');
 
-    $posts = Post::with(['reactions' => function($q) {
-        $q->orderByDesc('updated_at'); // waktu terbaru
-    }, 'reactions.user'])
-    ->where('user_id', $user->id)
-    ->orderByDesc('created_at')
-    ->paginate(10);
+        $posts = Post::with([
+                'reactions' => function ($q) {
+                    $q->orderByDesc('updated_at');
+                },
+                'reactions.user'
+            ])
+            ->where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->paginate(10);
 
-    return view('user.reactions_index', compact('posts'));
-}
+        return view('user.reactions_index', compact('posts'));
+    }
 
     /**
      * Detail reaksi untuk satu postingan
      */
     public function showReactions(Post $post)
     {
+        // SIMPAN URL untuk tombol kembali
+        session(['back_reactions' => url()->previous()]);
+
         $post->load(['reactions.user']);
 
         return view('posts.reactions', compact('post'));

@@ -12,7 +12,9 @@
 
 <div class="container" style="padding: 20px; max-width: 820px; margin:0 auto;">
 
-    <a href="{{ url()->previous() }}" style="display:inline-block;margin-bottom:14px;text-decoration:none;color:#40A09C;">
+    {{-- Tombol kembali ke halaman Daftar Suka --}}
+    <a href="{{ session('reactions_back_url') ?? route('user.reactions.index') }}"
+       style="display:inline-block;margin-bottom:14px;text-decoration:none;color:#40A09C;">
         ← Kembali
     </a>
 
