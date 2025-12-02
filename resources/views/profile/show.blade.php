@@ -15,11 +15,14 @@
                 {{ strtoupper(substr($user->name ?? 'U',0,1)) }}
             @endif
         </div>
+
         <div>
             <h2 style="margin:0">{{ $user->name }}</h2>
             <div style="color:#666;">{{ $user->email }}</div>
+
+            {{-- Only show total posts --}}
             <div style="margin-top:6px;color:#777;font-size:0.95em;">
-                Total postingan: {{ $user->posts()->count() }} • Total likes (estimasi): {{ $totalLikes ?? 0 }}
+                Total postingan: {{ $user->posts()->count() }}
             </div>
         </div>
     </div>
@@ -27,11 +30,16 @@
     <hr style="margin:18px 0;">
 
     <h3 style="margin-bottom:10px;">Postingan oleh {{ $user->name }}</h3>
+
     <div style="display:flex;flex-direction:column;gap:12px;">
         @forelse($posts as $p)
             <div style="background:#fff;padding:12px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-                <a href="{{ route('posts.show', $p) }}" style="font-weight:700;color:#2b3d4f;text-decoration:none;">{{ $p->title }}</a>
-                <div style="color:#666;font-size:0.92em;margin-top:5px;">{{ \Illuminate\Support\Str::limit($p->content, 180) }}</div>
+                <a href="{{ route('posts.show', $p) }}" style="font-weight:700;color:#2b3d4f;text-decoration:none;">
+                    {{ $p->title }}
+                </a>
+                <div style="color:#666;font-size:0.92em;margin-top:5px;">
+                    {{ \Illuminate\Support\Str::limit($p->content, 180) }}
+                </div>
             </div>
         @empty
             <div style="color:#777">Belum ada postingan dari user ini.</div>

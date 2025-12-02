@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
@@ -87,6 +87,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-posts', [ProfileController::class, 'myPosts'])->name('my-posts');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // ** Tambahan supaya Lihat Profil tidak error **
+    Route::get('/users/{user}', [ProfileController::class, 'show'])->name('profile.show');
 });
 
 /*
@@ -96,16 +99,13 @@ Route::middleware('auth')->group(function () {
 */
 Route::middleware('auth')->group(function () {
 
-    // form & simpan postingan baru
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
-    // edit / update / delete
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
-    // Report post
     Route::post('/posts/{post}/report', [ReportController::class, 'store'])->name('reports.store');
 });
 
@@ -127,19 +127,15 @@ Route::middleware('auth')->group(function () {
 */
 Route::middleware('auth')->group(function () {
 
-    // React to post (AJAX)
     Route::post('/posts/{post}/react', [PostReactionController::class, 'react'])
         ->name('posts.react');
 
-    // Detail daftar siapa saja yang bereaksi ke 1 post
     Route::get('/posts/{post}/reactions', [PostReactionController::class, 'showReactions'])
         ->name('posts.reactions');
 
-    // Halaman "Daftar Suka"
     Route::get('/daftar-suka', [PostReactionController::class, 'myPostReactions'])
         ->name('user.reactions.index');
 
-    // Alias URL /my-reactions
     Route::get('/my-reactions', [PostReactionController::class, 'myPostReactions'])
         ->name('user.reactions');
 });
