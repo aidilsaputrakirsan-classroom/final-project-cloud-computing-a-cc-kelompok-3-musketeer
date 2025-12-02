@@ -109,15 +109,15 @@
 
                     <div style="text-align:right;">
 <<<<<<< HEAD
-                        {{-- Ganti '#' menjadi route profile.show jika route ada --}}
                         @if($r->user)
-                            <a href="{{ route('profile.show', $r->user->id) }}"
-                               style="text-decoration:none;color:#40A09C;font-weight:600;">
-                                Lihat Profil
-                            </a>
-                        @else
-                            <span style="color:#999;">(akun dihapus)</span>
-                        @endif
+    <a href="#"
+       style="text-decoration:none;color:#40A09C;font-weight:600;cursor:not-allowed;">
+        Lihat Profil
+    </a>
+@else
+    <span style="color:#999;">(akun dihapus)</span>
+@endif
+
 =======
                         <a href="#"
                            style="text-decoration:none;color:#40A09C;font-weight:600;">

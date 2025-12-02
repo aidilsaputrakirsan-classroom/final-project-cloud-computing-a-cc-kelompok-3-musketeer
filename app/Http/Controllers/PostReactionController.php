@@ -88,21 +88,19 @@ class PostReactionController extends Controller
      * Halaman "Daftar Suka" (semua postingan milik user + reaksi orang)
      */
     public function myPostReactions()
-    {
-        $user = Auth::user();
-        if (!$user) {
-            return redirect()->route('login');
-        }
+{
+    $user = Auth::user();
+    if (!$user) return redirect()->route('login');
 
-        $posts = Post::with(['reactions.user'])
-            ->where('user_id', $user->id)
-            ->orderByDesc('created_at')
-            ->paginate(10);
+    $posts = Post::with(['reactions' => function($q) {
+        $q->orderByDesc('updated_at'); // waktu terbaru
+    }, 'reactions.user'])
+    ->where('user_id', $user->id)
+    ->orderByDesc('created_at')
+    ->paginate(10);
 
-        // NOTE: sesuaikan dengan nama file yang kamu punya:
-        // resources/views/user/reactions_index.blade.php
-        return view('user.reactions_index', compact('posts'));
-    }
+    return view('user.reactions_index', compact('posts'));
+}
 
     /**
      * Detail reaksi untuk satu postingan
