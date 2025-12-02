@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminUserSeeder::class,
+            ActivityLogSeeder::class, // Tambahan seeder untuk Activity Log
         ]);
     }
 }

@@ -45,18 +45,14 @@ class ProfileController extends Controller
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Handle profile picture upload
         if ($request->hasFile('profile_picture')) {
-            // Delete old profile picture if exists
             if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
                 Storage::disk('public')->delete($user->profile_picture);
             }
 
-            // Store new profile picture
             $path = $request->file('profile_picture')->store('profile_pictures', 'public');
             $validated['profile_picture'] = $path;
         } else {
-            // Keep existing profile picture
             $validated['profile_picture'] = $user->profile_picture;
         }
 
@@ -64,5 +60,26 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.edit')
             ->with('success', 'Profile berhasil diperbarui!');
+    }
+
+    /**
+     * Public Profile Page
+     */
+    public function show(Request $request, User $user)
+    {
+        // SIMPAN URL SEBELUMNYA untuk tombol kembali berurutan
+        if (!session()->has('reaction_detail_back_url')) {
+            session(['reaction_detail_back_url' => url()->previous()]);
+        }
+
+        // Simpan juga untuk tombol kembali dari profil
+        session(['profile_back_url' => url()->previous()]);
+
+        $posts = $user->posts()
+            ->withCount('comments')
+            ->latest()
+            ->paginate(10);
+
+        return view('profile.show', compact('user', 'posts'));
     }
 }

@@ -110,7 +110,7 @@
                                             @endif
                                         </td>
                                         <td style="padding:6px 8px;border-bottom:1px solid #f1f1f1;">
-                                            {{ $reaction->created_at->format('d M Y, H:i') }}
+                                            {{ ($reaction->updated_at ?? $reaction->created_at)->format('d M Y, H:i') }}
                                         </td>
                                     </tr>
                                 @empty

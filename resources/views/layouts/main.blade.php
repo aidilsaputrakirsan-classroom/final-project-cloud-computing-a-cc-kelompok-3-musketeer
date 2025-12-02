@@ -108,7 +108,6 @@
             background: #f5f6fa;
             margin-left: 230px;
             min-width: 0;
-            /* keep layout flexible: allow pages to overflow naturally */
             overflow-y: visible;
             height: auto;
         }
@@ -180,21 +179,10 @@
             </li>
         </ul>
 
-    <div class="faq-box"
-        style="display:flex; flex-direction:column; align-items:center; gap:6px;">
-
-        <div class="faq-text">Ada Kendala?</div>
-
-        <img src="{{ asset('image1.png') }}"
-            alt="Bantuan"
-            style="width:100px; height:100px;">
-
-        <a href="{{ route('faq.index') }}" class="faq-btn">
-            Lihat Bantuan & FAQ
-        </a>
-    </div>
-
-
+        <div class="faq-box">
+            <div class="faq-text">Ada Kendala?</div>
+            <a href="{{ route('faq.index') }}" class="faq-btn">Lihat Bantuan & FAQ</a>
+        </div>
     </aside>
 
     {{-- KONTEN UTAMA --}}
@@ -211,8 +199,8 @@
     const meta = document.querySelector('meta[name="csrf-token"]');
     const csrf = meta ? meta.content : null;
 
-    function setButtonsLoading(likeBtn, dislikeBtn, loading) {
-        [likeBtn, dislikeBtn].forEach(btn => {
+    function setButtonsLoading(buttons, loading) {
+        buttons.forEach(btn => {
             if (!btn) return;
             if (loading) {
                 btn.classList.add('loading');
@@ -222,25 +210,6 @@
                 btn.disabled = false;
             }
         });
-    }
-
-    function findCountElements(wrapper, postId) {
-        let likesEl = null;
-        let dislikesEl = null;
-
-        if (wrapper) {
-            likesEl = wrapper.querySelector('.likes-count');
-            dislikesEl = wrapper.querySelector('.dislikes-count');
-        }
-
-        if (!likesEl) {
-            likesEl = document.querySelector('.likes-count[data-post-id="' + postId + '"]') || null;
-        }
-        if (!dislikesEl) {
-            dislikesEl = document.querySelector('.dislikes-count[data-post-id="' + postId + '"]') || null;
-        }
-
-        return {likesEl, dislikesEl};
     }
 
     document.addEventListener('click', async function (e) {
@@ -256,32 +225,24 @@
         const currentlyActive = btn.classList.contains('active');
         const type = currentlyActive ? 'remove' : (isLike ? 'like' : 'dislike');
 
-        // Ambil SEMUA tombol reaksi untuk post ini (di dashboard, detail, my-posts)
-        const allButtons = document.querySelectorAll('.reaction-btn[data-post-id="' + postId + '"]');
-        let likeBtn = null;
-        let dislikeBtn = null;
-        allButtons.forEach(b => {
-            if (b.classList.contains('like-btn')) likeBtn = b;
-            if (b.classList.contains('dislike-btn')) dislikeBtn = b;
-        });
+        // Semua tombol like/dislike untuk post ini (kalau suatu saat muncul lebih dari satu)
+        const likeBtns = Array.from(document.querySelectorAll('.like-btn[data-post-id="' + postId + '"]'));
+        const dislikeBtns = Array.from(document.querySelectorAll('.dislike-btn[data-post-id="' + postId + '"]'));
+        const allBtns = likeBtns.concat(dislikeBtns);
 
-        // Wrapper buat cari counter
-        let wrapper = btn.closest('[data-post-id]');
-        if (!wrapper) {
-            wrapper = document.querySelector('[data-post-id="' + postId + '"]');
-        }
+        // Semua wrapper yang punya data-post-id sama (dashboard, my-posts, detail)
+        const wrappers = document.querySelectorAll('[data-post-id="' + postId + '"]');
 
-        const {likesEl, dislikesEl} = findCountElements(wrapper, postId);
-
-        setButtonsLoading(likeBtn, dislikeBtn, true);
+        setButtonsLoading(allBtns, true);
 
         if (!csrf) {
-            alert('CSRF token tidak ditemukan. Pastikan meta tag csrf ada di layout.');
-            setButtonsLoading(likeBtn, dislikeBtn, false);
+            console.error('CSRF token tidak ditemukan');
+            setButtonsLoading(allBtns, false);
             return;
         }
 
         try {
+            // sesuai route: /posts/{post}/react
             const res = await fetch('/posts/' + postId + '/react', {
                 method: 'POST',
                 headers: {
@@ -290,54 +251,45 @@
                     'Accept': 'application/json'
                 },
                 credentials: 'same-origin',
-                body: JSON.stringify({type})
+                body: JSON.stringify({ type: type })
             });
 
             if (!res.ok) {
-                if (res.status === 419) {
-                    alert('Session/CSRF token kadaluarsa. Reload halaman dan coba lagi.');
-                } else if (res.status === 401 || res.status === 302) {
-                    alert('Silakan login untuk memberi reaksi.');
-                } else {
-                    alert('Terjadi kesalahan saat mengirim reaksi. Lihat console.');
-                }
-                console.error('React failed', res.status, await res.text());
-                return;
-            }
-
-            const contentType = res.headers.get('content-type') || '';
-            if (!contentType.includes('application/json')) {
-                console.error('Response bukan JSON', await res.text());
-                alert('Respon server tidak valid. Cek console/network.');
+                console.error('React gagal', res.status, await res.text());
+                setButtonsLoading(allBtns, false);
                 return;
             }
 
             const data = await res.json();
 
-            // Update angka
-            if (likesEl && typeof data.likes !== 'undefined') {
-                likesEl.textContent = data.likes;
-            }
-            if (dislikesEl && typeof data.dislikes !== 'undefined') {
-                dislikesEl.textContent = data.dislikes;
-            }
+            // Update angka di semua wrapper post tersebut
+            wrappers.forEach(wrap => {
+                const likesEl = wrap.querySelector('.likes-count');
+                const dislikesEl = wrap.querySelector('.dislikes-count');
+                if (likesEl && typeof data.likes !== 'undefined') {
+                    likesEl.textContent = data.likes;
+                }
+                if (dislikesEl && typeof data.dislikes !== 'undefined') {
+                    dislikesEl.textContent = data.dislikes;
+                }
+            });
 
-            // Hapus dulu active dari dua-duanya UNTUK POST INI
-            [likeBtn, dislikeBtn].forEach(b => b && b.classList.remove('active'));
+            // Reset active semua tombol post ini
+            likeBtns.forEach(b => b.classList.remove('active'));
+            dislikeBtns.forEach(b => b.classList.remove('active'));
 
-            // Tambahkan kembali sesuai user_reaction
-            if (data.user_reaction === 1 && likeBtn) {
-                likeBtn.classList.add('active');
-            } else if (data.user_reaction === -1 && dislikeBtn) {
-                dislikeBtn.classList.add('active');
+            // Set active sesuai user_reaction dari server
+            if (data.user_reaction === 1) {
+                likeBtns.forEach(b => b.classList.add('active'));
+            } else if (data.user_reaction === -1) {
+                dislikeBtns.forEach(b => b.classList.add('active'));
             }
-            // Kalau 0 => dua-duanya tetap non-active (berarti user batal reaksi)
+            // kalau 0: dua-duanya tetap non-active
 
         } catch (err) {
             console.error('React error', err);
-            alert('Gagal mengirim reaksi. Periksa koneksi Anda.');
         } finally {
-            setButtonsLoading(likeBtn, dislikeBtn, false);
+            setButtonsLoading(allBtns, false);
         }
     });
 })();
