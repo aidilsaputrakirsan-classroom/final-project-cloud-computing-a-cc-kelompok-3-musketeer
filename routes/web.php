@@ -49,7 +49,7 @@ Route::get('/topics/{category:slug}', [CategoryController::class, 'show'])->name
 
 /*
 |--------------------------------------------------------------------------
-| Authentication & Dashboard
+| Authentication
 |--------------------------------------------------------------------------
 */
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -80,21 +80,18 @@ Route::get('/faq/{id}', [FAQController::class, 'show'])->name('faq.show');
 
 /*
 |--------------------------------------------------------------------------
-| Profile (auth)
+| Profile
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
-    // halaman postingan saya
     Route::get('/my-posts', [ProfileController::class, 'myPosts'])->name('my-posts');
-
-    // edit profile (private)
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 /*
 |--------------------------------------------------------------------------
-| POSTS (create/edit/delete) — must login
+| POSTS (must login)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -149,15 +146,6 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-<<<<<<< HEAD
-| Public profile (anyone can view a user's public profile)
-| - This allows links like route('profile.show', $user->id) to work for public profiles.
-| - Put this before the generic post show route.
-|--------------------------------------------------------------------------
-*/
-Route::get('/users/{user}', [ProfileController::class, 'show'])
-    ->name('profile.show');
-=======
 | NOTIFICATIONS (AJAX mark all as read)
 |--------------------------------------------------------------------------
 */
@@ -168,15 +156,10 @@ Route::middleware('auth')->post('/notifications/read-all', function () {
     }
     return response()->json(['success' => true]);
 })->name('notifications.readAll');
->>>>>>> development
 
 /*
 |--------------------------------------------------------------------------
 | PUBLIC — anyone can see a single post
-<<<<<<< HEAD
-| LETAKKAN PALING BAWAH, setelah semua /posts/... lain
-=======
->>>>>>> development
 |--------------------------------------------------------------------------
 */
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
