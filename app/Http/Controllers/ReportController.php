@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use App\Notification\GeneralNotification;
 
 class ReportController extends Controller
 {
@@ -44,9 +45,22 @@ class ReportController extends Controller
         $report->handled_by = Auth::id();
         $report->save();
 
-        return redirect()
-            ->route('admin.reports.index')
-            ->with('success', 'Laporan diterima, postingan telah dihapus.');
+        $owner = $report->post->user ?? null;
+    if ($owner) {
+        $adminUrl = "https://wa.me/6283140266116" . urlencode("Halo admin, saya ingin menanyakan tentang laporan postingan saya yang dihapus.");
+        $notifMsg = "Postingan Anda telah dihapus oleh admin. <a href='{$adminUrl}' style='color:#46B6B0;' target='_blank'>Hubungi admin untuk informasi lebih lanjut</a>";
+
+
+        $extra = [
+            'post_id' => $report->post_id,
+            'type' => 'report',
+        ];
+        $owner->notify(new GeneralNotification('report', $notifMsg, $extra));
+    }
+
+    return redirect()
+        ->route('admin.reports.index')
+        ->with('success', 'Laporan diterima, postingan telah dihapus.');
     }
 
     // ADMIN MENOLAK LAPORAN -> TIDAK HAPUS POST

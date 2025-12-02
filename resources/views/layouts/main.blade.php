@@ -180,10 +180,21 @@
             </li>
         </ul>
 
-        <div class="faq-box">
-            <div class="faq-text">Ada Kendala?</div>
-            <a href="{{ route('faq.index') }}" class="faq-btn">Lihat Bantuan & FAQ</a>
-        </div>
+    <div class="faq-box"
+        style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+
+        <div class="faq-text">Ada Kendala?</div>
+
+        <img src="{{ asset('image1.png') }}"
+            alt="Bantuan"
+            style="width:100px; height:100px;">
+
+        <a href="{{ route('faq.index') }}" class="faq-btn">
+            Lihat Bantuan & FAQ
+        </a>
+    </div>
+
+
     </aside>
 
     {{-- KONTEN UTAMA --}}

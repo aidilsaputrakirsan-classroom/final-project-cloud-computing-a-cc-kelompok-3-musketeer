@@ -50,6 +50,25 @@ class CommentController extends Controller
             ));
         }
 
+        /*
+        |--------------------------------------|
+        |       🔔 NOTIFIKASI REPLY BARU       |
+        |--------------------------------------|
+        */
+        if ($comment->parent_id) {
+            $parentComment = Comment::find($comment->parent_id);
+            $parentOwner = $parentComment->user;
+
+            if ($parentOwner && $parentOwner->id !== $request->user()->id) {
+                $parentOwner->notify(new \App\Notification\GeneralNotification(
+                    'comment_reply',
+                    $request->user()->name . " membalas komentar Anda pada postingan '{$post->title}'",
+                    ["post_id" => $post->id]
+                ));
+            }
+        }
+        // ---------------------------------------------
+
         // Jika request dari AJAX
         if ($request->wantsJson()) {
             return response()->json([

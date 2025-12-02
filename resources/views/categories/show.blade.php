@@ -59,11 +59,15 @@
 
                 {{-- BUTTON LAPOR --}}
                 @if(Auth::check() && Auth::id() !== $post->user_id)
-                    <button onclick="openReportModal({{ $post->id }})"
-                            style="position:absolute;top:15px;right:15px;padding:6px 12px;background:#f44336;
-                                   color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.85em;">
-                        <i class="fa fa-flag"></i>
-                    </button>
+                    <button type="button"
+                        onclick="openReportModal({{ $post->id }})"
+                        style="position:absolute;top:15px;right:15px;
+                            padding:6px 14px;background:#f44336;color:#fff;
+                            border:none;border-radius:999px;cursor:pointer;
+                            font-size:0.85em;display:inline-flex;align-items:center;gap:6px;">
+                    <i class="fa fa-flag" aria-hidden="true"></i>
+                    <span>Laporkan</span>
+                </button>
                 @endif
 
             {{-- Avatar dan User --}}
@@ -203,7 +207,7 @@
                 id="details"
                 rows="3"
                 style="
-                    width:100%;
+                    width:95%;
                     box-sizing:border-box;   /* supaya lebar sama dengan select */
                     border:1px solid #ddd;
                     border-radius:5px;

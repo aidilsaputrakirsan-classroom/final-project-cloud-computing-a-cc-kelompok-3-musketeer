@@ -70,7 +70,7 @@
                     gap:12px;
                     box-shadow:0 1px 4px rgba(0,0,0,0.03);">
 
-                    {{-- Avatar huruf awal nama --}}
+
                     <div style="
                         width:44px;
                         height:44px;
@@ -108,6 +108,7 @@
                     </div>
 
                     <div style="text-align:right;">
+<<<<<<< HEAD
                         {{-- Ganti '#' menjadi route profile.show jika route ada --}}
                         @if($r->user)
                             <a href="{{ route('profile.show', $r->user->id) }}"
@@ -117,6 +118,12 @@
                         @else
                             <span style="color:#999;">(akun dihapus)</span>
                         @endif
+=======
+                        <a href="#"
+                           style="text-decoration:none;color:#40A09C;font-weight:600;">
+                            Lihat Profil
+                        </a>
+>>>>>>> development
                     </div>
                 </div>
             @endforeach
