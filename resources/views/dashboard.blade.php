@@ -142,9 +142,17 @@
 
                 {{-- HEADER --}}
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                    <div style="width:40px; height:40px; border-radius:50%; background:#ddd; background-size:cover; background-position:center;"></div>
+                    <a href="{{ route('profile.show', $post->user) }}" style="text-decoration:none;">
+                        <div style="width:40px; height:40px; border-radius:50%; background:#40A09C; background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:bold; font-size:1em; {{ $post->user->profile_picture ? "background-image:url('" . e(Storage::url($post->user->profile_picture)) . "');" : '' }}">
+                            @unless($post->user->profile_picture)
+                                {{ strtoupper(substr($post->user->name ?? 'U', 0, 1)) }}
+                            @endunless
+                        </div>
+                    </a>
                     <div>
-                        <div style="font-weight:600; color:#d49d3d; font-size:1em;">{{ $post->user->name }}</div>
+                        <a href="{{ route('profile.show', $post->user) }}" style="text-decoration:none; color:#d49d3d;">
+                            <div style="font-weight:600; color:#d49d3d; font-size:1em;">{{ $post->user->name }}</div>
+                        </a>
                         <div style="font-size:0.85em; color:#888;">{{ $post->created_at->format('d M Y, H:i') }}</div>
                     </div>
                 </div>

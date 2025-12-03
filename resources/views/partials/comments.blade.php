@@ -66,14 +66,20 @@
                         box-shadow:0 1px 6px rgba(0,0,0,0.05);margin-bottom:18px;transition:.18s;">
                 
                 <div style="display:flex;align-items:center;gap:13px;">
-                    <div style="width:33px;height:33px;border-radius:50%;background:#40A09C;
-                                display:flex;align-items:center;justify-content:center;color:#fff;
-                                font-weight:bold;font-size:1.02em;">
-                        {{ strtoupper(substr($comment->user->name ?? 'U', 0, 1)) }}
-                    </div>
+                    <a href="{{ route('profile.show', $comment->user) }}" style="text-decoration:none;">
+                        <div style="width:33px;height:33px;border-radius:50%;background:#40A09C;background-size:cover;background-position:center;
+                                    display:flex;align-items:center;justify-content:center;color:#fff;
+                                    font-weight:bold;font-size:1.02em;{{ $comment->user->profile_picture ? "background-image:url('" . e(Storage::url($comment->user->profile_picture)) . "');" : '' }}">
+                            @unless($comment->user->profile_picture)
+                                {{ strtoupper(substr($comment->user->name ?? 'U', 0, 1)) }}
+                            @endunless
+                        </div>
+                    </a>
 
                     <div>
-                        <span style="font-weight:600;color:#2b3d4f;">{{ $comment->user->name }}</span>
+                        <a href="{{ route('profile.show', $comment->user) }}" style="text-decoration:none; color:#2b3d4f;">
+                            <span style="font-weight:600;color:#2b3d4f;">{{ $comment->user->name }}</span>
+                        </a>
                         <span style="color:#999;font-size:0.92em;">
                             · {{ $comment->created_at->diffForHumans() }}
                         </span>
@@ -199,14 +205,20 @@
                                  style="margin-bottom:11px;background:#fbfefd;border-radius:9px;padding:8px 13px;">
 
                                 <div style="display:flex;align-items:center;gap:10px;">
-                                    <div style="width:22px;height:22px;border-radius:50%;background:#40A09C;
-                                                display:flex;align-items:center;justify-content:center;color:#fff;
-                                                font-weight:bold;font-size:.97em;">
-                                        {{ strtoupper(substr($reply->user->name ?? 'U', 0, 1)) }}
-                                    </div>
+                                    <a href="{{ route('profile.show', $reply->user) }}" style="text-decoration:none;">
+                                        <div style="width:22px;height:22px;border-radius:50%;background:#40A09C;background-size:cover;background-position:center;
+                                                    display:flex;align-items:center;justify-content:center;color:#fff;
+                                                    font-weight:bold;font-size:.97em;{{ $reply->user->profile_picture ? "background-image:url('" . e(Storage::url($reply->user->profile_picture)) . "');" : '' }}">
+                                            @unless($reply->user->profile_picture)
+                                                {{ strtoupper(substr($reply->user->name ?? 'U', 0, 1)) }}
+                                            @endunless
+                                        </div>
+                                    </a>
 
                                     <div>
-                                        <span style="font-weight:600;color:#314057;">{{ $reply->user->name }}</span>
+                                        <a href="{{ route('profile.show', $reply->user) }}" style="text-decoration:none; color:#314057;">
+                                            <span style="font-weight:600;color:#314057;">{{ $reply->user->name }}</span>
+                                        </a>
                                         <span style="color:#888;"> · {{ $reply->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>

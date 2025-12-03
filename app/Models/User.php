@@ -62,8 +62,8 @@ class User extends Authenticatable
     /**
      * Reactions yang dibuat user (likes/dislikes pada post)
      */
-    public function postReactions(): HasMany
+    public function reactions(): HasMany
     {
-        return $this->hasMany(\App\Models\PostReaction::class);
+        return $this->hasMany(\App\Models\Reaction::class);
     }
 }
