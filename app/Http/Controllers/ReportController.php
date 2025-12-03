@@ -18,7 +18,11 @@ class ReportController extends Controller
             'details' => 'nullable|string',
         ]);
 
+        // Cek jika post sudah dihapus (soft delete)
         $post = Post::findOrFail($postId);
+        if ($post->trashed()) {
+            return redirect()->back()->with('error', 'Postingan tidak dapat dilaporkan karena telah dihapus.');
+        }
 
         Report::create([
             'user_id' => Auth::id(),
@@ -46,17 +50,16 @@ class ReportController extends Controller
         $report->save();
 
         $owner = $report->post->user ?? null;
-    if ($owner) {
-        $adminUrl = "https://wa.me/6283140266116" . urlencode("Halo admin, saya ingin menanyakan tentang laporan postingan saya yang dihapus.");
-        $notifMsg = "Postingan Anda telah dihapus oleh admin. <a href='{$adminUrl}' style='color:#46B6B0;' target='_blank'>Hubungi admin untuk informasi lebih lanjut</a>";
+        if ($owner) {
+            $adminUrl = "https://wa.me/6283140266116?text=" . urlencode("Halo admin, saya ingin menanyakan tentang laporan postingan saya yang dihapus.");
+            $notifMsg = "Postingan Anda telah dihapus oleh admin. <a href='{$adminUrl}' style='color:#46B6B0;' target='_blank'>Hubungi admin untuk informasi lebih lanjut</a>";
 
-
-        $extra = [
-            'post_id' => $report->post_id,
-            'type' => 'report',
-        ];
-        $owner->notify(new GeneralNotification('report', $notifMsg, $extra));
-    }
+            $extra = [
+                'post_id' => $report->post_id,
+                'type' => 'report',
+            ];
+            $owner->notify(new GeneralNotification('report', $notifMsg, $extra));
+        }
 
     return redirect()
         ->route('admin.reports.index')

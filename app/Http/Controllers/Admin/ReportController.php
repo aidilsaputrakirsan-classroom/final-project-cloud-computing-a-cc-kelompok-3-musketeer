@@ -75,7 +75,7 @@ class ReportController extends Controller
         // Simpan dulu referensi post (kalau ada)
         $post = $report->post;
 
-        if ($request->status === 'accepted' && $post) {
+        if ($request->status === 'accepted' && $post && !$post->trashed()) {
             $owner = $post->user;
 
             // Hapus postingan dari database (dan seluruh komentar jika ada)
@@ -85,14 +85,16 @@ class ReportController extends Controller
             $post->delete();
 
             // Kirim hanya SATU notifikasi ke user (ada link WhatsApp admin)
-            $adminUrl = "https://wa.me/6283140266116?text=" . urlencode("Halo admin, saya ingin menanyakan tentang laporan postingan saya yang dihapus.");
-            $notifMsg = "Postingan Anda telah dihapus oleh admin. <a href='{$adminUrl}' style='color:#2c7774;' target='_blank'>Hubungi admin untuk informasi lebih lanjut</a>";
+            if ($owner) {
+                $adminUrl = "https://wa.me/6283140266116?text=" . urlencode("Halo admin, saya ingin menanyakan tentang laporan postingan saya yang dihapus.");
+                $notifMsg = "Postingan Anda telah dihapus oleh admin. <a href='{$adminUrl}' style='color:#2c7774;' target='_blank'>Hubungi admin untuk informasi lebih lanjut</a>";
 
-            $extra = [
-                'post_id' => $report->post_id,
-                'type' => 'report',
-            ];
-            $owner->notify(new GeneralNotification('report', $notifMsg, $extra));
+                $extra = [
+                    'post_id' => $report->post_id,
+                    'type' => 'report',
+                ];
+                $owner->notify(new GeneralNotification('report', $notifMsg, $extra));
+            }
         }
 
         // Update status laporan + admin yang menangani (report yang dipilih)

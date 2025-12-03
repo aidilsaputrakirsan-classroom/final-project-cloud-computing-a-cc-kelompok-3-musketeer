@@ -20,6 +20,11 @@ class PostReactionController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
+        // Cek jika post sudah dihapus (soft delete)
+        if ($post->trashed()) {
+            return response()->json(['message' => 'Postingan tidak ditemukan atau telah dihapus.'], 404);
+        }
+
         $type = $request->input('type'); // 'like', 'dislike', 'remove'
         if (!in_array($type, ['like', 'dislike', 'remove'])) {
             return response()->json(['message' => 'Tipe tidak valid'], 422);
@@ -110,8 +115,13 @@ class PostReactionController extends Controller
      */
     public function showReactions(Post $post)
     {
+        // Cek jika post sudah dihapus (soft delete)
+        if ($post->trashed()) {
+            abort(404, 'Postingan tidak ditemukan atau telah dihapus.');
+        }
+
         // SIMPAN URL untuk tombol kembali
-        session(['back_reactions' => url()->previous()]);
+        session(['reaction_detail_back_url' => url()->previous()]);
 
         $post->load(['reactions.user']);
 

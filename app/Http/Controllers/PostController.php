@@ -62,6 +62,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        // Cek jika post sudah dihapus (soft delete)
+        if ($post->trashed()) {
+            abort(404, 'Postingan tidak ditemukan atau telah dihapus.');
+        }
+
         $post->load(['user', 'category']); // tambahkan relasi category
 
         // Tambahkan views count
@@ -85,6 +90,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        // Cek jika post sudah dihapus (soft delete)
+        if ($post->trashed()) {
+            abort(404, 'Postingan tidak ditemukan atau telah dihapus.');
+        }
+
         if ($post->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
@@ -98,6 +108,11 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        // Cek jika post sudah dihapus (soft delete)
+        if ($post->trashed()) {
+            abort(404, 'Postingan tidak ditemukan atau telah dihapus.');
+        }
+
         if ($post->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
@@ -124,6 +139,11 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        // Cek jika post sudah dihapus (soft delete)
+        if ($post->trashed()) {
+            abort(404, 'Postingan tidak ditemukan atau telah dihapus.');
+        }
+
         if ($post->user_id !== Auth::id()) {
             abort(403, 'Unauthorized action.');
         }

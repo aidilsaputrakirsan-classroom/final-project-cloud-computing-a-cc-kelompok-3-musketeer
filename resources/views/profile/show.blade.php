@@ -12,14 +12,11 @@
     </a>
 
     <div style="display:flex;align-items:center;gap:16px;margin-top:10px;">
-        <div style="width:72px;height:72px;border-radius:50%;background:#40A09C;color:#fff;
-                    display:flex;align-items:center;justify-content:center;font-size:1.6em;">
-            @if($user->profile_picture)
-                <img src="{{ Storage::url($user->profile_picture) }}"
-                     style="width:72px;height:72px;border-radius:50%;object-fit:cover;">
-            @else
+        <div style="width:72px;height:72px;border-radius:50%;background:#40A09C;background-size:cover;background-position:center;color:#fff;
+                    display:flex;align-items:center;justify-content:center;font-size:1.6em;font-weight:bold;{{ $user->profile_picture ? "background-image:url('" . e(Storage::url($user->profile_picture)) . "');" : '' }}">
+            @unless($user->profile_picture)
                 {{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}
-            @endif
+            @endunless
         </div>
 
         <div>

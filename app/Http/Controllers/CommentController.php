@@ -40,6 +40,12 @@ class CommentController extends Controller
 
         // Kirim notifikasi ke pemilik post (asal bukan dirinya sendiri)
         $post = $comment->post;
+        
+        // Cek jika post sudah dihapus (soft delete)
+        if ($post->trashed()) {
+            return back()->with('error', 'Postingan tidak ditemukan atau telah dihapus.');
+        }
+        
         $owner = $post->user;
         if ($owner && $owner->id !== $request->user()->id) {
             $owner->notify(new \App\Notification\GeneralNotification(
@@ -120,6 +126,11 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         $user = auth()->user();
+
+        // Cek jika post sudah dihapus (soft delete)
+        if ($comment->post && $comment->post->trashed()) {
+            return back()->with('error', 'Postingan tidak ditemukan atau telah dihapus.');
+        }
 
         // hanya pemilik komentar atau pemilik posting yang bisa hapus
         if ($user->id !== $comment->user_id && $user->id !== $comment->post->user_id) {
