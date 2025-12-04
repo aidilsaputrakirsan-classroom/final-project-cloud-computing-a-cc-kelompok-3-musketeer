@@ -93,7 +93,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo-row">
-            <img src="{{ asset('logo.png') }}" alt="Logo">
+            <img src="{{ asset('images/screenshots/logochatterbox.png') }}" alt="Logo">
             <div>
                 <div class="logo-title">CHATTER BOX</div>
                 <div class="logo-sub">Express yourself everyday</div>
@@ -113,12 +113,7 @@
                 onclick="window.location='{{ route('admin.reports.history') }}'">
                 <i class="fa fa-history"></i> History Laporan
             </li>
-
-            {{-- Menu Pengaturan --}}
-            <li>
-                <i class="fa fa-cog"></i> Pengaturan
-            </li>
-
+            
             {{-- Logout --}}
             <li onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="margin-top:20px;color:#d9534f;">
                 <i class="fa fa-right-from-bracket"></i> Logout

@@ -24,44 +24,47 @@ memfasilitasi pengguna dalam membuat diskusi dan berdiskusi berbagai topik menar
 - [Deployment](#deployment)
 - [Kontribusi](#kontribusi)
 - [Lisensi](#lisensi)
+---
 
 
 
 ---
 ## Fitur Utama
 
-### Manajemen Postingan
+### 1. Manajemen Postingan
 ✅ **CRUD Postingan**
-Pengguna dapat membuat, mengedit, menghapus, dan melihat postingan.
+Pengguna dapat membuat, mengedit, menghapus, dan melihat postingan. 
+
 ✅ **Kategori Postingan**
 Setiap postingan memiliki satu kategori, dan pengguna dapat mencari kategori postingan orang lain melalui menu jelajahi topik.
 
-### Interaksi Pengguna
+### 2. Interaksi Pengguna
 ✅ **Voting (Like / Dislike)**
 Pengguna dapat memberikan voting berupa like atau dislike pada postingan pengguna. Adapun pengguna dapat melihat daftar like dan dislike pada postingan pribadi melalui menu daftar suka.
+
 ✅ **Komentar**
 Pengguna dapat memberikan komentar pada postingan pribadi dan postingan orang lain, serta dapat membalas komentar orang lain.  
+
 ✅ **Notifikasi**
 Pengguna mendapatkan notifikasi untuk komentar baru, balasan komentar, like, dislike, dan laporan postingan.  
 
-### Moderasi Konten
+### 3. Moderasi Konten
 ✅ **Report Postingan**
 Pengguna dapat melaporkan postingan sesuai pilihan kategori laporan dan memberikan alasan tambahan. Laporan ini akan dikelola oleh admin.  
 
-### Personalisasi dan Pengalaman Pengguna
-✅ **Dark Mode / Light Mode**
-Pengguna dapat mengganti tema tampilan terang atau gelap melalui menu pengaturan.  
+### 4. Personalisasi dan Pengalaman Pengguna
 ✅ **Daftar Postingan**
-Pengguna dapat melihat daftar postingan yang telah dibuat melalui menu postingan saya.
+Pengguna dapat melihat daftar postingan yang telah dibuat 
+melalui menu postingan saya.
+
 ✅ **Profil Pengguna**
 Pengguna dapat mengedit foto profil melalui menu postingan saya ataupun dengan mengklik foto profil.
 
-### Halaman Informasi
+### 5. Halaman Informasi
 ✅ **FAQ & Bantuan**
 Pengguna yang memiliki kendala dapat memilih menu Lihat Bantuan dan FAQ untuk melihat pertanyaan dan solusi dari masalah yang umumnya terjadi di pengguna.
+
 ---
-
-
 
 ---
 ## Tech Stack
@@ -212,38 +215,36 @@ Sistem menggunakan 2 role utama dengan permission berbeda:
 ### 9. Halaman Daftar Suka
 ![Halaman Daftar Suka](public/images/screenshots/09-daftar-suka.png)
 *Halaman yang menampilkan daftar pengguna yang melakukan aksi like atau dislike pada postingan pribadi pengguna*
-### 10. Halaman Pengaturan
-![Halaman Pengaturan](public/images/screenshots/10-pengaturan.png)
 *Halaman pengaturan dengan pilihan mode gelap atau mode terang*
-### 11. Tampilan Melaporkan Postingan
-![Tampilan Melaporkan Postingan](public/images/screenshots/11-melaporkan-postingan.png)
+### 10. Tampilan Melaporkan Postingan
+![Tampilan Melaporkan Postingan](public/images/screenshots/10-melaporkan-postingan.png)
 *Tampilan pelaporan terhadap postingan orang lain*
-### 12. Halaman Laporan Postingan
-![Halaman Laporan Postingan](public/images/screenshots/12-laporan-postingan.png)
+### 11. Halaman Laporan Postingan
+![Halaman Laporan Postingan](public/images/screenshots/11-laporan-postingan.png)
 *Halaman yang menampilkan daftar laporan postingan dari pengguna*
-### 13. Halaman Detail Laporan
-![Halaman Detail Laporan](public/images/screenshots/13-detail-laporan.png)
+### 12. Halaman Detail Laporan
+![Halaman Detail Laporan](public/images/screenshots/12-detail-laporan.jpeg)
 *Halaman yang menampilkan detail laporan dari pengguna*
-### 14. Tampilan Notifikasi
-![Tampilan Notifikasi 1](public/images/screenshots/14-tampilan-notifikasi.png)
+### 13. Tampilan Notifikasi Postingan dihapus karena dilaporkan
+![Tampilan Notifikasi 1](public/images/screenshots/13-tampilan-notifikasi.png)
 *Tampilan notifikasi saat laporan diterima Admin*
-### 15. Tampilan Notifikasi
-![Tampilan Notifikasi 2](public/images/screenshots/15-tampilan-notifikasi.png)
+### 14. Tampilan Notifikasi
+![Tampilan Notifikasi 2](public/images/screenshots/14-tampilan-notifikasi.png)
 *Tampilan notifikasi saat pengguna mengomentari postingan pribadi*
-### 16. Tampilan Notifikasi
-![Tampilan Notifikasi 3](public/images/screenshots/16-tampilan-notifikasi.png)
+### 15. Tampilan Notifikasi
+![Tampilan Notifikasi 3](public/images/screenshots/15-tampilan-notifikasi.png)
 *Tampilan notifikasi saat terdapat pengguna membalas komentar pribadi*
-### 17. Tampilan Notifikasi
-![Tampilan Notifikasi 4](public/images/screenshots/17-tampilan-notifikasi.png)
+### 16. Tampilan Notifikasi
+![Tampilan Notifikasi 4](public/images/screenshots/16-tampilan-notifikasi.png)
 *Tampilan notifikasi saat pengguna melakukan like/dislike postingan pribadi*
-### 18. Halaman History Laporan
-![Halaman History Laporan](public/images/screenshots/18-history-laporan.png)
+### 17. Halaman History Laporan
+![Halaman History Laporan](public/images/screenshots/17-history-laporan.png)
 *Halaman yang menampilkan daftar riwayat laporan pengguna*
-### 19. Halaman Lihat Bantuan & FAQ
-![Halaman Bantuan](public/images/screenshots/19-bantuan.png)
+### 18. Halaman Lihat Bantuan & FAQ
+![Halaman Bantuan](public/images/screenshots/18-bantuan.png)
 *Halaman yang menampilkan daftar pertanyaan yang dapat membantu permasalahan umum yang dihadapi pengguna*
-### 20. Halaman Detail Bantuan & FAQ
-![Halaman Detail Bantuan](public/images/screenshots/20-detail-bantuan.png)
+### 19. Halaman Detail Bantuan & FAQ
+![Halaman Detail Bantuan](public/images/screenshots/19-detail-bantuan.png)
 *Halaman yang menampilkan jawaban yang membantu pengguna sesuai dengan pertanyaan yang dipilih*
 
 ---
