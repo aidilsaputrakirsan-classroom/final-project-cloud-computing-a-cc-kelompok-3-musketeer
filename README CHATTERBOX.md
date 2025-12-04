@@ -156,7 +156,6 @@ php artisan serve
 Aplikasi akan berjalan di: `http://localhost:8000`
 ```
 
-```
 ## Konfigurasi
 
 ### Email Configuration
@@ -169,13 +168,12 @@ Sistem menggunakan 2 role utama dengan permission berbeda:
 | Role | Deskripsi |
 |------|-----------|
 | **User** | Pengguna dapat membuat postingan dan berinteraksi dengan postingan |
-| **Admin** | Admin sebagai pengelola laporan postingan dari User |
+| **Admin** | Admin sebagai pengelola laporan postingan dari User 
 
----
-
----
 ## Fitur Berdasarkan Role
+
 ### User
+```
 - Membuat / melihat / mengedit / menghapus postingan  
 - Memberikan komentar dan balasan komentar
 - Melakukan voting postingan (Like/Dislike)
@@ -185,16 +183,16 @@ Sistem menggunakan 2 role utama dengan permission berbeda:
 - Mengelola profil
 - Melihat & mengelola daftar postingan pribadi
 - Menjelajahi kategori dan postingan
+ ```
   
 ### Admin
+```
 - Melihat daftar laporan postingan dari User
 - Memberikan aksi terhadap laporan (Menerima/Menolak)
 - Melihat riwayat laporan postingan dari User
 - Memberikan notifikasi status laporan kepada user   
 
----
-
----
+```
 ## Screenshot
 ### 1. Halaman Login
 ![Halaman Login](public/images/screenshots/01-login.png)
@@ -271,13 +269,12 @@ Sistem menggunakan 2 role utama dengan permission berbeda:
 ### 19. Halaman Detail Bantuan & FAQ
 ![Halaman Detail Bantuan](public/images/screenshots/19-detail-bantuan.png)
 *Halaman yang menampilkan jawaban yang membantu pengguna sesuai dengan pertanyaan yang dipilih*
-
----
-
----
-## Struktur Database
 ```
+
+```
+## Struktur Database
 ### Tabel Utama
+```
 - **users** - Data akun pengguna sistem (User & Admin), termasuk foto profil
 - **posts** - Data postingan yang dibuat oleh user
 - **comments** - Data komentar dan balasan komentar pada postingan   
@@ -298,7 +295,6 @@ posts (1) --- (n) reactions
 users (1) --- (n) notifications
 ```
 
----
 ## Arsitektur & Komponen
 
 ### Arsitektur Aplikasi
@@ -327,7 +323,6 @@ Aplikasi ChatterBox dibangun menggunakan arsitektur **MVC (Model View Controller
 ### Test Framework
 
 Aplikasi ChatterBox menggunakan metode **manual testing** dimana pengujian dilakukan langsung oleh tim untuk memastikan seluruh fitur berjalan dengan baik.
-```
 
 ### Konfigurasi Test
 
@@ -336,8 +331,8 @@ Aplikasi ChatterBox menggunakan metode **manual testing** dimana pengujian dilak
 - **Skenario Pengujian**: Menguji interaksi pengguna (User & Admin)
 - **Validasi**: Cek input, output, dan tampilan UI
 ```
----
 
+```
 ## Penggunaan
 
 ### Login Pertama Kali
@@ -345,6 +340,7 @@ Aplikasi ChatterBox menggunakan metode **manual testing** dimana pengujian dilak
 Setelah instalasi dan seeding database, Anda dapat login dengan akun default yang dibuat melalui halaman Register. Sistem tidak menyediakan akun default otomatis, sehingga pengguna perlu mendaftarkan akun terlebih dahulu sebelum masuk ke aplikasi.
 
 ### Workflow Umum
+```
 1. **Pengguna** melakukan register dan login
 2. **Pengguna** mengelola profil pribadi
 3. **Pengguna** membuat postingan baru
@@ -357,21 +353,22 @@ Setelah instalasi dan seeding database, Anda dapat login dengan akun default yan
 10.**Pengguna** menerima notifikasi
 11. **Pengguna** melihat daftar pengguna yang melakukan Like / Dislike
 12. **Pengguna** melihat informasi bantuan
- 
----
+ ```
 
 ## Deployment
 
 ### Requirements Production
+```
 - PHP 8.2+
 - MySQL / MariaDB
 - Composer
 - Node.js & NPM
 - Web server (Apache/Nginx)
 - SSL Certificate (jika production)
+```
 
 ### Production Setup
-
+```
 1. Clone repository ke server
 2. Install dependencies
 3. Setup environment production (.env)
@@ -395,30 +392,22 @@ composer install --optimize-autoloader --no-dev
 ```
 
 Pastikan `.env` menggunakan setting production.
-
----
+```
 
 ### Github Actions
 
 Project ini saat ini belum menggunakan Github Actions untuk auto-deployment. Deployment dilakukan secara manual pada environment production.
 
----
-
----
 ## Kontribusi
 1. Fork repository ini  
 2. Buat branch fitur baru (`git checkout -b feature/FiturBaru`)  
 3. Commit perubahan (`git commit -m "Tambah fitur baru"`)  
 4. Push ke branch (`git push origin feature/FiturBaru`)  
 5. Buat Pull Request  
----
 
 
----
 ## Lisensi
 Project ini dilisensikan di bawah **MIT License**.
 
 
----
 **Developed with ❤️ by Tim Musketeer — Cloud Computing**
-
