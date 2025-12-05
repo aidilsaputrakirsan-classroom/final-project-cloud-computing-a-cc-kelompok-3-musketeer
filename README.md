@@ -1,61 +1,460 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ChatterBox - Aplikasi Komunitas Diskusi Publik
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-12.36.1-FF2D20?style=flat&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-Database-blue?style=flat&logo=mysql)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-## About Laravel
+ChatterBox adalah aplikasi komunitas berbasis web yang dirancang untuk memfasilitasi pengguna dalam melakukan diskusi dan berbagi informasi mengenai berbagai topik secara terbuka. Dengan adanya platform ini, Pengguna dapat membuat postingan topik diskusi baru, memberikan tanggapan melalui komentar, serta menilai postingan dengan fitur like dan dislike. ChatterBox hadir sebagai ruang interaksi publik yang bersifat dinamis, informatif, dan mendorong pertukaran gagasan secara konstruktif.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Daftar Isi
+- [Fitur Utama](#fitur-utama)
+- [Tech Stack](#tech-stack)
+- [Persyaratan Sistem](#persyaratan-sistem)
+- [Instalasi](#instalasi)
+- [Konfigurasi](#konfigurasi)
+- [Role & Permissions](#role--permissions)
+- [Fitur Berdasarkan Role](#fitur-berdasarkan-role)
+- [Screenshot](#screenshot)
+- [Struktur Database](#struktur-database)
+- [Penggunaan](#penggunaan)
+- [Deployment](#deployment)
+- [Kontribusi](#kontribusi)
+- [Lisensi](#lisensi)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Manajemen Postingan
+✅ **CRUD Postingan**
+Pengguna dapat membuat, melihat, mengedit, dan menghapus postingan. 
 
-## Learning Laravel
+✅ **Kategori Postingan**
+Pengguna dapat memilih dan  menjelajahi postingan berdasarkan kategori yang dipilih melalui menu Jelajahi Topik.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 2. Interaksi Pengguna
+✅ **Voting (Like / Dislike)**
+ Pengguna dapat memberikan aksi berupa like atau dislike pada postingan pribadi / orang lain serta pengguna dapat melihat daftar like dan dislike pada postingan pribadi melalui menu Daftar Suka.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+✅ **Komentar & Balasan Komentar**
+Pengguna dapat memberikan komentar pada postingan pribadi dan postingan orang lain, serta dapat membalas komentar orang lain.    
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+✅ **Notifikasi**
+Pengguna mendapatkan notifikasi untuk komentar baru, balasan komentar, aksi like & dislike serta laporan postingan. 
 
-## Laravel Sponsors
+### 3. Moderasi Konten
+✅ **Report Postingan**
+Pengguna dapat melaporkan postingan beserta alasan sesuai pilihan kategori laporan dan laporan akan ditinjau oleh admin.   
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 4. Personalisasi dan Pengalaman Pengguna
+✅ **Daftar Postingan**
+Pengguna dapat melihat daftar postingan yang telah dibuat melalui menu Postingan Saya.
 
-### Premium Partners
+✅ **Profil Pengguna**
+Pengguna dapat mengubah foto profil melalui menu Postingan Saya ataupun dengan mengklik foto profil.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 5. Halaman Informasi
+✅ **FAQ & Bantuan**
+Pengguna yang memiliki kendala dapat memilih menu Lihat Bantuan dan FAQ untuk melihat pertanyaan dan solusi dari masalah yang umumnya terjadi di pengguna, dan pengguna juga dapat menghubungi admin melalui WHATSAPP.
 
-## Contributing
+## Tech Stack
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Backend
+- **Laravel 12.0+** - - PHP Framework
+- **MySQL** - Database
 
-## Code of Conduct
+### Frontend
+- **HTML** - Struktur halaman
+- **CSS** - Styling tampilan aplikasi
+- **JavaScript** - Interaksi dinamis browser
+- **Tailwind CSS 4.0** - Frontend dan Libraries
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Libraries & Tools
+- **Node.js & NPM** - Pengelola dependency frontend dan menjalankan Vite
+- **Composer** - Dependency manager untuk PHP & Laravel
+- **Laravel Artisan CLI** - command line tool (`php artisan`)
+- **Vite Asset Builder** - Asset builder untuk CSS & JavaScript
+- **Tailwind CSS 4.0**
 
-## Security Vulnerabilities
+## Persyaratan Sistem
+- PHP >= 8.2  
+- MySQL >= 5.7 atau MariaDB >= 10.3
+- Composer  
+- Node.js dan NPM
+- Web Server (Apache/Nginx)  
+- Ekstensi PHP yang dibutuhkan:
+  - OpenSSL
+  - PDO
+  - Mbstring
+  - Tokenizer
+  - Ctype
+  - JSON
+  - GD
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Instalasi
+### 1. Clone Repository
+```bash
+git clone https://github.com/aidilsaputrakirsan-classroom/final-project-cloud-computing-a-cc-kelompok-3-musketeer.git
+```
+### 2. Install Dependencies
 
-## License
+```bash
+# Install PHP dependencies
+composer install
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Install Node dependencies
+npm install
+```
+
+### 3. Setup Environment
+
+```bash
+# Copy file environment
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+```
+
+### 4. Konfigurasi Database
+
+Edit file `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=chatterbox
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 5. Migrasi Database
+
+```bash
+# Jalankan migrasi dan seeder
+php artisan migrate --seed
+
+# Atau jika ingin fresh install
+php artisan migrate:fresh --seed
+```
+
+### 6. Build Assets
+
+```bash
+# Development
+npm run dev
+
+# Production
+npm run build
+```
+
+### 7. Jalankan Aplikasi
+
+```bash
+# Development server
+php artisan serve
+```
+
+Aplikasi akan berjalan di: `http://localhost:8000`
+```
+
+## Konfigurasi
+
+### Email Configuration
+Saat ini aplikasi ChatterBox belum menggunakan fitur pengiriman email seperti verifikasi akun, reset password, maupun notifikasi ke email pengguna. 
+```
+
+## Role & Permissions
+Sistem menggunakan 2 role utama dengan permission berbeda:
+
+| Role | Deskripsi |
+|------|-----------|
+| **User** | Pengguna dapat membuat postingan dan berinteraksi dengan postingan |
+| **Admin** | Admin sebagai pengelola laporan postingan dari User 
+
+## Fitur Berdasarkan Role
+
+### User
+```
+- Membuat / melihat / mengedit / menghapus postingan  
+- Memberikan komentar dan balasan komentar
+- Melakukan voting postingan (Like/Dislike)
+- Melihat daftar pengguna yang memberikan voting Like / Dislike 
+- Melaporkan postingan beserta alasan laporan
+- Menerima notifikasi
+- Mengelola profil
+- Melihat & mengelola daftar postingan pribadi
+- Menjelajahi kategori dan postingan
+- Menghubungi admin, dan melihat pertanyaan-pertanyaan terkait permasalahan yang sering muncul dalam sistem beserta cara mengatasinya.
+ ```
+  
+### Admin
+```
+- Melihat daftar laporan postingan dari User
+- Memberikan aksi terhadap laporan (Menerima/Menolak)
+- Melihat riwayat laporan postingan dari User
+- Memberikan notifikasi status laporan kepada user   
+
+```
+## Screenshot
+### 1. Halaman Login
+![Halaman Login](public/images/screenshots/01-login.png)
+*Halaman login dengan form email dan password*
+
+### 2. Halaman Register
+![Halaman Register](public/images/screenshots/02-register.png)
+*Halaman Register dengan form nama lengkap, email, password, dan konfirmasi password*
+
+### 3. Halaman Diskusi
+![Halaman Diskusi](public/images/screenshots/03-diskusi.png)
+*Halaman yang menampilkan daftar postingan*
+
+### 4. Halaman Membuat Postingan
+![Halaman Membuat Postingan](public/images/screenshots/04-membuat-postingan.png)
+*Halaman Membuat Postingan dengan form judul, isi konten, dan pilihan kategori*
+
+### 5. Halaman Edit Postingan
+![Halaman Mengedit Postingan](public/images/screenshots/05-mengedit-postingan.png)
+*Halaman membuat postingan dengan form judul, isi konten, dan pilihan kategori*
+
+### 6. Halaman Detail Postingan
+![Halaman Detail Postingan](public/images/screenshots/06-detail-postingan.png)
+*Halaman yang menampilkan detail postingan pengguna dan isi komentar*
+
+### 7. Halaman Jelajahi Topik
+![Halaman Jelajahi Topik](public/images/screenshots/07-jelajahi-topik.png)
+*Halaman yang menampilkan beberapa kategori postingan yang dapat dipilih pengguna untuk melihat daftar postingan dengan kategori yang dipilih*
+
+### 8. Halaman Postingan Saya
+![Halaman Postingan Saya](public/images/screenshots/08-postingan-saya.png)
+*Halaman yang menampilkan daftar postingan serta profil pengguna*
+
+### 9. Halaman Daftar Suka
+![Halaman Daftar Suka](public/images/screenshots/09-daftar-suka.png)
+*Halaman yang menampilkan daftar pengguna yang melakukan aksi like atau dislike pada postingan pribadi pengguna*
+
+### 10. Tampilan Melaporkan Postingan
+![Tampilan Melaporkan Postingan](public/images/screenshots/10-melaporkan-postingan.png)
+*Tampilan pelaporan terhadap postingan orang lain*
+
+### 11. Halaman Laporan Postingan
+![Halaman Laporan Postingan](public/images/screenshots/11-laporan-postingan.png)
+*Halaman yang menampilkan daftar laporan postingan dari pengguna*
+
+### 12. Halaman Detail Laporan
+![Halaman Detail Laporan](public/images/screenshots/12-detail-laporan.jpeg)
+*Halaman yang menampilkan detail laporan dari pengguna*
+
+### 13. Tampilan Notifikasi Postingan dihapus karena dilaporkan
+![Tampilan Notifikasi 1](public/images/screenshots/13-tampilan-notifikasi.png)
+*Tampilan notifikasi saat laporan diterima Admin*
+
+### 14. Tampilan Notifikasi Postingan pribadi dikomentari oleh pengguna lain
+![Tampilan Notifikasi 2](public/images/screenshots/14-tampilan-notifikasi.png)
+*Tampilan notifikasi saat pengguna mengomentari postingan pribadi*
+
+### 15. Tampilan Notifikasi komentar pribadi dibalas pengguna lain
+![Tampilan Notifikasi 3](public/images/screenshots/15-tampilan-notifikasi.png)
+*Tampilan notifikasi saat terdapat pengguna membalas komentar pribadi*
+
+### 16. Tampilan Notifikasi postingan pribadi disukai/tidak disukai oleh pengguna lain
+![Tampilan Notifikasi 4](public/images/screenshots/16-tampilan-notifikasi.png)
+*Tampilan notifikasi saat pengguna melakukan like/dislike postingan pribadi*
+
+### 17. Halaman History Laporan
+![Halaman History Laporan](public/images/screenshots/17-history-laporan.png)
+*Halaman yang menampilkan daftar riwayat laporan pengguna*
+
+### 18. Halaman Lihat Bantuan & FAQ
+![Halaman Bantuan](public/images/screenshots/18-bantuan.png)
+*Halaman yang menampilkan daftar pertanyaan yang dapat membantu permasalahan umum yang dihadapi pengguna*
+
+### 19. Halaman Detail Bantuan & FAQ
+![Halaman Detail Bantuan](public/images/screenshots/19-detail-bantuan.png)
+*Halaman yang menampilkan jawaban yang membantu pengguna sesuai dengan pertanyaan yang dipilih dan tombol untuk menghubungi admin apabila permasalahan belum bisa terselesaikan*
+```
+
+```
+## Struktur Database
+### Tabel Utama
+```
+- **users** - Data akun pengguna sistem (User & Admin), termasuk foto profil
+- **posts** - Data postingan yang dibuat oleh user
+- **comments** - Data komentar dan balasan komentar pada postingan   
+- **categories** - Data kategori yang digunakan untuk mengelompokkan postingan  
+- **reports** - Data laporan postingan dari user ke admin (beserta alasan laporan dan status) 
+- **notifications** - Data notifikasi untuk setiap aktivitas (komentar, balasan, voting, status laporan)
+- **reactions** - Data voting like/dislike pada postingan (mencatat user dan status reaksi)  
+```
+
+### Relasi Database
+```
+users (1) --- (n) posts
+users (1) --- (n) comments
+users (1) --- (n) reports (Sebagai reporter)
+users (1) --- (n) reports (sebagai handler)
+comments (1)  --- (n) comments
+posts (1) --- (n) reports
+posts (1) --- (n) comments
+posts (n) --- (1) categories
+posts (1) --- (n) reports
+posts (1) --- (n) reactions
+users (1) --- (n) notifications
+```
+
+## Arsitektur & Komponen
+
+### Arsitektur Aplikasi
+
+Aplikasi ChatterBox dibangun menggunakan arsitektur **MVC (Model View Controller** bawaan Laravel, yang memisahkan logika aplikasi, tampilan, dan pengelolaan data, sehingga pengembangan lebih terstruktur dan mudah dikembangkan:
+
+- **Controllers** - Business logic dan routing
+- **Models** - Data utama (Users, Posts, Comments, Reactions, Reports, Notifications)
+- **Middleware** - Pengaturan akses User & Admin
+- **Views** - Tampilan halaman UI
+- **Routes** - Rute navigasi aplikasi
+- **Assets** - Tampilan tema & interaksi UI
+- **Notifications** - Sistem notifikasi pengguna
+
+### Fitur Teknis Unggulan
+
+- **Authentication System** - Login, Register, dan proteksi akses
+- **CRUD Postingan** - Kelola postingan diskusi
+- **Komentar & Voting** - Interaksi pengguna pada postingan
+- **Report Postingan** - Pelaporan konten ke admin
+- **Notifikasi** - Pemberitahuan interaksi & laporan
+- **Responsive Mobile-First** - Tampilan optimal untuk semua device
+
+### Fitur Layanan Pengguna
+
+- **Bantuan & FAQ** - Daftar pertanyaan mengenai permasalahan yang umum terjadi didalam sistem beserta solusi
+- **Hubungi admin** - Menanyakan pertanyaan mengenai permasalahan yang tidak bisa diselesaikan dengan melihat bantuan & FAQ, dan mengenai postingan yang dihapus apabila disetujui oleh admin berdasarkan pelaporan postingan dari pengguna-pengguna lainnya.
+
+
+## Testing
+
+### Test Framework
+
+Aplikasi ChatterBox menggunakan metode **manual testing** dimana pengujian dilakukan langsung oleh tim untuk memastikan seluruh fitur berjalan dengan baik.
+
+### Konfigurasi Test
+
+- **Metode Pengujian**: Manual testing langsung pada aplikasi
+- **Lingkup Pengujian**: Pengujian fungsi utama pada setiap fitur
+- **Skenario Pengujian**: Menguji interaksi pengguna (User & Admin)
+- **Validasi**: Cek input, output, dan tampilan UI
+```
+
+```
+## Penggunaan
+
+### Login Pertama Kali
+
+Setelah instalasi dan seeding database, Anda dapat login dengan akun default yang dibuat melalui halaman Register. Sistem tidak menyediakan akun default otomatis, sehingga pengguna perlu mendaftarkan akun terlebih dahulu sebelum masuk ke aplikasi.
+
+### Workflow Umum
+```
+1. **Pengguna** melakukan register dan login
+2. **Pengguna** mengelola profil pribadi
+3. **Pengguna** membuat postingan baru
+4. **Pengguna** melihat, mengedit, atau menghapus postingan pribadi
+5. **Pengguna** memberikan komentar atau balasan komentar
+6. **Pengguna** memberikan voting Like / Dislike
+7. **Pengguna** melaporkan postingan jika diperlukan
+8. **Admin** menerima laporan postingan yang masuk
+9. **Admin** meninjau laporan postingan dan menentukan keputusan
+10.**Pengguna** menerima notifikasi (postingan pribadi dikomentari, komentar pribadi dibalas pengguna lain, disukai, tidak disukai, dilaporkan)
+11. **Pengguna** melihat daftar pengguna yang melakukan Like / Dislike
+12. **Pengguna** melihat informasi bantuan
+13. **Pengguna** menghubungi admin jika diperlukan
+ ```
+
+## Deployment
+
+### Requirements Production
+```
+- PHP 8.2+
+- MySQL 5.7+ / MariaDB 10.3+
+- Composer 2.0+
+- Node.js & NPM
+- Web server (Apache/Nginx)
+- SSL Certificate (jika production)
+- Storage symlink (Untuk File uploads seperti profile picture)
+- File permissions
+```
+
+### Production Setup
+```
+1. Clone repository ke server
+```bash
+git clone <repository-url>
+cd <project-directory>
+```
+
+2. Install dependencies
+```bash
+composer install --optimize-autoloader --no-dev
+npm install
+npm run build
+```
+
+3. Setup environment production (.env)
+- Set 'APP_ENV=proudction'
+- SET 'APP_DEBUG=false'
+- Konfigurasi database production
+- Set 'APP_URL=https://chatterbox.my.id'
+
+4. Optimaze aplikasi:
+```bash
+php artisan key:generate
+```
+5. Jalankan migration
+   ```bash
+   php artisan migrate --force
+   php artisan db:seed --force
+   ```
+
+6. Optimize aplikasi:
+   ```bash
+   # Optimize configuration
+   php artisan config:cache
+   
+   # Optimize routes
+   php artisan route:cache
+   
+   # Optimize views
+   php artisan view:cache
+   
+   # Create symbolic link untuk storage
+   php artisan storage:link
+   ```
+
+7. Set permissions:
+   ```bash
+   chmod -R 775 storage
+   chmod -R 775 bootstrap/cache
+   ```
+
+8. Set ownership (jika perlu):
+   ```bash
+   chown -R www-data:www-data storage
+   chown -R www-data:www-data bootstrap/cache
+   ```
+
+### Github Actions
+
+Project ini saat ini belum menggunakan Github Actions untuk auto-deployment. Deployment dilakukan secara manual pada environment production.
+
+## Kontribusi
+1. Fork repository ini  
+2. Buat branch fitur baru (`git checkout -b feature/FiturBaru`)  
+3. Commit perubahan (`git commit -m "Tambah fitur baru"`)  
+4. Push ke branch (`git push origin feature/FiturBaru`)  
+5. Buat Pull Request  
+
+
+## Lisensi
+Project ini dilisensikan di bawah **MIT License**.
+
+
+**Developed with ❤️ by Tim Musketeer — Cloud Computing**
