@@ -17,7 +17,7 @@
             <div class="icon"
                  style="width:56px;height:56px;border-radius:10px;background:#e6f4f8;display:flex;align-items:center;justify-content:center;font-weight:700;color:#40A09C">!</div>
             <div>
-                <div style="font-size:20px;font-weight:700">{{ $counts['total'] }}</div>
+                <div style="font-size:20px;font-weight:700">{{ $counts['pending'] }}</div>
                 <div style="color:#9aa0a6">Total Laporan</div>
             </div>
         </div>

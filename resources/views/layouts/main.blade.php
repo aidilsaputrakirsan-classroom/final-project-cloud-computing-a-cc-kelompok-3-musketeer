@@ -87,6 +87,12 @@
             border-radius: 10px;
             text-align: center;
         }
+
+        .faq-img {
+            width: 70%;
+            margin-bottom: 15px;
+        }
+
         .faq-text {
             font-size: 1em;
             margin-bottom: 6px;
@@ -146,7 +152,7 @@
     {{-- SIDEBAR --}}
     <aside class="sidebar">
         <div class="logo-row">
-            <img src="{{ asset('logo.png') }}" alt="Logo">
+            <img src="{{ asset('images/screenshots/logochatterbox.png') }}" alt="Logo">
             <div>
                 <div class="logo-title">CHATTER BOX</div>
                 <div class="logo-sub">Express yourself everyday</div>
@@ -174,12 +180,8 @@
                 <i class="fa fa-heart"></i> Daftar Suka
             </li>
 
-            <li onclick="window.location='#'">
-                <i class="fa fa-cog"></i> Pengaturan
-            </li>
-        </ul>
-
         <div class="faq-box">
+            <img src="{{ asset('images/screenshots/bantuan.png') }}" alt="FAQ Illustration" class="faq-img">
             <div class="faq-text">Ada Kendala?</div>
             <a href="{{ route('faq.index') }}" class="faq-btn">Lihat Bantuan & FAQ</a>
         </div>

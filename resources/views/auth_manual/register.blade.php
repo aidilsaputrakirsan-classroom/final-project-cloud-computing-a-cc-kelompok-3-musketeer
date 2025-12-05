@@ -195,7 +195,7 @@
 <div class="page-wrapper">
     <div class="left-side">
         <div class="logo-row">
-            <img src="{{ asset('logochatterbox.png') }}" alt="Chatter Box" class="logo-icon">
+            <img src="{{ asset('images/screenshots/logochatterbox.png') }}" alt="Chatter Box" class="logo-icon">
             <div>
                 <div class="logo-text">CHATTER BOX</div>
                 <div class="logo-tagline">Express yourself everyday</div>
@@ -245,7 +245,7 @@
     </div>
     <div class="right-side">
         <div class="illustration">
-            <img src="{{ asset('bg.png') }}" alt="People Network Illustration">
+            <img src="{{ asset('images/screenshots/Bg.png') }}" alt="People Network Illustration">
         </div>
     </div>
 
