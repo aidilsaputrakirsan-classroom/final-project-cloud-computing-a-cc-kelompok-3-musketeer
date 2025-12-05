@@ -54,7 +54,7 @@ Pengguna dapat mengubah foto profil melalui menu Postingan Saya ataupun dengan m
 
 ### 5. Halaman Informasi
 ✅ **FAQ & Bantuan**
-Pengguna yang memiliki kendala dapat memilih menu Lihat Bantuan dan FAQ untuk melihat pertanyaan dan solusi dari masalah yang umumnya terjadi di pengguna.
+Pengguna yang memiliki kendala dapat memilih menu Lihat Bantuan dan FAQ untuk melihat pertanyaan dan solusi dari masalah yang umumnya terjadi di pengguna, dan pengguna juga dapat menghubungi admin melalui WHATSAPP.
 
 ## Tech Stack
 
@@ -185,6 +185,7 @@ Sistem menggunakan 2 role utama dengan permission berbeda:
 - Mengelola profil
 - Melihat & mengelola daftar postingan pribadi
 - Menjelajahi kategori dan postingan
+- Menghubungi admin, dan melihat pertanyaan-pertanyaan terkait permasalahan yang sering muncul dalam sistem beserta cara mengatasinya.
  ```
   
 ### Admin
@@ -248,15 +249,15 @@ Sistem menggunakan 2 role utama dengan permission berbeda:
 ![Tampilan Notifikasi 1](public/images/screenshots/13-tampilan-notifikasi.png)
 *Tampilan notifikasi saat laporan diterima Admin*
 
-### 14. Tampilan Notifikasi
+### 14. Tampilan Notifikasi Postingan pribadi dikomentari oleh pengguna lain
 ![Tampilan Notifikasi 2](public/images/screenshots/14-tampilan-notifikasi.png)
 *Tampilan notifikasi saat pengguna mengomentari postingan pribadi*
 
-### 15. Tampilan Notifikasi
+### 15. Tampilan Notifikasi komentar pribadi dibalas pengguna lain
 ![Tampilan Notifikasi 3](public/images/screenshots/15-tampilan-notifikasi.png)
 *Tampilan notifikasi saat terdapat pengguna membalas komentar pribadi*
 
-### 16. Tampilan Notifikasi
+### 16. Tampilan Notifikasi postingan pribadi disukai/tidak disukai oleh pengguna lain
 ![Tampilan Notifikasi 4](public/images/screenshots/16-tampilan-notifikasi.png)
 *Tampilan notifikasi saat pengguna melakukan like/dislike postingan pribadi*
 
@@ -356,9 +357,10 @@ Setelah instalasi dan seeding database, Anda dapat login dengan akun default yan
 7. **Pengguna** melaporkan postingan jika diperlukan
 8. **Admin** menerima laporan postingan yang masuk
 9. **Admin** meninjau laporan postingan dan menentukan keputusan
-10.**Pengguna** menerima notifikasi
+10.**Pengguna** menerima notifikasi (postingan pribadi dikomentari, komentar pribadi dibalas pengguna lain, disukai, tidak disukai, dilaporkan)
 11. **Pengguna** melihat daftar pengguna yang melakukan Like / Dislike
 12. **Pengguna** melihat informasi bantuan
+13. **Pengguna** menghubungi admin jika diperlukan
  ```
 
 ## Deployment
