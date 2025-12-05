@@ -59,19 +59,21 @@ Pengguna yang memiliki kendala dapat memilih menu Lihat Bantuan dan FAQ untuk me
 ## Tech Stack
 
 ### Backend
-- **Laravel 12.36.1** - - PHP Framework
+- **Laravel 12.0+** - - PHP Framework
 - **MySQL** - Database
 
 ### Frontend
 - **HTML** - Struktur halaman
 - **CSS** - Styling tampilan aplikasi
 - **JavaScript** - Interaksi dinamis browser
+- **Tailwind CSS 4.0** - Frontend dan Libraries
 
 ### Libraries & Tools
 - **Node.js & NPM** - Pengelola dependency frontend dan menjalankan Vite
 - **Composer** - Dependency manager untuk PHP & Laravel
 - **Laravel Artisan CLI** - command line tool (`php artisan`)
 - **Vite Asset Builder** - Asset builder untuk CSS & JavaScript
+- **Tailwind CSS 4.0**
 
 ## Persyaratan Sistem
 - PHP >= 8.2  
@@ -288,6 +290,10 @@ Sistem menggunakan 2 role utama dengan permission berbeda:
 ```
 users (1) --- (n) posts
 users (1) --- (n) comments
+users (1) --- (n) reports (Sebagai reporter)
+users (1) --- (n) reports (sebagai handler)
+comments (1)  --- (n) comments
+posts (1) --- (n) reports
 posts (1) --- (n) comments
 posts (n) --- (1) categories
 posts (1) --- (n) reports
@@ -360,39 +366,72 @@ Setelah instalasi dan seeding database, Anda dapat login dengan akun default yan
 ### Requirements Production
 ```
 - PHP 8.2+
-- MySQL / MariaDB
-- Composer
+- MySQL 5.7+ / MariaDB 10.3+
+- Composer 2.0+
 - Node.js & NPM
 - Web server (Apache/Nginx)
 - SSL Certificate (jika production)
+- Storage symlink (Untuk File uploads seperti profile picture)
+- File permissions
 ```
 
 ### Production Setup
 ```
 1. Clone repository ke server
-2. Install dependencies
-3. Setup environment production (.env)
-4. Optimaze aplikasi:
-
 ```bash
-# Optimaze configuration
-php artisan config:cache
+git clone <repository-url>
+cd <project-directory>
+```
 
-#Optimaze routes
-php artisan route:cache
-
-#Optimaze views
-php artisan view:cache
-
-#Create symbolic link
-php artisan storage:link
-
-# Optimaze autoloader
+2. Install dependencies
+```bash
 composer install --optimize-autoloader --no-dev
+npm install
+npm run build
 ```
 
-Pastikan `.env` menggunakan setting production.
+3. Setup environment production (.env)
+- Set 'APP_ENV=proudction'
+- SET 'APP_DEBUG=false'
+- Konfigurasi database production
+- Set 'APP_URL=https://chatterbox.my.id'
+
+4. Optimaze aplikasi:
+```bash
+php artisan key:generate
 ```
+5. Jalankan migration
+   ```bash
+   php artisan migrate --force
+   php artisan db:seed --force
+   ```
+
+6. Optimize aplikasi:
+   ```bash
+   # Optimize configuration
+   php artisan config:cache
+   
+   # Optimize routes
+   php artisan route:cache
+   
+   # Optimize views
+   php artisan view:cache
+   
+   # Create symbolic link untuk storage
+   php artisan storage:link
+   ```
+
+7. Set permissions:
+   ```bash
+   chmod -R 775 storage
+   chmod -R 775 bootstrap/cache
+   ```
+
+8. Set ownership (jika perlu):
+   ```bash
+   chown -R www-data:www-data storage
+   chown -R www-data:www-data bootstrap/cache
+   ```
 
 ### Github Actions
 
