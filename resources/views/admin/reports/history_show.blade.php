@@ -69,12 +69,36 @@
                         ?? '(Tidak ada konten)' }}
                 </p>
 
+                @php
+                    try {
+                        // Hitung dari relasi reactions
+                        $likesCount = method_exists($report->post, 'likes')
+                            ? $report->post->likes()->count()
+                            : ($report->post->likes ?? 0);
+
+                        $dislikesCount = method_exists($report->post, 'dislikes')
+                            ? $report->post->dislikes()->count()
+                            : ($report->post->dislikes ?? 0);
+
+                        // PENTING: langsung hitung dari relasi comments(),
+                        // JANGAN pakai comments_count lagi
+                        $commentsCount = method_exists($report->post, 'comments')
+                            ? $report->post->comments()->count()
+                            : ($report->post->comments->count() ?? 0);
+                    } catch (\Throwable $e) {
+                        // Fallback jika ada error di relasi
+                        $likesCount = $report->post->likes ?? 0;
+                        $dislikesCount = $report->post->dislikes ?? 0;
+                        $commentsCount = $report->post->comments->count() ?? 0;
+                    }
+                @endphp
+
                 <!-- Statistik -->
                 <div class="bg-light rounded p-3 mb-3 d-flex flex-wrap gap-4 text-muted">
                     <span>{{ $report->post->views ?? 0 }} Dilihat</span>
-                    <span>{{ $report->post->comments->count() ?? 0 }} Komentar</span>
-                    <span>{{ $report->post->likes ?? 0 }} Suka</span>
-                    <span>{{ $report->post->dislikes ?? 0 }} Tidak Suka</span>
+                    <span>{{ $commentsCount }} Komentar</span>
+                    <span>{{ $likesCount }} Suka</span>
+                    <span>{{ $dislikesCount }} Tidak Suka</span>
                 </div>
 
                 <span class="badge"
@@ -93,7 +117,8 @@
         {{-- CARD KOMENTAR --}}
         <div class="card mb-4">
             <div class="card-header bg-white fw-semibold">
-                Komentar
+                {{-- pakai nilai yang sudah dihitung --}}
+                Komentar ({{ $commentsCount }})
             </div>
             <div class="card-body">
 

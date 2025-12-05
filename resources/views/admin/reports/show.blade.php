@@ -68,12 +68,36 @@
                     ?? '(Tidak ada konten)' }}
             </p>
 
+            @php
+                try {
+                    // Hitung dari relasi likes/dislikes jika ada
+                    $likesCount = method_exists($report->post, 'likes')
+                        ? $report->post->likes()->count()
+                        : ($report->post->likes ?? 0);
+
+                    $dislikesCount = method_exists($report->post, 'dislikes')
+                        ? $report->post->dislikes()->count()
+                        : ($report->post->dislikes ?? 0);
+
+                    // PENTING: langsung hitung dari relasi comments(),
+                    // jangan pakai comments_count lagi
+                    $commentsCount = method_exists($report->post, 'comments')
+                        ? $report->post->comments()->count()
+                        : ($report->post->comments->count() ?? 0);
+                } catch (\Throwable $e) {
+                    // Fallback kalau relasi/akses error
+                    $likesCount = $report->post->likes ?? 0;
+                    $dislikesCount = $report->post->dislikes ?? 0;
+                    $commentsCount = $report->post->comments->count() ?? 0;
+                }
+            @endphp
+
             <!-- Statistik -->
             <div class="bg-light rounded p-3 mb-3 d-flex flex-wrap gap-4 text-muted">
                 <span><i class="bi bi-eye"></i> {{ $report->post->views ?? 0 }} Dilihat</span>
-                <span><i class="bi bi-chat"></i> {{ $report->post->comments->count() ?? 0 }} Komentar</span>
-                <span><i class="bi bi-hand-thumbs-up"></i> {{ $report->post->likes ?? 0 }} Suka</span>
-                <span><i class="bi bi-hand-thumbs-down"></i> {{ $report->post->dislikes ?? 0 }} Tidak Suka</span>
+                <span><i class="bi bi-chat"></i> {{ $commentsCount }} Komentar</span>
+                <span><i class="bi bi-hand-thumbs-up"></i> {{ $likesCount }} Suka</span>
+                <span><i class="bi bi-hand-thumbs-down"></i> {{ $dislikesCount }} Tidak Suka</span>
             </div>
 
             <span class="badge"
@@ -92,7 +116,7 @@
     <!-- CARD KOMENTAR -->
     <div class="card mb-4">
         <div class="card-header bg-white fw-semibold">
-            Komentar
+            Komentar ({{ $commentsCount }})
         </div>
         <div class="card-body">
 
