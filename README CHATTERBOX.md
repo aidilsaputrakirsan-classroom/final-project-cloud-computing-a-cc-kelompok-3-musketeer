@@ -271,7 +271,7 @@ Sistem menggunakan 2 role utama dengan permission berbeda:
 
 ### 19. Halaman Detail Bantuan & FAQ
 ![Halaman Detail Bantuan](public/images/screenshots/19-detail-bantuan.png)
-*Halaman yang menampilkan jawaban yang membantu pengguna sesuai dengan pertanyaan yang dipilih*
+*Halaman yang menampilkan jawaban yang membantu pengguna sesuai dengan pertanyaan yang dipilih dan tombol untuk menghubungi admin apabila permasalahan belum bisa terselesaikan*
 ```
 
 ```
@@ -324,6 +324,12 @@ Aplikasi ChatterBox dibangun menggunakan arsitektur **MVC (Model View Controller
 - **Report Postingan** - Pelaporan konten ke admin
 - **Notifikasi** - Pemberitahuan interaksi & laporan
 - **Responsive Mobile-First** - Tampilan optimal untuk semua device
+
+### Fitur Layanan Pengguna
+
+- **Bantuan & FAQ** - Daftar pertanyaan mengenai permasalahan yang umum terjadi didalam sistem beserta solusi
+- **Hubungi admin** - Menanyakan pertanyaan mengenai permasalahan yang tidak bisa diselesaikan dengan melihat bantuan & FAQ, dan mengenai postingan yang dihapus apabila disetujui oleh admin berdasarkan pelaporan postingan dari pengguna-pengguna lainnya.
+
 
 ## Testing
 
